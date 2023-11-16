@@ -13,6 +13,6 @@ public class TUI {
         do {
             // TODO : les autres commandes
         }
-        while (!Objects.equals(sc.nextLine(), "quit"));
+        while (!sc.nextLine().equals("quit"));
     }
 }
