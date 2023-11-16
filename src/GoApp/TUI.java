@@ -1,10 +1,14 @@
-package GoApp;
+package src.GoApp;
+
+import src.GoGame.Game;
 
 import java.util.Objects;
 import java.util.Scanner;
 
 public class TUI {
-    public static void main(String[] Args){
+    private Game game;
+    public static void main(String[] args) {
+
         Scanner sc = new Scanner(System.in);
         do {
             // TODO : les autres commandes
