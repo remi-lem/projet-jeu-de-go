@@ -1,6 +1,7 @@
-package src.GoGame;
+package GoGame;
 
-import src.Players.Player;
+import Players.Player;
+import GoGame.Board;
 
 public class Game {
     private Board board;
@@ -11,5 +12,14 @@ public class Game {
         this.board = board;
         this.player1 = player1;
         this.player2 = player2;
+    }
+
+    public void showBoard() {
+        if(board != null){
+            this.board.show();
+        }
+        else {
+            throw new RuntimeException("Board not initialized");
+        }
     }
 }
