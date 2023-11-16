@@ -1,7 +1,9 @@
-package GoApp;
+package src.GoApp;
+
+import src.GoGame.Game;
 
 public class TUI {
-    public static void main(String[] Args){
-
+    private Game game;
+    public static void main(String[] args) {
     }
 }
