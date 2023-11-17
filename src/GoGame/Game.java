@@ -1,5 +1,6 @@
 package GoGame;
 
+
 import Players.Player;
 
 public class Game {
@@ -20,5 +21,9 @@ public class Game {
         else {
             throw new RuntimeException("Board not initialized");
         }
+    }
+
+    public void showBoard() {
+        //TODO : a coder
     }
 }

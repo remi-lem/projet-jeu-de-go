@@ -2,6 +2,7 @@ package Players;
 
 import Players.NaturePlayer;
 
+
 public class Player {
     private int score;
     private String name;

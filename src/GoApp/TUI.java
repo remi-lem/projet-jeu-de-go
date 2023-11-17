@@ -1,11 +1,14 @@
 package GoApp;
 
-import GoGame.Board;
+
 import GoGame.Game;
-import Players.NaturePlayer;
+import GoGame.Board;
 import Players.Player;
+import Players.NaturePlayer;
 
 import java.util.Scanner;
+
+import static java.lang.Integer.parseInt;
 
 public class TUI {
     public static void main(String[] args) {
@@ -34,6 +37,7 @@ public class TUI {
                     else {
                         System.out.println("Board not initialized");
                     }
+
                     break;
                 case "play":
                     break;
