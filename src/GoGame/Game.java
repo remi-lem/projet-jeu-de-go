@@ -5,13 +5,22 @@ import Players.Player;
 
 public class Game {
     private Board board;
-    private Player player1;
-    private Player player2;
+    private Player playerBlack;
+    private Player playerWhite;
 
-    public Game(Board board, Player player1, Player player2) {
+    public Game(Board board, Player playerBlack, Player playerWhite) {
         this.board = board;
-        this.player1 = player1;
-        this.player2 = player2;
+        this.playerBlack = playerBlack;
+        this.playerWhite = playerWhite;
+    }
+
+    public void showBoard() {
+        if(board != null){
+            this.board.show();
+        }
+        else {
+            throw new RuntimeException("Board not initialized");
+        }
     }
 
     public void showBoard() {
