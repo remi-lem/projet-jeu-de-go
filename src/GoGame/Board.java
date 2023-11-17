@@ -4,12 +4,7 @@ public class Board {
     private final char[][] boardMap;
 
     public Board(int size) {
-        boardMap = new char[size][size];
-        for (int i = 0 ; i < size ; i++) {
-            for (int j = 0; j < size; j++) {
-                boardMap[i][j] = '.';
-            }
-        }
+        initialize(size);
     }
 
     public void show() {

@@ -23,7 +23,8 @@ public class Game {
         }
     }
 
-    public void showBoard() {
-        //TODO : a coder
+    public void clearBoard() {
+        testInitBoard();
+        this.board.clear();
     }
 }
