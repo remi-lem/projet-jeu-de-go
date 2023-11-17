@@ -15,7 +15,7 @@ public class Game {
 
     public void commandInterpreter(String[] command) throws RuntimeException {
         switch(command[0]) {
-            case "boardsize":
+            case "boardsize", "b":
                 try {
                     setSizeBoard(Integer.parseInt(command[1]));
                     System.out.println("Board initialized"); //TODO: enlever les messages
@@ -25,20 +25,23 @@ public class Game {
                     System.out.println("There is no number");
                 }
                 break;
-            case "showboard":
+            case "showboard", "s":
                 testInitBoard();
                 showBoard();
                 break;
-            case "play":
+            case "play", "p":
                 testInitBoard();
                 playMove(command[1], command[2]);
-            case "clearboard":
+                showBoard();
+                break;
+            case "clearboard", "c":
                 testInitBoard();
                 clearBoard();
+                showBoard();
                 break;
-            case "genmove":
+            case "genmove", "g":
                 break;
-            case "quit":
+            case "quit", "q":
                 return;
             default:
                 System.err.println("commande non reconnue");
@@ -66,5 +69,9 @@ public class Game {
         if (board == null) {
             throw new RuntimeException("Board not initalized");
         }
+    }
+
+    public Board getBoard() {
+        return board;
     }
 }

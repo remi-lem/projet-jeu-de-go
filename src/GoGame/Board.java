@@ -51,19 +51,30 @@ public class Board {
         System.out.print("  ");
         for (int i = 0; i < size; i++)
             System.out.print(" " + (char)(i + 65) + " ");
-
         System.out.println();
     }
 
     public void makeMove(String color, String move){
-        final int ascii_0 = 49, ascii_A = 65;
-        int letter = move.charAt(0);
-        int number = move.charAt(1);
+        int size = boardMap.length;
 
-        if (color.equals("BLACK"))
-            boardMap[number-ascii_0][letter-ascii_A] = 'X';
+        final int ascii_A = 65;
+        int letter = move.charAt(0);
+        int number;
+
+        if (move.length() == 2) {
+            number = Integer.parseInt(move.substring(1, 2));
+        } else {
+            number = Integer.parseInt(move.substring(1, 3));
+        }
+
+        if (color.equals("BLACK")) {
+            this.boardMap[size - (number)][letter - ascii_A] = 'X';
+        }
         else
-            boardMap[number-ascii_0][letter-ascii_A] = 'O';
-        show(); // TODO : update le jeu
+            this.boardMap[size-(number)][letter-ascii_A] = 'O';
+    }
+
+    public char[][] getBoardMap() {
+        return this.boardMap;
     }
 }

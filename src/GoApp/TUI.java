@@ -4,6 +4,7 @@ import GoGame.Game;
 import Players.NaturePlayer;
 import Players.Player;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class TUI {
@@ -15,7 +16,6 @@ public class TUI {
             System.out.print("> ");
             commands = sc.nextLine().split(" ");
             game.commandInterpreter(commands);
-        }
-        while (!commands[0].equals("quit"));
+        } while (!(commands[0].equals("quit") || commands[0].equals("q")));
     }
 }
