@@ -30,15 +30,18 @@ public class Game {
                 showBoard();
                 break;
             case "play":
-                break;
+                testInitBoard();
+                playMove(command[1], command[2]);
             case "clearboard":
                 testInitBoard();
                 clearBoard();
                 break;
             case "genmove":
                 break;
+            case "quit":
+                return;
             default:
-                System.out.println("commande non reconnue");
+                System.err.println("commande non reconnue");
                 break;
         }
     }
@@ -57,9 +60,13 @@ public class Game {
         this.board.clear();
     }
 
+    public void playMove(String playerColor, String coordinate) {
+        this.board.makeMove(playerColor.toUpperCase(), coordinate.toUpperCase());
+    }
+
     public void testInitBoard() throws RuntimeException {
         if (board == null) {
-            throw new RuntimeException("Board not initalised");
+            throw new RuntimeException("Board not initalized");
         }
     }
 }

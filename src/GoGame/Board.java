@@ -28,13 +28,13 @@ public class Board {
         }
         System.out.println();
         for (int i = 0 ; i < size ; i++) {
-            if (size - i <= 9) {
+            if (size - i <= 9)
                 System.out.print(" ");
-            }
             System.out.print(size - i);
-            for (int j = 0 ; j < size ; j++) {
+
+            for (int j = 0 ; j < size ; j++)
                 System.out.print(" " + boardMap[i][j] + " ");
-            }
+
             if ((size-i) == 2){
                 System.out.print("2     ");
                 //TODO : Faire la méthode white capture
@@ -50,9 +50,9 @@ public class Board {
             }
         }
         System.out.print("  ");
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++)
             System.out.print(" " + (char)(i + 65) + " ");
-        }
+
         System.out.println();
     }
 }
