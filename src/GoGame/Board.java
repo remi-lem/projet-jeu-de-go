@@ -1,4 +1,4 @@
-package src.GoGame;
+package GoGame;
 
 public class Board {
     private char[][] boardMap;

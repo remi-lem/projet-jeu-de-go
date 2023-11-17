@@ -1,4 +1,4 @@
-package src.Players;
+package Players;
 
 public class Player {
     private int score;

@@ -1,9 +1,9 @@
-package src.GoApp;
+package GoApp;
 
-import src.GoGame.Game;
-import src.GoGame.Board;
-import src.Players.Player;
-import src.Players.NaturePlayer;
+import GoGame.Game;
+import GoGame.Board;
+import Players.Player;
+import Players.NaturePlayer;
 
 import java.util.Scanner;
 
@@ -26,7 +26,7 @@ public class TUI {
                         game = new Game(new Board(size), new Player("Nose", NaturePlayer.Human), new Player("Foot", NaturePlayer.Robot));
                         System.out.println("Board Initialisé");
                     } catch(NumberFormatException e) {
-                        System.out.println("Cette valeur n'est pas un chiffre, essaie encore !");
+                        System.err.println("Cette valeur n'est pas un chiffre, essaie encore !");
                     }
                     break;
                 case "showboard":
