@@ -14,8 +14,7 @@ public class TUI {
         Scanner sc = new Scanner(System.in);
         do {
             System.out.print("> ");
-            String input = sc.nextLine();
-            commands = input.split(" ");
+            commands = sc.nextLine().split(" ");
             switch(commands[0]) {
                 case "boardsize":
                     try {

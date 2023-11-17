@@ -9,8 +9,8 @@ public class Game {
 
     public Game(Board board, Player player1, Player player2) {
         this.board = board;
-        this.player1 = player1;
-        this.player2 = player2;
+        this.playerBlack = playerBlack;
+        this.playerWhite = playerWhite;
     }
 
     public void showBoard() {
