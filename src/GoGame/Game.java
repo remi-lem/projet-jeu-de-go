@@ -1,6 +1,5 @@
 package GoGame;
 
-
 import Players.NaturePlayer;
 import Players.Player;
 
@@ -56,5 +55,11 @@ public class Game {
     public void clearBoard() {
         testInitBoard();
         this.board.clear();
+    }
+
+    public void testInitBoard() throws RuntimeException {
+        if (board == null) {
+            throw new RuntimeException("Board not initalised");
+        }
     }
 }
