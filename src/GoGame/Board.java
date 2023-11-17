@@ -1,10 +1,23 @@
 package GoGame;
 
 public class Board {
-    private final char[][] boardMap;
+    private char[][] boardMap;
 
     public Board(int size) {
         initialize(size);
+    }
+
+    public void initialize(int size) {
+        boardMap = new char[size][size];
+        for (int i = 0 ; i < size ; i++) {
+            for (int j = 0; j < size; j++) {
+                boardMap[i][j] = '.';
+            }
+        }
+    }
+
+    public void clear() {
+        initialize(boardMap.length);
     }
 
     public void show() {
