@@ -1,21 +1,22 @@
 package GoGame;
 
 public class Board {
-    private char[][] boardMap;
+    private final char[][] boardMap;
 
     public Board(int size) {
         boardMap = new char[size][size];
-        for (int i = 0; i < size; i++) {
+        for (int i = 0 ; i < size ; i++) {
             for (int j = 0; j < size; j++) {
                 boardMap[i][j] = '.';
             }
         }
     }
+
     public void show() {
         int size = boardMap.length;
         System.out.print("  ");
         for (int i = 0; i < size; i++) {
-            System.out.print(" "+(char)(i+65)+" ");
+            System.out.print(" " + (char)(i + 65) + " ");
         }
         System.out.println();
         for (int i = 0 ; i < size ; i++) {
@@ -42,13 +43,8 @@ public class Board {
         }
         System.out.print("  ");
         for (int i = 0; i < size; i++) {
-            System.out.print(" "+(char)(i+65)+" ");
+            System.out.print(" " + (char)(i + 65) + " ");
         }
         System.out.println();
-    }
-
-    public boolean initialized() {
-        //TODO : a coder
-        return true;
     }
 }

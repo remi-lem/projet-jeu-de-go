@@ -18,10 +18,9 @@ public class TUI {
             switch(commands[0]) {
                 case "boardsize":
                     try {
-                        String size_c = commands[1];
-                        int size = Integer.parseInt(size_c);
+                        int size = Integer.parseInt(commands[1]);
                         game = new Game(new Board(size), new Player("Nose", NaturePlayer.Human), new Player("Foot", NaturePlayer.Robot));
-                        System.out.println("Board Initialisé");
+                        System.out.println("Board initialized"); //TODO: enlever les messages
                     } catch(NumberFormatException e) {
                         System.out.println("You have to put a valid number");
                     } catch(ArrayIndexOutOfBoundsException e) {
