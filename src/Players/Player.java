@@ -1,6 +1,4 @@
-package src.Players;
-
-import src.Players.NaturePlayer;
+package Players;
 
 public class Player {
     private int score;
