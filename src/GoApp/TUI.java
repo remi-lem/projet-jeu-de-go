@@ -1,40 +1,47 @@
-package GoApp;
+package src.GoApp;
 
-import GoGame.*;
-import Players.*;
+import src.GoGame.Game;
+import src.GoGame.Board;
+import src.Players.Player;
+import src.Players.NaturePlayer;
 
 import java.util.Scanner;
 
 import static java.lang.Integer.parseInt;
 
 public class TUI {
-    //public static int INIT_SIZE = 5;
     public static void main(String[] args) {
+        String[] commands;
         Game game = null;
         Scanner sc = new Scanner(System.in);
         do {
-            switch(sc.next()){
+            System.out.print("> ");
+            String input = sc.nextLine();
+            commands = input.split(" ");
+            switch(commands[0]) {
                 case "boardsize":
-                    int size = Integer.parseInt(sc.next());
-                    game = new Game(new Board(size), new Player("Nose", NaturePlayer.Human), new Player("Foot", NaturePlayer.Robot));
+                    try {
+                        //voir si commands[1] != null
+                        int size = Integer.parseInt(commands[1]);
+                        game = new Game(new Board(size), new Player("Nose", NaturePlayer.Human), new Player("Foot", NaturePlayer.Robot));
+                        System.out.println("Board Initialisé");
+                    } catch(NumberFormatException e) {
+                        System.out.println("Cette valeur n'est pas un chiffre, essaie encore !");
+                    }
                     break;
                 case "showboard":
-                    game.showBoard();
                     break;
                 case "play":
                     break;
-
                 case "clearboard":
                     break;
-
                 case "genmove":
                     break;
                 default:
                     System.out.println("commande non reconnue");
                     break;
             }
-            sc.nextLine();
         }
-        while (!sc.nextLine().equals("quit"));
+        while (!commands[0].equals("quit"));
     }
 }
