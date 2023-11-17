@@ -1,6 +1,6 @@
-package src.GoGame;
+package GoGame;
 
-import src.Players.Player;
+import Players.Player;
 
 public class Game {
     private Board board;

@@ -1,9 +1,9 @@
-package src.GoApp;
+package GoApp;
 
-import src.GoGame.Board;
-import src.GoGame.Game;
-import src.Players.NaturePlayer;
-import src.Players.Player;
+import GoGame.Board;
+import GoGame.Game;
+import Players.NaturePlayer;
+import Players.Player;
 
 import java.util.Scanner;
 
