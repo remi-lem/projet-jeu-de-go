@@ -23,18 +23,18 @@ public class Board {
     public void show() {
         int size = boardMap.length;
         System.out.print("  ");
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++)
             System.out.print(" " + (char)(i + 65) + " ");
-        }
+
         System.out.println();
         for (int i = 0 ; i < size ; i++) {
-            if (size - i <= 9) {
+            if (size - i <= 9)
                 System.out.print(" ");
-            }
             System.out.print(size - i);
-            for (int j = 0 ; j < size ; j++) {
+
+            for (int j = 0 ; j < size ; j++)
                 System.out.print(" " + boardMap[i][j] + " ");
-            }
+
             if ((size-i) == 2){
                 System.out.print("2     ");
                 //TODO : Faire la méthode white capture
@@ -45,14 +45,36 @@ public class Board {
                 //TODO : Faire la méthode black capture
                 System.out.println("//BLACK (X) has captured 0 stones");
             }
-            else {
+            else
                 System.out.println(size-i);
-            }
         }
         System.out.print("  ");
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++)
             System.out.print(" " + (char)(i + 65) + " ");
-        }
         System.out.println();
+    }
+
+    public void makeMove(String color, String move){
+        int size = boardMap.length;
+
+        final int ascii_A = 65;
+        int letter = move.charAt(0);
+        int number;
+
+        if (move.length() == 2) {
+            number = Integer.parseInt(move.substring(1, 2));
+        } else {
+            number = Integer.parseInt(move.substring(1, 3));
+        }
+
+        if (color.equals("BLACK")) {
+            this.boardMap[size - (number)][letter - ascii_A] = 'X';
+        }
+        else
+            this.boardMap[size-(number)][letter-ascii_A] = 'O';
+    }
+
+    public char[][] getBoardMap() {
+        return this.boardMap;
     }
 }
