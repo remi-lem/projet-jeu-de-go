@@ -51,12 +51,10 @@ public class Game {
     }
 
     public void showBoard() {
-        testInitBoard();
         this.board.show();
     }
 
     public void clearBoard() {
-        testInitBoard();
         this.board.clear();
     }
 

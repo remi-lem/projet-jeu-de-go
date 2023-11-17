@@ -23,9 +23,9 @@ public class Board {
     public void show() {
         int size = boardMap.length;
         System.out.print("  ");
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++)
             System.out.print(" " + (char)(i + 65) + " ");
-        }
+
         System.out.println();
         for (int i = 0 ; i < size ; i++) {
             if (size - i <= 9)
@@ -45,14 +45,25 @@ public class Board {
                 //TODO : Faire la méthode black capture
                 System.out.println("//BLACK (X) has captured 0 stones");
             }
-            else {
+            else
                 System.out.println(size-i);
-            }
         }
         System.out.print("  ");
         for (int i = 0; i < size; i++)
             System.out.print(" " + (char)(i + 65) + " ");
 
         System.out.println();
+    }
+
+    public void makeMove(String color, String move){
+        final int ascii_0 = 49, ascii_A = 65;
+        int letter = move.charAt(0);
+        int number = move.charAt(1);
+
+        if (color.equals("BLACK"))
+            boardMap[number-ascii_0][letter-ascii_A] = 'X';
+        else
+            boardMap[number-ascii_0][letter-ascii_A] = 'O';
+        show(); // TODO : update le jeu
     }
 }
