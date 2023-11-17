@@ -12,4 +12,13 @@ public class Game {
         this.player1 = player1;
         this.player2 = player2;
     }
+
+    public void showBoard() {
+        if(board != null){
+            this.board.show();
+        }
+        else {
+            throw new RuntimeException("Board not initialized");
+        }
+    }
 }
