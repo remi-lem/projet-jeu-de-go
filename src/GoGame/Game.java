@@ -5,10 +5,10 @@ import Players.Player;
 
 public class Game {
     private Board board;
-    private Player playerBlack;
-    private Player playerWhite;
+    private IPlayer playerBlack;
+    private IPlayer playerWhite;
 
-    public Game(Player playerBlack, Player playerWhite) {
+    public Game(IPlayer playerBlack, IPlayer playerWhite) {
         this.playerBlack = playerBlack;
         this.playerWhite = playerWhite;
     }
@@ -67,7 +67,7 @@ public class Game {
 
     public void testInitBoard() throws RuntimeException {
         if (board == null) {
-            throw new RuntimeException("Board not initalized");
+            throw new RuntimeException("Board not initialised");
         }
     }
 
