@@ -9,6 +9,10 @@ public abstract class Player implements IPlayer {
     public Player(String name){
         this.score = 0;
         this.name = name;
-        this.nature = nature;
+    }
+
+    @Override
+    public int getScore() {
+        return score;
     }
 }
