@@ -19,16 +19,19 @@ public class Game {
     }
 
     public void commandInterpreter(String[] command) throws RuntimeException {
+        String noCommand = "";
+
+        try{
+            Integer.parseInt(command[0]);
+            noCommand = command[0];
+            command = Arrays.copyOfRange(command, 1, command.length);
+        }
+        catch(NumberFormatException e){
+        }
+
         switch(command[0]) {
             case "boardsize", "b":
-                try {
-                    setSizeBoard(Integer.parseInt(command[1]));
-                    System.out.println("Board initialized"); //TODO: enlever les messages
-                } catch(NumberFormatException e) {
-                    System.out.println("You have to put a valid number");
-                } catch(ArrayIndexOutOfBoundsException e) {
-                    System.out.println("There is no number");
-                }
+                boardsize(command, noCommand);
                 break;
             case "showboard", "s":
                 showBoard(noCommand);
@@ -37,18 +40,34 @@ public class Game {
                 playMove(command[1], command[2]);
                 showBoard(noCommand);
                 break;
-            case "clearboard", "c":
-                testInitBoard();
-                clearBoard();
-                showBoard();
+            case "clear_board", "c":
+                clearBoard(noCommand);
                 break;
             case "genmove", "g":
+                genMove(noCommand);
                 break;
             case "quit", "q":
                 return;
             default:
                 System.err.println("commande non reconnue");
                 break;
+        }
+    }
+
+    private void printCommandGTP(String command) {
+        System.out.println("=" + command + "\n");
+    }
+
+    private void boardsize(String[] command, String noCommand) {
+        try {
+            int size = Integer.parseInt(command[1]);
+            if ((size > BOARD_SIZE_MIN - 1) && (size < BOARD_SIZE_MAX + 1)) { // TODO : Supprimer les nombres mystères
+                setSizeBoard(Integer.parseInt(command[1]));
+                printCommandGTP(noCommand);
+            }
+            else throw new RuntimeException("pas le bon nombre");
+        } catch(RuntimeException e) {
+            System.err.println("?" + noCommand + " unacceptable size\n");
         }
     }
 
@@ -70,13 +89,7 @@ public class Game {
         this.board.makeMove(playerColor.toUpperCase(), coordinate.toUpperCase());
     }
 
-    public void testInitBoard() throws RuntimeException {
-        if (board == null) {
-            throw new RuntimeException("Board not initalized");
-        }
-    }
-
-    public Board getBoard() {
-        return board;
+    private void genMove(String noCommand) {
+        // TODO : à faire lol
     }
 }
