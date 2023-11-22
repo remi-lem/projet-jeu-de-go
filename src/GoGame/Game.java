@@ -7,6 +7,9 @@ public class Game {
     private Board board;
     private Player playerBlack;
     private Player playerWhite;
+    private final int BOARD_SIZE_MAX = 19;
+    private final int BOARD_SIZE_MIN = 1;
+
 
     public Game(Player playerBlack, Player playerWhite) {
         this.playerBlack = playerBlack;
@@ -26,8 +29,7 @@ public class Game {
                 }
                 break;
             case "showboard", "s":
-                testInitBoard();
-                showBoard();
+                showBoard(noCommand);
                 break;
             case "play", "p":
                 testInitBoard();
@@ -53,11 +55,13 @@ public class Game {
         board = new Board(sizeBoard);
     }
 
-    public void showBoard() {
+    public void showBoard(String noCommand) {
+        printCommandGTP(noCommand);
         this.board.show();
     }
 
-    public void clearBoard() {
+    public void clearBoard(String noCommand) {
+        printCommandGTP(noCommand);
         this.board.clear();
     }
 
