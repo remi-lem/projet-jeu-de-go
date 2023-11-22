@@ -1,8 +1,5 @@
 package GoGame;
 
-import Players.NaturePlayer;
-import Players.Player;
-
 public class Game {
     private Board board;
     private IPlayer playerBlack;
