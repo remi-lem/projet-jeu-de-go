@@ -1,7 +1,8 @@
 package GoGame;
 
-import Players.NaturePlayer;
 import Players.Player;
+
+import java.util.Arrays;
 
 public class Game {
     private Board board;
@@ -14,6 +15,7 @@ public class Game {
     public Game(Player playerBlack, Player playerWhite) {
         this.playerBlack = playerBlack;
         this.playerWhite = playerWhite;
+        this.board = new Board(BOARD_SIZE_MAX);
     }
 
     public void commandInterpreter(String[] command) throws RuntimeException {
@@ -32,9 +34,8 @@ public class Game {
                 showBoard(noCommand);
                 break;
             case "play", "p":
-                testInitBoard();
                 playMove(command[1], command[2]);
-                showBoard();
+                showBoard(noCommand);
                 break;
             case "clearboard", "c":
                 testInitBoard();
