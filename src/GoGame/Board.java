@@ -88,5 +88,29 @@ public class Board {
         }
         //TODO : savoir si malgrès que le coup soit libre il soit jouable
         return false;
+    public void makeRndMove(String color) {
+        int size = boardMap.length;
+
+        int letter = (int) ((Math.random() * (boardMap.length + 1)));
+        int number = (int) ((Math.random() * (boardMap.length + 1)));
+        System.out.println(size - number);
+        System.out.println(letter);
+
+        for (int i =0; i<100;i++) {
+            letter = (int) ((Math.random() * (boardMap.length + 1))-1);
+            number = (int) ((Math.random() * (boardMap.length + 1))-1);
+            System.out.print(size - number);
+            System.out.println(letter);
+        }
+
+        if (color.equals("BLACK"))
+            this.boardMap[size - (number)][letter] = 'X';
+        else
+            this.boardMap[size-(number)][letter] = 'O';
     }
+
+    public char[][] getBoardMap() {
+        return this.boardMap;
+    }
+
 }
