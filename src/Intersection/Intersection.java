@@ -3,8 +3,10 @@ package Intersection;
 import GoGame.IIntersection;
 import Stones.Stone;
 
+import java.util.Objects;
+
 public class Intersection implements IIntersection {
-    private Stone stone;
+    private final Stone stone;
 
     public Intersection(){
         this.stone = null;
@@ -16,10 +18,7 @@ public class Intersection implements IIntersection {
 
     @Override
     public boolean isFree() {
-        if(this.stone == null){
-            return true;
-        }
-        return false;
+        return this.stone == null;
     }
 
     @Override
@@ -27,6 +26,6 @@ public class Intersection implements IIntersection {
         if (isFree()){
             return ".";
         }
-        return stone.toString();
+        return Objects.requireNonNull(stone).toString();
     }
 }

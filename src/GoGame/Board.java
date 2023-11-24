@@ -61,7 +61,7 @@ public class Board {
         System.out.println();
     }
 
-    public void makeMove(String color, String move) {
+    public void makeMove(Color color, String move) {
         int size = boardMap.size();
 
         final int ascii_A = 65;
@@ -82,35 +82,26 @@ public class Board {
         }
     }
 
-    private boolean isMoveValid(String color, int x, int y) {
+    private boolean isMoveValid(Color color, int x, int y) {
         if (this.boardMap.get(x).get(y).isFree()) {
+            //TODO : savoir si malgrès que le coup soit libre il soit jouable
             return true;
         }
-        //TODO : savoir si malgrès que le coup soit libre il soit jouable
         return false;
-    public void makeRndMove(String color) {
-        int size = boardMap.length;
-
-        int letter = (int) ((Math.random() * (boardMap.length + 1)));
-        int number = (int) ((Math.random() * (boardMap.length + 1)));
-        System.out.println(size - number);
-        System.out.println(letter);
-
-        for (int i =0; i<100;i++) {
-            letter = (int) ((Math.random() * (boardMap.length + 1))-1);
-            number = (int) ((Math.random() * (boardMap.length + 1))-1);
-            System.out.print(size - number);
-            System.out.println(letter);
-        }
-
-        if (color.equals("BLACK"))
-            this.boardMap[size - (number)][letter] = 'X';
-        else
-            this.boardMap[size-(number)][letter] = 'O';
     }
 
-    public char[][] getBoardMap() {
-        return this.boardMap;
-    }
+    public void makeRndMove(Color color) {
+        int letter;
+        int number;
 
+        do {
+            letter = (int) ((Math.random() * (boardMap.size() + 1))-1);
+            number = (int) ((Math.random() * (boardMap.size() + 1))-1);
+        } while (!isMoveValid(color, number, letter));
+
+        if (color == Color.black) {
+            this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.black)));// TODO : false par défaut mais peut être attaqué
+        } else
+            this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.white)));
+    }
 }
