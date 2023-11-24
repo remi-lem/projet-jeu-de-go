@@ -6,8 +6,8 @@ import java.util.Arrays;
 
 public class Game {
     private Board board;
-    private Player playerBlack;
-    private Player playerWhite;
+    private final IPlayer playerBlack;
+    private final IPlayer playerWhite;
     private final int BOARD_SIZE_MAX = 19;
     private final int BOARD_SIZE_MIN = 1;
 
@@ -86,8 +86,8 @@ public class Game {
 
     public void playMove(String[] command, String noCommand) {
         try {
-            if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
-                this.board.makeMove(command[1].toUpperCase(), command[2].toUpperCase());
+            if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
+                this.board.makeMove(Color.valueOf(command[1].toUpperCase()), command[2].toUpperCase());
                 System.out.println("=" + noCommand + "\n");
                 this.board.show();
             }

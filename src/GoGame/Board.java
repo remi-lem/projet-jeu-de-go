@@ -61,7 +61,7 @@ public class Board {
         System.out.println();
     }
 
-    public void makeMove(String color, String move) {
+    public void makeMove(Color color, String move) {
         int size = boardMap.size();
 
         final int ascii_A = 65;
@@ -82,7 +82,7 @@ public class Board {
         }
     }
 
-    private boolean isMoveValid(String color, int x, int y) {
+    private boolean isMoveValid(Color color, int x, int y) {
         if (this.boardMap.get(x).get(y).isFree()) {
             //TODO : savoir si malgrès que le coup soit libre il soit jouable
             return true;
@@ -104,9 +104,4 @@ public class Board {
         } else
             this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.white)));
     }
-
-    public char[][] getBoardMap() {
-        return this.boardMap;
-    }
-
 }
