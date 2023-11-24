@@ -25,11 +25,11 @@ public class Board {
     }
 
     public void clear() {
-        initialize(boardMap.length);
+        initialize(boardMap.size());
     }
 
     public void show() {
-        int size = boardMap.length;
+        int size = boardMap.size();
         System.out.print("  ");
         for (int i = 0; i < size; i++)
             System.out.print(" " + (char) (i + 65) + " ");
@@ -40,8 +40,9 @@ public class Board {
                 System.out.print(" ");
             System.out.print(size - i);
 
+            ArrayList<IIntersection> line = boardMap.get(i);
             for (int j = 0; j < size; j++)
-                System.out.print(" " + boardMap[i][j] + " ");
+                System.out.print(" " + line.get(j) + " ");
 
             if ((size - i) == 2) {
                 System.out.print("2     ");
@@ -61,7 +62,7 @@ public class Board {
     }
 
     public void makeMove(String color, String move) {
-        int size = boardMap.length;
+        int size = boardMap.size();
 
         final int ascii_A = 65;
         int letter = (move.charAt(0)) - ascii_A;
@@ -75,21 +76,17 @@ public class Board {
 
         if (isMoveValid(color, number, letter)){
             if (color.equals("BLACK")) {
-                this.boardMap[number][letter] = new Intersection(new Stone(Color.black, false));// TODO : false par défaut mais peut être attaqué
+                this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.black)));// TODO : false par défaut mais peut être attaqué
             } else
-                this.boardMap[number][letter] = new Intersection(new Stone(Color.white, false));
+                this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.white)));
         }
     }
 
     private boolean isMoveValid(String color, int x, int y) {
-        if (this.boardMap[x][y].isFree()) {
+        if (this.boardMap.get(x).get(y).isFree()) {
             return true;
         }
         //TODO : savoir si malgrès que le coup soit libre il soit jouable
         return false;
-    }
-
-    public Intersection[][] getBoardMap() {
-        return this.boardMap;
     }
 }
