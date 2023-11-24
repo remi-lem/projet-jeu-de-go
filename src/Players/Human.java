@@ -9,4 +9,9 @@ public class Human extends Player {
     public int getScore() {
         return super.getScore();
     }
+
+    @Override
+    public String getColor() {
+        return super.getColor();
+    }
 }

@@ -86,8 +86,9 @@ public class Game {
 
     public void playMove(String[] command, String noCommand) {
         try {
-            if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
-                this.board.makeMove(Color.valueOf(command[1].toUpperCase()), command[2].toUpperCase());
+            if (command[1].equalsIgnoreCase(playerBlack.getColor())
+                    || command[1].equalsIgnoreCase(playerWhite.getColor())) {
+                this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase());
                 System.out.println("=" + noCommand + "\n");
                 this.board.show();
             }

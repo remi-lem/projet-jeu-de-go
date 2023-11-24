@@ -15,4 +15,6 @@ public abstract class Player implements IPlayer {
     public int getScore() {
         return score;
     }
+
+    public String getColor() {return color;}
 }
