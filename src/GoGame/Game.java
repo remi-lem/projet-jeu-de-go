@@ -43,7 +43,7 @@ public class Game {
                 clearBoard(noCommand);
                 break;
             case "genmove", "g":
-                genMove(noCommand);
+                genMove(command, noCommand);
                 break;
             case "quit", "q":
                 return;
@@ -98,7 +98,17 @@ public class Game {
         }
     }
 
-    private void genMove(String noCommand) {
-        // TODO : à faire lol
+    private void genMove(String[] command, String noCommand) {
+        try {
+            if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
+                this.board.makeRndMove(command[1].toUpperCase());
+                System.out.println("=" + noCommand + "\n");
+                this.board.show();
+            }
+            else throw new RuntimeException("syntax error");
+        }
+        catch (RuntimeException e){
+            System.err.println("?" + noCommand + " illegal move\n");
+        }
     }
 }
