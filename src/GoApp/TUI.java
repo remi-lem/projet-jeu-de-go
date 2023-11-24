@@ -13,7 +13,6 @@ public class TUI {
         Game game = new Game(new Player("Nose", NaturePlayer.Human), new Player("Foot", NaturePlayer.Robot));
         Scanner sc = new Scanner(System.in);
         do {
-            System.out.print("> ");
             commands = sc.nextLine().split(" ");
             game.commandInterpreter(commands);
         } while (!(commands[0].equals("quit") || commands[0].equals("q")));
