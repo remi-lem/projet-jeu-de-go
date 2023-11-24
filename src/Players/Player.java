@@ -5,10 +5,10 @@ import GoGame.IPlayer;
 
 public abstract class Player implements IPlayer {
     private final int score;
-    private final String name;
-    public Player(String name){
+    private final String color;
+    public Player(String color){
         this.score = 0;
-        this.name = name;
+        this.color = color;
     }
 
     @Override

@@ -75,7 +75,7 @@ public class Board {
         }
 
         if (isMoveValid(color, number, letter)){
-            if (color.equals("BLACK")) {
+            if (color.equals("black")) {
                 this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.black)));// TODO : false par défaut mais peut être attaqué
             } else
                 this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.white)));
