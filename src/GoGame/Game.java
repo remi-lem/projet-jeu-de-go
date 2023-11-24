@@ -1,5 +1,7 @@
 package GoGame;
 
+import Stones.Color;
+
 public class Game {
     private Board board;
     private IPlayer playerBlack;

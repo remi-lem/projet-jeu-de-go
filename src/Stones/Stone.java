@@ -24,9 +24,4 @@ public class Stone implements IStone {
     public Color getColor() {
         return color;
     }
-
-    @Override
-    public boolean isAttacked() {
-        return isAttacked;
-    }
 }

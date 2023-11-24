@@ -14,8 +14,9 @@ public class Board {
     public void initialize(int size) {
         boardMap = new Intersection[size][size];
         for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                boardMap[i][j] = null;
+            boardMap.add(new ArrayList<>(size));
+            for (int j = 0; j < size ; j++) {
+                boardMap.get(i).add(new Intersection());
             }
         }
     }
@@ -81,7 +82,7 @@ public class Board {
         if (this.boardMap[x][y].isFree()) {
             return true;
         }
-        //TODO : à coder
+        //TODO : savoir si malgrès que le coup soit libre il soit jouable
         return false;
     }
 
