@@ -2,7 +2,6 @@ package GoApp;
 
 import GoGame.Game;
 import Players.*;
-import Stones.Color;
 
 import java.util.Scanner;
 

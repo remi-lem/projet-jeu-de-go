@@ -101,7 +101,7 @@ public class Game {
     private void genMove(String[] command, String noCommand) {
         try {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
-                this.board.makeRndMove(command[1].toUpperCase());
+                this.board.makeRndMove(Color.valueOf(command[1].toLowerCase()));
                 System.out.println("=" + noCommand + "\n");
                 this.board.show();
             }
