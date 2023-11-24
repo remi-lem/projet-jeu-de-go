@@ -1,6 +1,6 @@
 package GoGame;
 
-import Players.Player;
+import Stones.Color;
 
 import java.util.Arrays;
 
@@ -11,8 +11,7 @@ public class Game {
     private final int BOARD_SIZE_MAX = 19;
     private final int BOARD_SIZE_MIN = 1;
 
-
-    public Game(Player playerBlack, Player playerWhite) {
+    public Game(IPlayer playerBlack, IPlayer playerWhite) {
         this.playerBlack = playerBlack;
         this.playerWhite = playerWhite;
         this.board = new Board(BOARD_SIZE_MAX);
@@ -83,6 +82,7 @@ public class Game {
         printCommandGTP(noCommand);
         this.board.clear();
     }
+
 
     public void playMove(String[] command, String noCommand) {
         try {

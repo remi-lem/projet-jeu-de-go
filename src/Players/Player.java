@@ -1,15 +1,18 @@
 package Players;
 
-import Players.NaturePlayer;
 
+import GoGame.IPlayer;
 
-public class Player {
-    private int score;
-    private String name;
-    private NaturePlayer nature;
-    public Player(String name, NaturePlayer nature){
+public abstract class Player implements IPlayer {
+    private final int score;
+    private final String name;
+    public Player(String name){
         this.score = 0;
         this.name = name;
-        this.nature = nature;
+    }
+
+    @Override
+    public int getScore() {
+        return score;
     }
 }
