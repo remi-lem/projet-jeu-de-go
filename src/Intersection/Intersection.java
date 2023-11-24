@@ -16,10 +16,7 @@ public class Intersection implements IIntersection {
 
     @Override
     public boolean isFree() {
-        if(this.stone == null){
-            return true;
-        }
-        return false;
+        return this.stone == null;
     }
 
     @Override
