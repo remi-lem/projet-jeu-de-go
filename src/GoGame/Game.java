@@ -25,8 +25,8 @@ public class Game {
             Integer.parseInt(command[0]);
             noCommand = command[0];
             command = Arrays.copyOfRange(command, 1, command.length);
-        }
-        catch(NumberFormatException e){
+        } catch(NumberFormatException e) {
+
         }
 
         switch(command[0]) {
@@ -37,8 +37,7 @@ public class Game {
                 showBoard(noCommand);
                 break;
             case "play", "p":
-                playMove(command[1], command[2]);
-                showBoard(noCommand);
+                playMove(command, noCommand);
                 break;
             case "clear_board", "c":
                 clearBoard(noCommand);
@@ -61,11 +60,11 @@ public class Game {
     private void boardsize(String[] command, String noCommand) {
         try {
             int size = Integer.parseInt(command[1]);
-            if ((size > BOARD_SIZE_MIN - 1) && (size < BOARD_SIZE_MAX + 1)) { // TODO : Supprimer les nombres mystères
+            if ((size > BOARD_SIZE_MIN - 1) && (size < BOARD_SIZE_MAX + 1)) {
                 setSizeBoard(Integer.parseInt(command[1]));
                 printCommandGTP(noCommand);
             }
-            else throw new RuntimeException("pas le bon nombre");
+            else throw new RuntimeException("wrong number");
         } catch(RuntimeException e) {
             System.err.println("?" + noCommand + " unacceptable size\n");
         }
@@ -85,8 +84,18 @@ public class Game {
         this.board.clear();
     }
 
-    public void playMove(String playerColor, String coordinate) {
-        this.board.makeMove(playerColor.toUpperCase(), coordinate.toUpperCase());
+    public void playMove(String[] command, String noCommand) {
+        try {
+            if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
+                this.board.makeMove(command[1].toUpperCase(), command[2].toUpperCase());
+                System.out.println("=" + noCommand + "\n");
+                this.board.show();
+            }
+            else throw new RuntimeException("syntax error");
+        }
+        catch (RuntimeException e){
+            System.err.println("?" + noCommand + " illegal move\n");
+        }
     }
 
     private void genMove(String noCommand) {
