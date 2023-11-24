@@ -4,15 +4,18 @@ import Intersection.Intersection;
 import Stones.Color;
 import Stones.Stone;
 
+import java.util.ArrayList;
+
 public class Board {
-    private Intersection[][] boardMap;
+
+    private ArrayList<ArrayList<IIntersection>> boardMap;
 
     public Board(int size) {
         initialize(size);
     }
 
     public void initialize(int size) {
-        boardMap = new Intersection[size][size];
+        boardMap = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
             boardMap.add(new ArrayList<>(size));
             for (int j = 0; j < size ; j++) {
