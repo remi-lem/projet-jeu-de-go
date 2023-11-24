@@ -5,11 +5,19 @@ import GoGame.IStone;
 public class Stone implements IStone {
 
     private final Color color;
-    private final boolean isFree;
+    private final boolean isAttacked;
 
-    public Stone(String color, boolean isFree){
-        this.color = Color.valueOf(color);
-        this.isFree = isFree;
+    public Stone(Color color, boolean isAttacked){
+        this.color = color;
+        this.isAttacked = isAttacked;
+    }
+
+    @Override
+    public String toString() {
+        if (getColor() == Color.black){
+            return "X";
+        }
+        return "O";
     }
 
     @Override
@@ -18,7 +26,7 @@ public class Stone implements IStone {
     }
 
     @Override
-    public boolean isFree() {
-        return isFree;
+    public boolean isAttacked() {
+        return isAttacked;
     }
 }
