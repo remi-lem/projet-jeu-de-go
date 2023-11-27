@@ -1,6 +1,6 @@
-package GoGame;
+package game;
 
-import Stones.Color;
+import stones.Color;
 
 import java.util.Arrays;
 
@@ -17,9 +17,9 @@ public class Game {
         this.board = new Board(BOARD_SIZE_MAX);
     }
 
-    public void commandInterpreter(String[] command) throws RuntimeException {
+    public String commandInterpreter(String[] command) throws RuntimeException {
         String noCommand = "";
-
+        String ret = "";
         try{
             Integer.parseInt(command[0]);
             noCommand = command[0];
@@ -30,40 +30,42 @@ public class Game {
 
         switch(command[0]) {
             case "boardsize", "b":
-                boardsize(command, noCommand);
+                ret = boardsize(command, noCommand);
                 break;
             case "showboard", "s":
                 ret = showBoard(noCommand);
                 break;
             case "play", "p":
-                playMove(command, noCommand);
+                ret = playMove(command, noCommand);
                 break;
             case "clear_board", "c":
                 ret = clearBoard(noCommand);
                 break;
             case "genmove", "g":
-                genMove(command, noCommand);
+                ret = genMove(command, noCommand);
                 break;
             case "quit", "q":
-                return;
+                break;
             default:
-                System.err.println("commande non reconnue");
+                ret = "unrecognized command";
                 break;
         }
+        return ret;
     }
 
-    private void printCommandGTP(String command) {
-        System.out.println("=" + command + "\n");
+    private String printCommandGTP(String command) {
+        return "=" + command + "\n";
     }
 
-    private void boardsize(String[] command, String noCommand) {
+    private String boardsize(String[] command, String noCommand) {
+        String ret
         try {
             int size = Integer.parseInt(command[1]);
             if ((size > BOARD_SIZE_MIN - 1) && (size < BOARD_SIZE_MAX + 1)) {
                 setSizeBoard(Integer.parseInt(command[1]));
                 printCommandGTP(noCommand);
             }
-            else throw new RuntimeException("wrong number");
+            else throw new RuntimeException();
         } catch(RuntimeException e) {
             System.err.println("?" + noCommand + " unacceptable size\n");
         }
@@ -75,7 +77,7 @@ public class Game {
 
     public void showBoard(String noCommand) {
         printCommandGTP(noCommand);
-        this.board.show();
+        System.out.println(this.board.toString());
     }
 
     public void clearBoard(String noCommand) {
@@ -89,7 +91,7 @@ public class Game {
             if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
                 this.board.makeMove(Color.valueOf(command[1].toUpperCase()), command[2].toUpperCase());
                 System.out.println("=" + noCommand + "\n");
-                this.board.show();
+                System.out.println(this.board.toString());
             }
             else throw new RuntimeException("syntax error");
         }
@@ -103,7 +105,7 @@ public class Game {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
                 this.board.makeRndMove(Color.valueOf(command[1].toLowerCase()));
                 System.out.println("=" + noCommand + "\n");
-                this.board.show();
+                System.out.println(this.board.toString());
             }
             else throw new RuntimeException("syntax error");
         }

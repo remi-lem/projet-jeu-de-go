@@ -1,22 +1,22 @@
-package Stones;
+package stones;
 
-import GoGame.IIntersection;
-import GoGame.IStone;
+import game.IIntersection;
+import game.IStone;
 
 import java.util.ArrayList;
 
 public class Stone implements IStone {
 
     private final Color color;
-    private int nbLiberties;
-
+    //private int nbLiberties;
+//TODO A SUPPR ?
     /**
      * constructor of stone
      * @param color the color of the stones
      */
     public Stone(Color color){
         this.color = color;
-        this.nbLiberties = 4;
+        //TODO this.nbLiberties = 4;
     }
 
     /**

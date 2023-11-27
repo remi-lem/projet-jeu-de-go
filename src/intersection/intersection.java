@@ -1,18 +1,18 @@
-package Intersection;
+package intersection;
 
-import GoGame.IIntersection;
-import Stones.Stone;
+import game.IIntersection;
+import stones.Stone;
 
 import java.util.Objects;
 
-public class Intersection implements IIntersection {
+public class intersection implements IIntersection {
     private final Stone stone;
 
-    public Intersection(){
+    public intersection(){
         this.stone = null;
     }
 
-    public Intersection(Stone stone){
+    public intersection(Stone stone){
         this.stone = stone;
     }
 

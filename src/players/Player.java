@@ -1,7 +1,7 @@
-package Players;
+package players;
 
 
-import GoGame.IPlayer;
+import game.IPlayer;
 
 public abstract class Player implements IPlayer {
     private final int score;

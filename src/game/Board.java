@@ -1,8 +1,8 @@
-package GoGame;
+package game;
 
-import Intersection.Intersection;
-import Stones.Color;
-import Stones.Stone;
+import intersection.intersection;
+import stones.Color;
+import stones.Stone;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ public class Board {
         for (int i = 0; i < size; i++) {
             boardMap.add(new ArrayList<>(size));
             for (int j = 0; j < size ; j++) {
-                boardMap.get(i).add(new Intersection());
+                boardMap.get(i).add(new intersection());
             }
         }
     }
@@ -28,37 +28,39 @@ public class Board {
         initialize(boardMap.size());
     }
 
-    public void show() {
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
         int size = boardMap.size();
-        System.out.print("  ");
+        sb.append("  ");
         for (int i = 0; i < size; i++)
-            System.out.print(" " + (char) (i + 65) + " ");
+            sb.append(" ").append((char) (i + 65)).append(" ");
 
-        System.out.println();
+        sb.append("\n");
         for (int i = 0; i < size; i++) {
             if (size - i <= 9)
-                System.out.print(" ");
-            System.out.print(size - i);
+                sb.append(" ");
+            sb.append(size - i);
 
             ArrayList<IIntersection> line = boardMap.get(i);
             for (int j = 0; j < size; j++)
-                System.out.print(" " + line.get(j) + " ");
+                sb.append(" " + line.get(j) + " ");
 
             if ((size - i) == 2) {
-                System.out.print("2     ");
+                sb.append("2     ");
                 //TODO : Faire la méthode white capture
-                System.out.println("//WHITE (O) has captured 0 stones");
+                sb.append("WHITE (O) has captured 0 stones\n");
             } else if ((size - i) == 1) {
-                System.out.print("1     ");
+                sb.append("1     ");
                 //TODO : Faire la méthode black capture
-                System.out.println("//BLACK (X) has captured 0 stones");
+                sb.append("BLACK (X) has captured 0 stones\n");
             } else
-                System.out.println(size - i);
+                sb.append(size - i).append("\n");
         }
-        System.out.print("  ");
+        sb.append("  ");
         for (int i = 0; i < size; i++)
-            System.out.print(" " + (char) (i + 65) + " ");
-        System.out.println();
+            sb.append(" " + (char) (i + 65) + " ");
+        sb.append("\n");
+        return sb.toString();
     }
 
     public void makeMove(Color color, String move) {
@@ -76,9 +78,9 @@ public class Board {
 
         if (isMoveValid(color, number, letter)){
             if (color.equals("BLACK")) {
-                this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.black)));// TODO : false par défaut mais peut être attaqué
+                this.boardMap.get(number).set(letter, new intersection(new Stone(Color.black)));// TODO : false par défaut mais peut être attaqué
             } else
-                this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.white)));
+                this.boardMap.get(number).set(letter, new intersection(new Stone(Color.white)));
         }
     }
 
@@ -100,8 +102,8 @@ public class Board {
         } while (!isMoveValid(color, number, letter));
 
         if (color == Color.black) {
-            this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.black)));// TODO : false par défaut mais peut être attaqué
+            this.boardMap.get(number).set(letter, new intersection(new Stone(Color.black)));// TODO : false par défaut mais peut être attaqué
         } else
-            this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.white)));
+            this.boardMap.get(number).set(letter, new intersection(new Stone(Color.white)));
     }
 }

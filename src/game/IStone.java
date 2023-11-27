@@ -1,6 +1,6 @@
-package GoGame;
+package game;
 
-import Stones.Color;
+import stones.Color;
 
 import java.util.ArrayList;
 
