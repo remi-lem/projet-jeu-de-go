@@ -39,7 +39,7 @@ public class Game {
                 playMove(command, noCommand);
                 break;
             case "clear_board", "c":
-                clearBoard(noCommand);
+                ret = clearBoard(noCommand);
                 break;
             case "genmove", "g":
                 genMove(command, noCommand);
