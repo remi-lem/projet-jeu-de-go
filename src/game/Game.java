@@ -1,6 +1,4 @@
-package GoGame;
-
-import Stones.Color;
+package game;
 
 import java.util.Arrays;
 
@@ -17,9 +15,9 @@ public class Game {
         this.board = new Board(BOARD_SIZE_MAX);
     }
 
-    public void commandInterpreter(String[] command) throws RuntimeException {
+    public String commandInterpreter(String[] command) throws RuntimeException {
         String noCommand = "";
-
+        String ret = "";
         try{
             Integer.parseInt(command[0]);
             noCommand = command[0];
@@ -30,85 +28,90 @@ public class Game {
 
         switch(command[0]) {
             case "boardsize", "b":
-                boardsize(command, noCommand);
+                ret = boardsize(command, noCommand);
                 break;
             case "showboard", "s":
-                showBoard(noCommand);
+                ret = showBoard(noCommand);
                 break;
             case "play", "p":
-                playMove(command, noCommand);
+                ret = playMove(command, noCommand);
                 break;
             case "clear_board", "c":
-                clearBoard(noCommand);
+                ret = clearBoard(noCommand);
                 break;
             case "genmove", "g":
-                genMove(command, noCommand);
+                ret = genMove(command, noCommand);
                 break;
             case "quit", "q":
-                return;
+                break;
             default:
-                System.err.println("commande non reconnue");
+                ret = "unrecognized command";
                 break;
         }
+        return ret;
     }
 
-    private void printCommandGTP(String command) {
-        System.out.println("=" + command + "\n");
+    private String commandGTP(String command) {
+        return "=" + command + "\n";
     }
 
-    private void boardsize(String[] command, String noCommand) {
+    private String boardsize(String[] command, String noCommand) {
+        String ret;
         try {
             int size = Integer.parseInt(command[1]);
             if ((size > BOARD_SIZE_MIN - 1) && (size < BOARD_SIZE_MAX + 1)) {
                 setSizeBoard(Integer.parseInt(command[1]));
-                printCommandGTP(noCommand);
+                ret = commandGTP(noCommand);
             }
-            else throw new RuntimeException("wrong number");
+            else throw new RuntimeException();
         } catch(RuntimeException e) {
-            System.err.println("?" + noCommand + " unacceptable size\n");
+            ret = "?" + noCommand + " unacceptable size\n";
         }
+        return ret;
     }
 
     private void setSizeBoard(int sizeBoard) {
         board = new Board(sizeBoard);
     }
 
-    public void showBoard(String noCommand) {
-        printCommandGTP(noCommand);
-        this.board.show();
+    public String showBoard(String noCommand) {
+        return commandGTP(noCommand) + this.board.toString();
     }
 
-    public void clearBoard(String noCommand) {
-        printCommandGTP(noCommand);
+    public String clearBoard(String noCommand) {
         this.board.clear();
+        return commandGTP(noCommand);
     }
 
 
-    public void playMove(String[] command, String noCommand) {
+    public String playMove(String[] command, String noCommand) {
+        StringBuilder ret = new StringBuilder();
         try {
             if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
-                this.board.makeMove(Color.valueOf(command[1].toUpperCase()), command[2].toUpperCase());
-                System.out.println("=" + noCommand + "\n");
-                this.board.show();
+                this.board.makeMove(command[1].toUpperCase(), command[2].toUpperCase());
+                ret.append("=").append(noCommand).append("\n").append(this.board.toString());
             }
             else throw new RuntimeException("syntax error");
         }
-        catch (RuntimeException e){
-            System.err.println("?" + noCommand + " illegal move\n");
+        catch (RuntimeException e) {
+            ret.append("?").append(noCommand).append(" illegal move\n");
         }
+        return ret.toString();
     }
 
-    private void genMove(String[] command, String noCommand) {
+    private String genMove(String[] command, String noCommand) {
+        StringBuilder ret = new StringBuilder();
         try {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
-                this.board.makeRndMove(Color.valueOf(command[1].toLowerCase()));
-                System.out.println("=" + noCommand + "\n");
-                this.board.show();
+                this.board.makeRndMove(command[1].toLowerCase());
+                ret.append("=").append(noCommand).append("\n");
+                ret.append(this.board.toString());
             }
             else throw new RuntimeException("syntax error");
         }
         catch (RuntimeException e){
-            System.err.println("?" + noCommand + " illegal move\n");
+            ret.append("?").append(noCommand).append(" illegal move\n");
         }
+        return ret.toString();
     }
 }

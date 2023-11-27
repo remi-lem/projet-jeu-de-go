@@ -1,14 +1,11 @@
-package GoGame;
+package game;
 
-import Intersection.Intersection;
-import Stones.Color;
-import Stones.Stone;
-
+import intersection.Intersection;
 import java.util.ArrayList;
 
 public class Board {
-
     private ArrayList<ArrayList<IIntersection>> boardMap;
+    //TODO: eventuellemnt passer sur un tableau 2D
 
     public Board(int size) {
         initialize(size);
@@ -28,40 +25,42 @@ public class Board {
         initialize(boardMap.size());
     }
 
-    public void show() {
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
         int size = boardMap.size();
-        System.out.print("  ");
+        sb.append("  ");
         for (int i = 0; i < size; i++)
-            System.out.print(" " + (char) (i + 65) + " ");
+            sb.append(" ").append((char) (i + 65)).append(" ");
 
-        System.out.println();
+        sb.append("\n");
         for (int i = 0; i < size; i++) {
             if (size - i <= 9)
-                System.out.print(" ");
-            System.out.print(size - i);
+                sb.append(" ");
+            sb.append(size - i);
 
             ArrayList<IIntersection> line = boardMap.get(i);
             for (int j = 0; j < size; j++)
-                System.out.print(" " + line.get(j) + " ");
+                sb.append(" " + line.get(j) + " ");
 
             if ((size - i) == 2) {
-                System.out.print("2     ");
+                sb.append("2     ");
                 //TODO : Faire la méthode white capture
-                System.out.println("//WHITE (O) has captured 0 stones");
+                sb.append("WHITE (O) has captured 0 stones\n");
             } else if ((size - i) == 1) {
-                System.out.print("1     ");
+                sb.append("1     ");
                 //TODO : Faire la méthode black capture
-                System.out.println("//BLACK (X) has captured 0 stones");
+                sb.append("BLACK (X) has captured 0 stones\n");
             } else
-                System.out.println(size - i);
+                sb.append(size - i).append("\n");
         }
-        System.out.print("  ");
+        sb.append("  ");
         for (int i = 0; i < size; i++)
-            System.out.print(" " + (char) (i + 65) + " ");
-        System.out.println();
+            sb.append(" " + (char) (i + 65) + " ");
+        sb.append("\n");
+        return sb.toString();
     }
 
-    public void makeMove(Color color, String move) {
+    public void makeMove(String color, String move) {
         int size = boardMap.size();
 
         final int ascii_A = 65;
@@ -75,22 +74,20 @@ public class Board {
         }
 
         if (isMoveValid(color, number, letter)){
-            if (color.equals("BLACK")) {
-                this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.black)));// TODO : false par défaut mais peut être attaqué
-            } else
-                this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.white)));
+            this.boardMap.get(number).set(letter, new Intersection(color));
         }
     }
 
-    private boolean isMoveValid(Color color, int x, int y) {
+    private boolean isMoveValid(String color, int x, int y) {
         if (this.boardMap.get(x).get(y).isFree()) {
             //TODO : savoir si malgrès que le coup soit libre il soit jouable
             return true;
+            //TODO : regarder les libertés
         }
         return false;
     }
 
-    public void makeRndMove(Color color) {
+    public void makeRndMove(String color) {
         int letter;
         int number;
 
@@ -99,9 +96,6 @@ public class Board {
             number = (int) ((Math.random() * (boardMap.size() + 1))-1);
         } while (!isMoveValid(color, number, letter));
 
-        if (color == Color.black) {
-            this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.black)));// TODO : false par défaut mais peut être attaqué
-        } else
-            this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.white)));
+        this.boardMap.get(number).set(letter, new Intersection(color));
     }
 }
