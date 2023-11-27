@@ -69,15 +69,15 @@ public class Game {
         } catch(RuntimeException e) {
             System.err.println("?" + noCommand + " unacceptable size\n");
         }
+        return ret;
     }
 
     private void setSizeBoard(int sizeBoard) {
         board = new Board(sizeBoard);
     }
 
-    public void showBoard(String noCommand) {
-        printCommandGTP(noCommand);
-        System.out.println(this.board.toString());
+    public String showBoard(String noCommand) {
+        return commandGTP(noCommand) + this.board.toString();
     }
 
     public void clearBoard(String noCommand) {
@@ -98,6 +98,7 @@ public class Game {
         catch (RuntimeException e){
             System.err.println("?" + noCommand + " illegal move\n");
         }
+        return ret.toString();
     }
 
     private void genMove(String[] command, String noCommand) {
