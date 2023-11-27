@@ -19,7 +19,7 @@ public class Intersection implements IIntersection {
 
     @Override
     public boolean isFree() {
-        return this.stone == null;
+        return this.color == null;
     }
 
     @Override

@@ -1,6 +1,5 @@
 package players;
 
-
 import game.IPlayer;
 
 public abstract class Player implements IPlayer {

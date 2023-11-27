@@ -1,7 +1,5 @@
 package game;
 
-import stones.Color;
-
 import java.util.Arrays;
 
 public class Game {
@@ -53,21 +51,21 @@ public class Game {
         return ret;
     }
 
-    private String printCommandGTP(String command) {
+    private String commandGTP(String command) {
         return "=" + command + "\n";
     }
 
     private String boardsize(String[] command, String noCommand) {
-        String ret
+        String ret;
         try {
             int size = Integer.parseInt(command[1]);
             if ((size > BOARD_SIZE_MIN - 1) && (size < BOARD_SIZE_MAX + 1)) {
                 setSizeBoard(Integer.parseInt(command[1]));
-                printCommandGTP(noCommand);
+                ret = commandGTP(noCommand);
             }
             else throw new RuntimeException();
         } catch(RuntimeException e) {
-            System.err.println("?" + noCommand + " unacceptable size\n");
+            ret = "?" + noCommand + " unacceptable size\n";
         }
         return ret;
     }
@@ -80,9 +78,9 @@ public class Game {
         return commandGTP(noCommand) + this.board.toString();
     }
 
-    public void clearBoard(String noCommand) {
-        printCommandGTP(noCommand);
+    public String clearBoard(String noCommand) {
         this.board.clear();
+        return commandGTP(noCommand);
     }
 
 
@@ -95,8 +93,8 @@ public class Game {
             }
             else throw new RuntimeException("syntax error");
         }
-        catch (RuntimeException e){
-            System.err.println("?" + noCommand + " illegal move\n");
+        catch (RuntimeException e) {
+            ret.append("?").append(noCommand).append(" illegal move\n");
         }
         return ret.toString();
     }
@@ -112,7 +110,8 @@ public class Game {
             else throw new RuntimeException("syntax error");
         }
         catch (RuntimeException e){
-            System.err.println("?" + noCommand + " illegal move\n");
+            ret.append("?").append(noCommand).append(" illegal move\n");
         }
+        return ret.toString();
     }
 }

@@ -1,14 +1,11 @@
 package game;
 
-import intersection.intersection;
-import stones.Color;
-import stones.Stone;
-
+import intersection.Intersection;
 import java.util.ArrayList;
 
 public class Board {
-
     private ArrayList<ArrayList<IIntersection>> boardMap;
+    //TODO: eventuellemnt passer sur un tableau 2D
 
     public Board(int size) {
         initialize(size);
