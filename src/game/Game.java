@@ -33,7 +33,7 @@ public class Game {
                 boardsize(command, noCommand);
                 break;
             case "showboard", "s":
-                showBoard(noCommand);
+                ret = showBoard(noCommand);
                 break;
             case "play", "p":
                 playMove(command, noCommand);
