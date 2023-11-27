@@ -86,12 +86,12 @@ public class Game {
     }
 
 
-    public void playMove(String[] command, String noCommand) {
+    public String playMove(String[] command, String noCommand) {
+        StringBuilder ret = new StringBuilder();
         try {
             if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
-                this.board.makeMove(Color.valueOf(command[1].toUpperCase()), command[2].toUpperCase());
-                System.out.println("=" + noCommand + "\n");
-                System.out.println(this.board.toString());
+                this.board.makeMove(command[1].toUpperCase(), command[2].toUpperCase());
+                ret.append("=").append(noCommand).append("\n").append(this.board.toString());
             }
             else throw new RuntimeException("syntax error");
         }
@@ -101,12 +101,13 @@ public class Game {
         return ret.toString();
     }
 
-    private void genMove(String[] command, String noCommand) {
+    private String genMove(String[] command, String noCommand) {
+        StringBuilder ret = new StringBuilder();
         try {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
-                this.board.makeRndMove(Color.valueOf(command[1].toLowerCase()));
-                System.out.println("=" + noCommand + "\n");
-                System.out.println(this.board.toString());
+                this.board.makeRndMove(command[1].toLowerCase());
+                ret.append("=").append(noCommand).append("\n");
+                ret.append(this.board.toString());
             }
             else throw new RuntimeException("syntax error");
         }
