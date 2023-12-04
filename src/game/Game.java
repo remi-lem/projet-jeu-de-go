@@ -88,7 +88,7 @@ public class Game {
         StringBuilder ret = new StringBuilder();
         try {
             if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
-                ret.append(this.board.makeMove(command[1].toUpperCase(), command[2].toUpperCase(), noCommand));
+                ret.append(this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase(), noCommand));
                 ret.append(this.board.toString());
             }
             else throw new RuntimeException("syntax error");

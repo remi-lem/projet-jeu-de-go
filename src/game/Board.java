@@ -40,7 +40,7 @@ public class Board {
 
             ArrayList<IIntersection> line = boardMap.get(i);
             for (int j = 0; j < size; j++)
-                sb.append(" " + line.get(j) + " ");
+                sb.append(" ").append(line.get(j)).append(" ");
 
             if ((size - i) == 2) {
                 sb.append("2     ");
@@ -55,7 +55,7 @@ public class Board {
         }
         sb.append("  ");
         for (int i = 0; i < size; i++)
-            sb.append(" " + (char) (i + 65) + " ");
+            sb.append(" ").append((char) (i + 65)).append(" ");
         sb.append("\n");
         return sb.toString();
     }
@@ -78,9 +78,9 @@ public class Board {
         int number;
 
         if (move.length() == 2) {
-            number = size-Integer.parseInt(move.substring(1, 2));
+            number = size - Integer.parseInt(move.substring(1, 2));
         } else {
-            number = size-Integer.parseInt(move.substring(1, 3));
+            number = size - Integer.parseInt(move.substring(1, 3));
         }
 
         if (isMoveValid(color, number, letter)){
@@ -99,9 +99,8 @@ public class Board {
             letter = (int) ((Math.random() * (boardMap.size() + 1))-1);
             number = (int) ((Math.random() * (boardMap.size() + 1))-1);
             numTest++;
-            if(numTest <= Math.pow(boardMap.size(), 2)){
+            if(numTest <= Math.pow(boardMap.size(), 2))
                 return ("?" + noCommand + " illegal move\n\n");
-            }
         } while (!isMoveValid(color, number, letter));
 
         this.boardMap.get(number).set(letter, new Intersection(color));
