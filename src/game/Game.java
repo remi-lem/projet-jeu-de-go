@@ -87,7 +87,6 @@ public class Game {
     public String playMove(String[] command, String noCommand) {
         StringBuilder ret = new StringBuilder();
         try {
-
             if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
                 this.board.makeMove(command[1].toUpperCase(), command[2].toUpperCase(), noCommand);
                 ret.append("=").append(noCommand).append("\n").append(this.board.toString());

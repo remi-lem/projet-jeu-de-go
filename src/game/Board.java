@@ -105,6 +105,6 @@ public class Board {
         } while (!isMoveValid(color, number, letter));
 
         this.boardMap.get(number).set(letter, new Intersection(color));
-        return ("=" + noCommand + "\n\n");
+        return ("=" + noCommand + " ");
     }
 }
