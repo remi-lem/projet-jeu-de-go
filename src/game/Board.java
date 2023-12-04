@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
-    //TODO: eventuellemnt passer sur un tableau 2D
+    //TODO : éventuellement passer sur un tableau 2D
 
     public Board(int size) {
         initialize(size);
@@ -63,11 +63,12 @@ public class Board {
 
     private boolean isMoveValid(String color, int x, int y) {
         IIntersection iIntersection = this.boardMap.get(x).get(y);
-        if (iIntersection.isFree()) {
-            //TODO : savoir si malgrès que le coup soit libre il soit jouable
-            return true;
-        }
-        return false;
+        ArrayList<IIntersection> iIntersections = new ArrayList<>();
+        iIntersections.add(this.boardMap.get(x-1).get(y));
+        iIntersections.add(this.boardMap.get(x+1).get(y));
+        iIntersections.add(this.boardMap.get(x).get(y-1));
+        iIntersections.add(this.boardMap.get(x).get(y+1));
+        return iIntersection.isFree() && !iIntersection.isCaptured(iIntersections);
     }
 
     public String makeMove(String color, String move, String noCommand) {

@@ -7,13 +7,14 @@ public class Intersection implements IIntersection {
     public enum Color {
         white, black
     }
+
     private Color color;
 
-    public Intersection(){
+    public Intersection() {
         this.color = null;
     }
 
-    public Intersection(String color){
+    public Intersection(String color) {
         this.color = Color.valueOf(color);
     }
 
@@ -23,12 +24,22 @@ public class Intersection implements IIntersection {
     }
 
     @Override
-    public String getColor() {
-        return color.toString();// TODO : À tester
+    public boolean isCaptured(ArrayList<IIntersection> iIntersections) {
+        for (IIntersection iItersection : iIntersections) {
+            if (iItersection.isFree()) return false;
+            // TODO : regarder si le groupe est encerclé
+            // else if (iItersection.getColor().equals(this.getColor())) return iItersection.isCaptured();
+        }
+        return true;
     }
 
     @Override
-    public String toString(){
+    public String getColor() {
+        return color.toString(); // TODO : À tester
+    }
+
+    @Override
+    public String toString() {
         if (isFree())
             return ".";
         else {
