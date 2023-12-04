@@ -73,8 +73,7 @@ public class Board {
     public String makeMove(String color, String move, String noCommand) {
         int size = boardMap.size();
 
-        final int ascii_A = 65;
-        int letter = (move.charAt(0)) - ascii_A;
+        int letter = Character.toUpperCase(move.charAt(0)) - 'A';
         int number;
 
         if (move.length() == 2) {

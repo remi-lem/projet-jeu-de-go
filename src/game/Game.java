@@ -103,7 +103,7 @@ public class Game {
         StringBuilder ret = new StringBuilder();
         try {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
-                ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand)).append(this.board.toString());
+                ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand)).append(this.board.toString());//TODO ne pas afficher si illegal move
             }
             else throw new RuntimeException("syntax error");
         }
