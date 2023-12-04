@@ -1,4 +1,4 @@
-package GoApp;
+package app;
 
 public class Test {
 }
