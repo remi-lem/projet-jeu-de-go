@@ -88,8 +88,8 @@ public class Game {
         try {
             if (command[1].equalsIgnoreCase(playerBlack.getColor())
                     || command[1].equalsIgnoreCase(playerWhite.getColor())) {
-                this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase());
-                System.out.println("=" + noCommand + "\n");
+                String messRet = this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase(), noCommand);
+                System.out.println(messRet);
                 this.board.show();
             }
             else throw new RuntimeException("syntax error");
@@ -103,8 +103,8 @@ public class Game {
         try {
             if (command[1].equalsIgnoreCase(playerBlack.getColor())
                     || command[1].equalsIgnoreCase(playerWhite.getColor())) {
-                this.board.makeRndMove(command[1].toLowerCase());
-                System.out.println("=" + noCommand + "\n");
+                String messRet = this.board.makeRndMove(command[1].toLowerCase(), noCommand);
+                System.out.println(messRet);
                 this.board.show();
             }
             else throw new RuntimeException("syntax error");

@@ -70,7 +70,7 @@ public class Board {
         return false;
     }
 
-    public void makeMove(String color, String move) {
+    public String makeMove(String color, String move, String noCommand) {
         int size = boardMap.size();
 
         final int ascii_A = 65;
@@ -88,21 +88,29 @@ public class Board {
                 this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.black)));// TODO : false par défaut mais peut être attaqué
             } else
                 this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.white)));
+            return ("=" + noCommand + " ");
         }
+        return ("?" + noCommand + " illegal move\n\n");
     }
 
-    public void makeRndMove(String color) {
+    public String makeRndMove(String color, String noCommand) {
         int letter;
         int number;
+        int numTest = 0;
 
         do {
             letter = (int) ((Math.random() * (boardMap.size() + 1))-1);
             number = (int) ((Math.random() * (boardMap.size() + 1))-1);
+            numTest++;
+            if(numTest <= Math.pow(boardMap.size(), 2)){
+                return ("?" + noCommand + " illegal move\n\n");
+            }
         } while (!isMoveValid(color, number, letter));
 
         if (color.equals("black"))
             this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.black))); // TODO : false par défaut mais peut être attaqué
         else
             this.boardMap.get(number).set(letter, new Intersection(new Stone(Color.white)));
+        return ("=" + noCommand + "\n\n");
     }
 }
