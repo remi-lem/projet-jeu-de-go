@@ -73,7 +73,6 @@ public class Board {
 
     public String makeMove(String color, String move, String noCommand) {
         int size = boardMap.size();
-
         int letter = Character.toUpperCase(move.charAt(0)) - 'A';
         int number;
 
@@ -99,11 +98,10 @@ public class Board {
             letter = (int) ((Math.random() * (boardMap.size() + 1))-1);
             number = (int) ((Math.random() * (boardMap.size() + 1))-1);
             numTest++;
-            if(numTest <= Math.pow(boardMap.size(), 2))
+            if(numTest >= Math.pow(boardMap.size(), 2))
                 return ("?" + noCommand + " illegal move\n\n");
         } while (!isMoveValid(color, number, letter));
-
-        this.boardMap.get(number).set(letter, new Intersection(color));
+            this.boardMap.get(number).set(letter, new Intersection(color));
         return ("=" + noCommand + " ");
     }
 }
