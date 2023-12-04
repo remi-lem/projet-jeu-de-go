@@ -60,7 +60,17 @@ public class Board {
         return sb.toString();
     }
 
-    public void makeMove(String color, String move) {
+
+    private boolean isMoveValid(String color, int x, int y) {
+        IIntersection iIntersection = this.boardMap.get(x).get(y);
+        if (iIntersection.isFree()) {
+            //TODO : savoir si malgrès que le coup soit libre il soit jouable
+            return true;
+        }
+        return false;
+    }
+
+    public String makeMove(String color, String move, String noCommand) {
         int size = boardMap.size();
 
         final int ascii_A = 65;
@@ -75,27 +85,26 @@ public class Board {
 
         if (isMoveValid(color, number, letter)){
             this.boardMap.get(number).set(letter, new Intersection(color));
+            return ("=" + noCommand + " ");
         }
+        return ("?" + noCommand + " illegal move\n\n");
     }
 
-    private boolean isMoveValid(String color, int x, int y) {
-        if (this.boardMap.get(x).get(y).isFree()) {
-            //TODO : savoir si malgrès que le coup soit libre il soit jouable
-            return true;
-            //TODO : regarder les libertés
-        }
-        return false;
-    }
-
-    public void makeRndMove(String color) {
+    public String makeRndMove(String color, String noCommand) {
         int letter;
         int number;
+        int numTest = 0;
 
         do {
             letter = (int) ((Math.random() * (boardMap.size() + 1))-1);
             number = (int) ((Math.random() * (boardMap.size() + 1))-1);
+            numTest++;
+            if(numTest <= Math.pow(boardMap.size(), 2)){
+                return ("?" + noCommand + " illegal move\n\n");
+            }
         } while (!isMoveValid(color, number, letter));
 
         this.boardMap.get(number).set(letter, new Intersection(color));
+        return ("=" + noCommand + "\n\n");
     }
 }
