@@ -89,13 +89,14 @@ public class Game {
         try {
             if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
                 ret.append(this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase(), noCommand));
-                ret.append(this.board.toString());
+                ret.append("\n");
             }
             else throw new RuntimeException("syntax error");
         }
         catch (RuntimeException e) {
             ret.append("?").append(noCommand).append(" illegal move\n");
         }
+        this.board.updateCaptures();
         return ret.toString();
     }
 
@@ -103,13 +104,15 @@ public class Game {
         StringBuilder ret = new StringBuilder();
         try {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
-                ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand)).append(this.board.toString());//TODO ne pas afficher si illegal move
+                ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand));
+                ret.append("\n");
             }
             else throw new RuntimeException("syntax error");
         }
         catch (RuntimeException e){
             ret.append("?").append(noCommand).append(" illegal move\n");
         }
+        this.board.updateCaptures();
         return ret.toString();
     }
 }

@@ -44,12 +44,10 @@ public class Board {
 
             if ((size - i) == 2) {
                 sb.append("2     ");
-                //TODO : Faire la méthode white capture
-                sb.append("WHITE (O) has captured 0 stones\n");
+                sb.append("WHITE (O) has captured ").append(0).append(" stones\n");//TODO get white's score
             } else if ((size - i) == 1) {
                 sb.append("1     ");
-                //TODO : Faire la méthode black capture
-                sb.append("BLACK (X) has captured 0 stones\n");
+                sb.append("BLACK (X) has captured ").append(0).append(" stones\n");//TODO get black's score
             } else
                 sb.append(size - i).append("\n");
         }
@@ -122,17 +120,19 @@ public class Board {
             number = (int) (Math.random() * boardMap.size());
             numTest++;
             if(numTest > Math.pow(boardMap.size(), 2))
-                return ("?" + noCommand + " illegal move\n\n");
+                return ("?" + noCommand + " illegal move");
         } while (!isMoveValid(color, number, letter));
             this.boardMap.get(number).set(letter, new Intersection(color));
         return ("=" + noCommand + " ");
     }
 
-    public String getScore() {
+    public void updateScore() {
         // TODO : compter le nombre d'intersections contrôlées (+1 point par pierres en jeu)
         // TODO : compter le nombre de pierres capturées (+1 par pierre)
         // TODO : compter territoires encerclés (+1 par espaces vides entourés par les pierres d'un seul joueur)
+    }
 
-        return "";
+    public void updateCaptures() {
+        //TODO
     }
 }

@@ -24,11 +24,13 @@ public class Intersection implements IIntersection {
     }
 
     @Override
-    public boolean isCaptured(ArrayList<IIntersection> iIntersections) {
-        for (IIntersection iItersection : iIntersections) {
-            if (iItersection.isFree()) return false;
-            // TODO : regarder si le groupe est encerclé
-            // else if (iItersection.getColor().equals(this.getColor())) return iItersection.isCaptured();
+    public boolean isCaptured(ArrayList<IIntersection> neighborsIntersections) {
+        int cptOtherColor = 0;
+        for (IIntersection intersection : neighborsIntersections) {
+            if (intersection.isFree()) return false;
+            else if (intersection.getColor().equals(this.getColor())){
+                // TODO : regarder si le groupe est encerclé (recursivité?)
+            }
         }
         return true;
     }
@@ -43,7 +45,7 @@ public class Intersection implements IIntersection {
         if (isFree())
             return ".";
         else {
-            if (getColor().compareToIgnoreCase(Color.black.toString()) == 0) //TODO : À VERIFIER
+            if (getColor().compareToIgnoreCase(Color.black.toString()) == 0)
                 return "X";
             return "O";
         }
