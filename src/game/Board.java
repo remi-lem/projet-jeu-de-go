@@ -62,13 +62,36 @@ public class Board {
 
 
     private boolean isMoveValid(String color, int x, int y) {
-        IIntersection iIntersection = this.boardMap.get(x).get(y);
-        ArrayList<IIntersection> iIntersections = new ArrayList<>();
-        iIntersections.add(this.boardMap.get(x-1).get(y));
-        iIntersections.add(this.boardMap.get(x+1).get(y));
-        iIntersections.add(this.boardMap.get(x).get(y-1));
-        iIntersections.add(this.boardMap.get(x).get(y+1));
-        return iIntersection.isFree() && !iIntersection.isCaptured(iIntersections);
+        IIntersection currentIntersection = this.boardMap.get(x).get(y);
+        ArrayList<IIntersection> neighborsIntersections = new ArrayList<>();
+        try {
+            neighborsIntersections.add(this.boardMap.get(x - 1).get(y));
+        } catch(IndexOutOfBoundsException e){
+            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        }
+        try {
+            neighborsIntersections.add(this.boardMap.get(x + 1).get(y));
+        } catch(IndexOutOfBoundsException e){
+            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        }
+        try {
+            neighborsIntersections.add(this.boardMap.get(x).get(y - 1));
+        } catch(IndexOutOfBoundsException e){
+            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        }
+        try {
+            neighborsIntersections.add(this.boardMap.get(x).get(y + 1));
+        } catch(IndexOutOfBoundsException e){
+            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        }
+        return currentIntersection.isFree() && !currentIntersection.isCaptured(neighborsIntersections);
+    }
+
+    private String getOppositeColor(String color) {
+        if(color.equals(Intersection.Color.black.toString())){
+            return Intersection.Color.white.toString();
+        }
+        return Intersection.Color.black.toString();
     }
 
     public String makeMove(String color, String move, String noCommand) {
