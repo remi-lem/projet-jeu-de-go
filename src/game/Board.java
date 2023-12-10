@@ -72,6 +72,7 @@ public class Board {
     }
 
     public String makeMove(String color, String move, String noCommand) {
+        // TODO : les bornes du plateau ne sont pas prise en compte
         int size = boardMap.size();
         int letter = Character.toUpperCase(move.charAt(0)) - 'A';
         int number;
@@ -103,5 +104,13 @@ public class Board {
         } while (!isMoveValid(color, number, letter));
             this.boardMap.get(number).set(letter, new Intersection(color));
         return ("=" + noCommand + " ");
+    }
+
+    public String getScore() {
+        // TODO : compter le nombre d'intersections contrôlées (+1 point par pierres en jeu)
+        // TODO : compter le nombre de pierres capturées (+1 par pierre)
+        // TODO : compter territoires encerclés (+1 par espaces vides entourés par les pierres d'un seul joueur)
+
+        return "";
     }
 }

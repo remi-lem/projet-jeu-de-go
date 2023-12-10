@@ -35,7 +35,7 @@ public class Intersection implements IIntersection {
 
     @Override
     public String getColor() {
-        return color.toString(); // TODO : À tester
+        return color.toString();
     }
 
     @Override
