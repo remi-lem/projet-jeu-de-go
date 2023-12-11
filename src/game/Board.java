@@ -60,6 +60,7 @@ public class Board {
 
 
     private boolean isMoveValid(String color, int x, int y) {
+        //TODO verifier que le groupe de pierres n'est pas capturé ?
         IIntersection currentIntersection = this.boardMap.get(x).get(y);
         ArrayList<IIntersection> neighborsIntersections = new ArrayList<>();
         try {
@@ -134,5 +135,38 @@ public class Board {
 
     public void updateCaptures() {
         //TODO
+    }
+
+    public ArrayList<IIntersection> getNeighborsIntersections(int x, int y) {
+        ArrayList<IIntersection> neighborsIntersections = new ArrayList<>();
+        IIntersection currentIntersection = this.boardMap.get(x).get(y);
+        String color = currentIntersection.getColor();
+        try {
+            neighborsIntersections.add(this.boardMap.get(x - 1).get(y));
+        } catch(IndexOutOfBoundsException e) {
+            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        }
+        try {
+            neighborsIntersections.add(this.boardMap.get(x + 1).get(y));
+        } catch(IndexOutOfBoundsException e) {
+            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        }
+        try {
+            neighborsIntersections.add(this.boardMap.get(x).get(y - 1));
+        } catch(IndexOutOfBoundsException e) {
+            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        }
+        try {
+            neighborsIntersections.add(this.boardMap.get(x).get(y + 1));
+        } catch(IndexOutOfBoundsException e) {
+            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        }
+        return neighborsIntersections;
+    }
+
+    public int getNbLiberties(int x, int y) {
+        if (this.boardMap.get(x).get(y).isFree()) return -1;
+        getNeighborsIntersections(x,y);
+        //TODO a finir
     }
 }

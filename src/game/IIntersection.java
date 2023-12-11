@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public interface IIntersection {
     boolean isFree();
-    boolean isCaptured(ArrayList<IIntersection> iIntersections);
+    void remove();
     String getColor();
     String toString();
 }
