@@ -24,15 +24,8 @@ public class Intersection implements IIntersection {
     }
 
     @Override
-    public boolean isCaptured(ArrayList<IIntersection> neighborsIntersections) {
-        int cptOtherColor = 0;
-        for (IIntersection intersection : neighborsIntersections) {
-            if (intersection.isFree()) return false;
-            else if (intersection.getColor().equals(this.getColor())){
-                // TODO : regarder si le groupe est encerclé (recursivité?)
-            }
-        }
-        return true;
+    public void remove() {
+        this.color = null;
     }
 
     @Override

@@ -64,22 +64,22 @@ public class Board {
         ArrayList<IIntersection> neighborsIntersections = new ArrayList<>();
         try {
             neighborsIntersections.add(this.boardMap.get(x - 1).get(y));
-        } catch(IndexOutOfBoundsException e){
+        } catch(IndexOutOfBoundsException e) {
             neighborsIntersections.add(new Intersection(getOppositeColor(color)));
         }
         try {
             neighborsIntersections.add(this.boardMap.get(x + 1).get(y));
-        } catch(IndexOutOfBoundsException e){
+        } catch(IndexOutOfBoundsException e) {
             neighborsIntersections.add(new Intersection(getOppositeColor(color)));
         }
         try {
             neighborsIntersections.add(this.boardMap.get(x).get(y - 1));
-        } catch(IndexOutOfBoundsException e){
+        } catch(IndexOutOfBoundsException e) {
             neighborsIntersections.add(new Intersection(getOppositeColor(color)));
         }
         try {
             neighborsIntersections.add(this.boardMap.get(x).get(y + 1));
-        } catch(IndexOutOfBoundsException e){
+        } catch(IndexOutOfBoundsException e) {
             neighborsIntersections.add(new Intersection(getOppositeColor(color)));
         }
         return currentIntersection.isFree() && !currentIntersection.isCaptured(neighborsIntersections);
