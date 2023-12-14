@@ -8,6 +8,8 @@ public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
     //TODO : éventuellement passer sur un tableau 2D
 
+    public static final int NB_NEIGHBORS = 4;
+
     public Board(int size) {
         initialize(size);
     }
@@ -61,30 +63,21 @@ public class Board {
 
 
     private boolean isMoveValid(String color, int x, int y) {
-        //TODO verifier que le groupe de pierres n'est pas capturé ?
-        IIntersection currentIntersection = this.boardMap.get(x).get(y);
-        ArrayList<IIntersection> neighborsIntersections = new ArrayList<>();
-        try {
-            neighborsIntersections.add(this.boardMap.get(x - 1).get(y));
-        } catch(IndexOutOfBoundsException e) {
-            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        if(x < 0 || x > this.boardMap.size() || y < 0 || y > this.boardMap.size()){
+            return false;
         }
-        try {
-            neighborsIntersections.add(this.boardMap.get(x + 1).get(y));
-        } catch(IndexOutOfBoundsException e) {
-            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        int cptOtherColor = 0;
+        for(IIntersection i : getNeighborsIntersections(x, y)){
+            if(i.getColor().equals(getOppositeColor(color))){
+                cptOtherColor++;
+            }
+            //suicide si les cases voisines sont prises
+            //TODO : à améliorer
         }
-        try {
-            neighborsIntersections.add(this.boardMap.get(x).get(y - 1));
-        } catch(IndexOutOfBoundsException e) {
-            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
+        if(cptOtherColor == NB_NEIGHBORS){
+            return false;
         }
-        try {
-            neighborsIntersections.add(this.boardMap.get(x).get(y + 1));
-        } catch(IndexOutOfBoundsException e) {
-            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
-        }
-        return currentIntersection.isFree() && !currentIntersection.isCaptured(neighborsIntersections);
+        return this.boardMap.get(x).get(y).isFree();
     }
 
     private String getOppositeColor(String color) {
@@ -187,4 +180,37 @@ public class Board {
         }
         return nbLiberties;
     }
+    public int getNbLibertiesAnnex(ArrayList<IIntersection> toVisit) {
+        if (toVisit.isEmpty()) return 0;
+        return -1;//TODO
+    }
+    /*
+    public Set<Intersection> getGroupe(Plateau plateau) {
+        Set<Intersection> groupe = new HashSet<>();
+        Set<Intersection> dejaVisite = new HashSet<>();
+
+        // Utiliser une recherche en profondeur (DFS) pour trouver le groupe
+        dfs(plateau, this, groupe, dejaVisite);
+
+        return groupe;
+    }
+
+    private void dfs(Plateau plateau, Pierre pierre, Set<Intersection> groupe, Set<Intersection> dejaVisite) {
+        Intersection intersection = new Intersection(pierre.x, pierre.y);
+
+        // Vérifier si l'intersection a déjà été visitée
+        if (dejaVisite.contains(intersection)) {
+            return;
+        }
+
+        // Ajouter l'intersection au groupe
+        groupe.add(intersection);
+        dejaVisite.add(intersection);
+
+        // Vérifier les intersections voisines
+        for (Pierre voisin : plateau.getVoisins(pierre)) {
+            dfs(plateau, voisin, groupe, dejaVisite);
+        }
+    }
+     */
 }
