@@ -106,6 +106,7 @@ public class Board {
 
         if (isMoveValid(color, number, letter)){
             this.boardMap.get(number).set(letter, new Intersection(color));
+            updateCaptures(letter, number);
             return ("=" + noCommand + " ");
         }
         return ("?" + noCommand + " illegal move\n\n");
@@ -123,12 +124,25 @@ public class Board {
             if(numTest > Math.pow(boardMap.size(), 2))
                 return ("?" + noCommand + " illegal move");
         } while (!isMoveValid(color, number, letter));
+
+        if (isMoveValid(color, number, letter)){
             this.boardMap.get(number).set(letter, new Intersection(color));
+            updateCaptures(letter, number);
+        }
         return ("=" + noCommand + " ");
     }
 
     public void updateScore() {
         // TODO : compter le nombre d'intersections contrôlées (+1 point par pierres en jeu)
+        int size = boardMap.size();
+        for (ArrayList<IIntersection> intersectionsX : boardMap) {
+            for (IIntersection intersectionsY : intersectionsX) {
+                if (intersectionsY.getColor().equals(Color.black.toString()))
+                    scoreBlack++;
+                else if (intersectionsY.getColor().equals(Color.white.toString()))
+                    scoreWhite++;
+            }
+        }
         // TODO : compter le nombre de pierres capturées (+1 par pierre)
         // TODO : compter territoires encerclés (+1 par espaces vides entourés par les pierres d'un seul joueur)
     }
@@ -139,34 +153,29 @@ public class Board {
 
     public ArrayList<IIntersection> getNeighborsIntersections(int x, int y) {
         ArrayList<IIntersection> neighborsIntersections = new ArrayList<>();
-        IIntersection currentIntersection = this.boardMap.get(x).get(y);
-        String color = currentIntersection.getColor();
-        try {
-            neighborsIntersections.add(this.boardMap.get(x - 1).get(y));
-        } catch(IndexOutOfBoundsException e) {
-            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
-        }
-        try {
-            neighborsIntersections.add(this.boardMap.get(x + 1).get(y));
-        } catch(IndexOutOfBoundsException e) {
-            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
-        }
-        try {
-            neighborsIntersections.add(this.boardMap.get(x).get(y - 1));
-        } catch(IndexOutOfBoundsException e) {
-            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
-        }
-        try {
-            neighborsIntersections.add(this.boardMap.get(x).get(y + 1));
-        } catch(IndexOutOfBoundsException e) {
-            neighborsIntersections.add(new Intersection(getOppositeColor(color)));
-        }
+        if (x - 1 > 0)
+            neighborsIntersections.add(this.boardMap.get(x - 1).get(y)); // Left
+        if (x + 1 <= boardMap.size())
+            neighborsIntersections.add(this.boardMap.get(x + 1).get(y)); // Right
+        if (y - 1 > 0)
+            neighborsIntersections.add(this.boardMap.get(x).get(y - 1)); // Up
+        if (y + 1 <= boardMap.size())
+            neighborsIntersections.add(this.boardMap.get(x).get(y + 1)); // Down
         return neighborsIntersections;
     }
 
     public int getNbLiberties(int x, int y) {
-        if (this.boardMap.get(x).get(y).isFree()) return -1;
-        getNeighborsIntersections(x,y);
-        //TODO a finir
+        ArrayList<IIntersection> toVisit = new ArrayList<>(); // TODO : gérer les intersections visitées
+        IIntersection currentIntersection = this.boardMap.get(x).get(y);
+        String color = currentIntersection.getColor();
+        if (currentIntersection.isFree()) return -1;
+        int nbLiberties = 0;
+        for (IIntersection intersection : getNeighborsIntersections(x, y)) {
+            if (intersection.isFree()) nbLiberties++;
+            else if (intersection.getColor().equals(color))
+                toVisit.add(intersection);
+                nbLiberties += getNbLibertiesAnnex(toVisit);
+        }
+        return nbLiberties;
     }
 }

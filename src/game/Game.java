@@ -96,7 +96,6 @@ public class Game {
         catch (RuntimeException e) {
             ret.append("?").append(noCommand).append(" illegal move\n");
         }
-        this.board.updateCaptures();
         return ret.toString();
     }
 
@@ -112,7 +111,6 @@ public class Game {
         catch (RuntimeException e){
             ret.append("?").append(noCommand).append(" illegal move\n");
         }
-        this.board.updateCaptures();
         return ret.toString();
     }
 }
