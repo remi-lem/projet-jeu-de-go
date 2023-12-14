@@ -2,6 +2,7 @@ package game;
 
 import intersection.Intersection;
 import java.util.ArrayList;
+import intersection.Intersection.Color;
 
 public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
@@ -133,6 +134,8 @@ public class Board {
     }
 
     public void updateScore() {
+        int scoreBlack = 0; // TODO : Mettre dans le score des joueurs
+        int scoreWhite = 0;
         // TODO : compter le nombre d'intersections contrôlées (+1 point par pierres en jeu)
         int size = boardMap.size();
         for (ArrayList<IIntersection> intersectionsX : boardMap) {
@@ -144,11 +147,17 @@ public class Board {
             }
         }
         // TODO : compter le nombre de pierres capturées (+1 par pierre)
+
         // TODO : compter territoires encerclés (+1 par espaces vides entourés par les pierres d'un seul joueur)
     }
 
-    public void updateCaptures() {
-        //TODO
+    public void updateCaptures(int letter, int number) {
+        int nbLiberties = getNbLiberties(letter, number);
+        if (nbLiberties < 1) {
+            if (nbLiberties != -1) {
+                boardMap.get(letter).get(number).remove();
+            }
+        }
     }
 
     public ArrayList<IIntersection> getNeighborsIntersections(int x, int y) {
