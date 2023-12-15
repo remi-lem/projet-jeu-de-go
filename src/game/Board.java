@@ -50,7 +50,7 @@ public class Board {
                 sb.append("WHITE (O) has captured ").append(0).append(" stones\n");//TODO get white's score
             } else if ((size - i) == 1) {
                 sb.append("1     ");
-                sb.append("BLACK (X) has captured ").append(0).append(" stones\n");//TODO get black's score
+                sb.append("BLACK (X) has captured ").append(capturedStonesBlack).append(" stones\n");
             } else
                 sb.append(size - i).append("\n");
         }
@@ -100,7 +100,7 @@ public class Board {
 
         if (isMoveValid(color, number, letter)){
             this.boardMap.get(number).set(letter, new Intersection(color));
-            updateCaptures(letter, number);
+            updateCaptures(color, letter, number);
             return ("=" + noCommand + " ");
         }
         return ("?" + noCommand + " illegal move\n\n");
@@ -121,7 +121,7 @@ public class Board {
 
         if (isMoveValid(color, number, letter)){
             this.boardMap.get(number).set(letter, new Intersection(color));
-            updateCaptures(letter, number);
+            updateCaptures(color, letter, number);
         }
         return ("=" + noCommand + " ");
     }
@@ -140,15 +140,19 @@ public class Board {
             }
         }
         // TODO : compter le nombre de pierres capturées (+1 par pierre)
-
-        // TODO : compter territoires encerclés (+1 par espaces vides entourés par les pierres d'un seul joueur)
+        scoreBlack += capturedStonesBlack;
+        scoreWhite += capturedStonesWhite; // TODO : ajouter ce score au joueur
     }
 
-    public void updateCaptures(int letter, int number) {
+    public void updateCaptures(String Color, int letter, int number) {
         int nbLiberties = getNbLiberties(letter, number);
         if (nbLiberties < 1) {
             if (nbLiberties != -1) {
                 boardMap.get(letter).get(number).remove();
+                if (Color.equals("WHITE"))
+                    capturedStonesWhite++;
+                else capturedStonesBlack++;
+                updateScore();
             }
         }
     }

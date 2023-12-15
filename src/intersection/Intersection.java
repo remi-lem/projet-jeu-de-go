@@ -20,12 +20,12 @@ public class Intersection implements IIntersection {
 
     @Override
     public boolean isFree() {
-        return this.color == null;
+        return this.color == Color.nothing;
     }
 
     @Override
     public void remove() {
-        this.color = null;
+        this.color = Color.nothing;
     }
 
     @Override
