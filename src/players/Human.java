@@ -11,7 +11,7 @@ public class Human extends Player {
     }
 
     @Override
-    public String getColor() {
-        return super.getColor();
+    public void setScore(int score) {
+        super.setScore(score);
     }
 }

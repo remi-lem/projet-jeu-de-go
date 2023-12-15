@@ -18,7 +18,7 @@ public class Game {
     public String commandInterpreter(String[] command) throws RuntimeException {
         String noCommand = "";
         String ret = "";
-        try{
+        try {
             Integer.parseInt(command[0]);
             noCommand = command[0];
             command = Arrays.copyOfRange(command, 1, command.length);
@@ -42,6 +42,8 @@ public class Game {
             case "genmove", "g":
                 ret = genMove(command, noCommand);
                 break;
+            case "final_score", "f":
+                ret = scoring(command, noCommand);
             case "quit", "q":
                 break;
             default:
@@ -103,14 +105,20 @@ public class Game {
         StringBuilder ret = new StringBuilder();
         try {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
-                ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand));
-                ret.append("\n");
+                ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand)).append("\n");
             }
             else throw new RuntimeException("syntax error");
         }
         catch (RuntimeException e){
             ret.append("?").append(noCommand).append(" illegal move\n");
         }
+        return ret.toString();
+    }
+
+    private String scoring(String[] command, String noCommand) {
+        StringBuilder ret = new StringBuilder("WHITE : ");
+        ret.append(playerWhite.getScore()).append(" points");
+        ret.append("\nBLACK : ").append(playerBlack.getScore()).append(" points");
         return ret.toString();
     }
 }

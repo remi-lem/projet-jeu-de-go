@@ -48,7 +48,7 @@ public class Board {
 
             if ((size - i) == 2) {
                 sb.append("2     ");
-                sb.append("WHITE (O) has captured ").append(0).append(" stones\n");//TODO get white's score
+                sb.append("WHITE (O) has captured ").append(capturedStonesWhite).append(" stones\n");
             } else if ((size - i) == 1) {
                 sb.append("1     ");
                 sb.append("BLACK (X) has captured ").append(capturedStonesBlack).append(" stones\n");
@@ -130,8 +130,7 @@ public class Board {
     public void updateScore() {
         int scoreBlack = 0; // TODO : Mettre dans le score des joueurs
         int scoreWhite = 0;
-        // TODO : compter le nombre d'intersections contrôlées (+1 point par pierres en jeu)
-        int size = boardMap.size();
+        // Compte le nombre d'intersections contrôlées (+1 point par pierres en jeu)
         for (ArrayList<IIntersection> intersectionsX : boardMap) {
             for (IIntersection intersectionsY : intersectionsX) {
                 if (intersectionsY.getColor().equals(Color.black.toString()))

@@ -5,13 +5,12 @@ import java.util.ArrayList;
 
 public class Intersection implements IIntersection {
     public enum Color {
-        white, black
+        white, black, nothing
     }
-
     private Color color;
 
     public Intersection() {
-        this.color = null;
+        this.color = Color.nothing;
     }
 
     public Intersection(String color) {

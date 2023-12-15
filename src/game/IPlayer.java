@@ -2,5 +2,5 @@ package game;
 
 public interface IPlayer {
     int getScore();
-    String getColor();
+    void setScore(int score);
 }
