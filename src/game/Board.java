@@ -79,14 +79,11 @@ public class Board {
     }
 
     private String getOppositeColor(String color) {
-        if(color.equals(Intersection.Color.black.toString())){
-            return Intersection.Color.white.toString();
-        }
+        if(color.equals(Intersection.Color.black.toString())) return Intersection.Color.white.toString();
         return Intersection.Color.black.toString();
     }
 
     public String makeMove(String color, String move, String noCommand) {
-        int size = boardMap.size();
         int letter = Character.toUpperCase(move.charAt(0)) - 'A';
         int number = Integer.parseInt(move.substring(1)) - 1;
 
@@ -99,16 +96,13 @@ public class Board {
     }
 
     public String makeRndMove(String color, String noCommand) {
-        int letter;
-        int number;
-        int numTest = 0;
+        int letter, number, numTest = 0;
 
         do {
             letter = (int) (Math.random() * boardMap.size());
             number = (int) (Math.random() * boardMap.size());
             numTest++;
-            if(numTest > Math.pow(boardMap.size(), 2))
-                return ("?" + noCommand + " illegal move");
+            if(numTest > Math.pow(boardMap.size(), 2)) return ("?" + noCommand + " illegal move");
         } while (!isMoveValid(color, letter, number));
 
         if (isMoveValid(color, letter, number)){
@@ -130,14 +124,14 @@ public class Board {
                     scoreWhite++;
             }
         }
-        // TODO : compter le nombre de pierres capturées (+1 par pierre)
+        // Compte le nombre de pierres capturées (+1 par pierre)
         scoreBlack += capturedStonesBlack;
-        scoreWhite += capturedStonesWhite; // TODO : ajouter ce score au joueur
+        scoreWhite += capturedStonesWhite;
     }
 
     public void updateCaptures(String Color, int letter, int number) {
         int nbLiberties = getNbLiberties(letter, number);
-        if (nbLiberties < 1) {
+        if (nbLiberties < 1)
             if (nbLiberties != -1) {
                 boardMap.get(number).get(letter).remove();
                 if (Color.equalsIgnoreCase("white"))
@@ -145,7 +139,6 @@ public class Board {
                 else capturedStonesBlack++;
                 updateScore();
             }
-        }
     }
 
     public ArrayList<IIntersection> getNeighborsIntersections(int x, int y) {
@@ -165,6 +158,7 @@ public class Board {
         boolean[][] visited = new boolean[boardMap.size()][boardMap.size()];
         IIntersection currentIntersection = this.boardMap.get(y).get(x);
         String color = currentIntersection.getColor();
+
         if (currentIntersection.isFree()) return -1;
         return countLiberties(x, y, visited, color);
     }
@@ -182,7 +176,6 @@ public class Board {
         /*if (visited[x][y] || this.boardMap.get(x).get(y).getColor().equals((getOppositeColor(color))))
             return 0;
         visited[x][y] = true;
-
         int liberties = 0;
         int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // Down, Left, Up, Right
 
@@ -192,10 +185,7 @@ public class Board {
 
             liberties = countLiberties(newX, newY, visited, color);
         }
-        return liberties + 1;
-    }
-
-    private boolean isValidCoordinate(int x, int y) {
-        return x >= 0 && x < boardMap.size() && y >= 0 && y < boardMap.get(0).size();
+        return liberties + 1;*/
+        }
     }
 }
