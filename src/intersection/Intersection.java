@@ -29,7 +29,7 @@ public class Intersection implements IIntersection {
 
     @Override
     public String getColor() {
-        return color.toString();
+        return this.color.name();
     }
 
     @Override

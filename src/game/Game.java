@@ -116,9 +116,7 @@ public class Game {
     }
 
     private String scoring(String[] command, String noCommand) {
-        StringBuilder ret = new StringBuilder("WHITE : ");
-        ret.append(playerWhite.getScore()).append(" points");
-        ret.append("\nBLACK : ").append(playerBlack.getScore()).append(" points");
-        return ret.toString();
+        return "WHITE : " + playerWhite.getScore() + " points" +
+                "\nBLACK : " + playerBlack.getScore() + " points";
     }
 }
