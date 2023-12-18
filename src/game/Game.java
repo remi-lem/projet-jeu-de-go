@@ -44,6 +44,7 @@ public class Game {
                 break;
             case "final_score", "f":
                 ret = scoring();
+                break;
             case "quit", "q":
                 break;
             default:

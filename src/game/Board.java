@@ -31,9 +31,9 @@ public class Board {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         int size = boardMap.size();
-        sb.append("  ");
+        sb.append(" ");
         for (int i = 0; i < size; i++)
-            sb.append(" ").append((char) (i + 65)).append(" ");
+            sb.append("  ").append((char) (i + 65));
 
         sb.append("\n");
         for (int i = 0; i < size; i++) {
@@ -41,7 +41,7 @@ public class Board {
                 sb.append(" ");
             sb.append(size - i);
 
-            ArrayList<IIntersection> line = boardMap.get(i);
+            ArrayList<IIntersection> line = boardMap.get(size - 1 - i);
             for (int j = 0; j < size; j++)
                 sb.append(" ").append(line.get(j)).append(" ");
 
@@ -54,9 +54,9 @@ public class Board {
             } else
                 sb.append(size - i).append("\n");
         }
-        sb.append("  ");
+        sb.append(" ");
         for (int i = 0; i < size; i++)
-            sb.append(" ").append((char) (i + 65)).append(" ");
+            sb.append("  ").append((char) (i + 65));
         sb.append("\n");
         return sb.toString();
     }
@@ -91,16 +91,10 @@ public class Board {
     public String makeMove(String color, String move, String noCommand) {
         int size = boardMap.size();
         int letter = Character.toUpperCase(move.charAt(0)) - 'A';
-        int number;
-
-        if (move.length() == 2) {
-            number = size - Integer.parseInt(move.substring(1, 2));
-        } else {
-            number = size - Integer.parseInt(move.substring(1, 3));
-        }
+        int number = Integer.parseInt(move.substring(1)) - 1;
 
         if (isMoveValid(color, letter, number)){
-            this.boardMap.get(letter).set(number, new Intersection(color));
+            this.boardMap.get(number).set(letter, new Intersection(color));
             updateCaptures(color, letter, number);
             return ("=" + noCommand + " ");
         }
@@ -121,7 +115,7 @@ public class Board {
         } while (!isMoveValid(color, letter, number));
 
         if (isMoveValid(color, letter, number)){
-            this.boardMap.get(letter).set(number, new Intersection(color));
+            this.boardMap.get(number).set(letter, new Intersection(color));
             updateCaptures(color, letter, number);
         }
         return ("=" + noCommand + " ");
@@ -148,7 +142,7 @@ public class Board {
         int nbLiberties = getNbLiberties(letter, number);
         if (nbLiberties < 1) {
             if (nbLiberties != -1) {
-                boardMap.get(letter).get(number).remove();
+                boardMap.get(number).get(letter).remove();
                 if (Color.equalsIgnoreCase("white"))
                     capturedStonesWhite++;
                 else capturedStonesBlack++;
@@ -159,14 +153,14 @@ public class Board {
 
     public ArrayList<IIntersection> getNeighborsIntersections(int x, int y) {
         ArrayList<IIntersection> neighborsIntersections = new ArrayList<>();
-        if (x - 1 > 0)
-            neighborsIntersections.add(this.boardMap.get(y).get(x - 1)); // Left
+        if (x - 1 >= 0)
+            neighborsIntersections.add(this.boardMap.get(x - 1).get(y)); // Left
         if (x + 1 < boardMap.size())
-            neighborsIntersections.add(this.boardMap.get(y).get(x + 1)); // Right
-        if (y - 1 > 0)
-            neighborsIntersections.add(this.boardMap.get(y - 1).get(x)); // Up
+            neighborsIntersections.add(this.boardMap.get(x + 1).get(y)); // Right
+        if (y - 1 >= 0)
+            neighborsIntersections.add(this.boardMap.get(x).get(y - 1)); // Up
         if (y + 1 < boardMap.size())
-            neighborsIntersections.add(this.boardMap.get(y + 1).get(x)); // Down
+            neighborsIntersections.add(this.boardMap.get(x).get(y + 1)); // Down
         return neighborsIntersections;
     }
 
@@ -178,7 +172,7 @@ public class Board {
         return countLiberties(x, y, visited, color);
     }
     private int countLiberties(int x, int y, boolean[][] visited, String color) {
-        if (!isValidCoordinate(x, y) || visited[x][y] || this.boardMap.get(y).get(x).getColor().equals((getOppositeColor(color))))
+        if (!isValidCoordinate(x, y) || visited[x][y] || this.boardMap.get(x).get(y).getColor().equals((getOppositeColor(color))))
             return 0;
         visited[x][y] = true;
 
