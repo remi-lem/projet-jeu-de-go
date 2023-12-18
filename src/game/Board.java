@@ -63,21 +63,18 @@ public class Board {
 
 
     private boolean isMoveValid(String color, int x, int y) {
-        if(x < 0 || x > this.boardMap.size() || y < 0 || y > this.boardMap.size()){
-            return false;
-        }
+        if(x < 0 || x > this.boardMap.size() || y < 0 || y > this.boardMap.size()) return false;
+
         int cptOtherColor = 0;
-        for(IIntersection i : getNeighborsIntersections(x, y)){
-            if(!i.getColor().equals("nothing") && i.getColor().equals(getOppositeColor(color))){
+        int nbIntersections = 0;
+
+        for(IIntersection i : getNeighborsIntersections(x, y)) {
+            if(!i.getColor().equals("nothing") && i.getColor().equals(getOppositeColor(color)))
                 cptOtherColor++;
-            }
-            //suicide si les cases voisines sont prises
-            //TODO : à améliorer
+            nbIntersections++;
         }
-        //TODO : compter les murs dans cptOtherColor
-        if(cptOtherColor == NB_NEIGHBORS){
-            return false;
-        }
+
+        if(((NB_NEIGHBORS - nbIntersections) + cptOtherColor) == NB_NEIGHBORS) return false;
         return this.boardMap.get(y).get(x).isFree();
     }
 
@@ -165,14 +162,24 @@ public class Board {
     }
 
     public int getNbLiberties(int x, int y) {
-        boolean[][] visited = new boolean[boardMap.size()][boardMap.get(0).size()];
+        boolean[][] visited = new boolean[boardMap.size()][boardMap.size()];
         IIntersection currentIntersection = this.boardMap.get(y).get(x);
         String color = currentIntersection.getColor();
         if (currentIntersection.isFree()) return -1;
         return countLiberties(x, y, visited, color);
     }
-    private int countLiberties(int x, int y, boolean[][] visited, String color) {
-        if (!isValidCoordinate(x, y) || visited[x][y] || this.boardMap.get(x).get(y).getColor().equals((getOppositeColor(color))))
+    private int countLiberties(int x, int y, boolean[][] visited, String color) { //TODO : à développer
+        if (visited[x][y] || this.boardMap.get(y).get(x).getColor().equals(getOppositeColor(color)))
+            return 0;
+        for(IIntersection i : getNeighborsCoord(x, y)) {
+            visited[ix][iy] = true;
+            if(i.getColor().equals("nothing")) return 1;
+            else return countLiberties(getNeighborsCoord(x, y), visited, color);
+        }
+        //in progress
+
+
+        /*if (visited[x][y] || this.boardMap.get(x).get(y).getColor().equals((getOppositeColor(color))))
             return 0;
         visited[x][y] = true;
 
