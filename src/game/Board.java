@@ -2,15 +2,14 @@ package game;
 
 import intersection.Intersection;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import intersection.Intersection.Color;
 
 public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
-    //TODO : éventuellement passer sur un tableau 2D
 
     public static final int NB_NEIGHBORS = 4;
+    public static int capturedStonesWhite = 0, capturedStonesBlack = 0;//TODO stocker ca dans Player
 
     public Board(int size) {
         initialize(size);
@@ -49,10 +48,10 @@ public class Board {
 
             if ((size - i) == 2) {
                 sb.append("2     ");
-                sb.append("WHITE (O) has captured ").append(0).append(" stones\n");//TODO get white's score
+                sb.append("WHITE (O) has captured ").append(capturedStonesWhite).append(" stones\n");
             } else if ((size - i) == 1) {
                 sb.append("1     ");
-                sb.append("BLACK (X) has captured ").append(0).append(" stones\n");//TODO get black's score
+                sb.append("BLACK (X) has captured ").append(capturedStonesBlack).append(" stones\n");
             } else
                 sb.append(size - i).append("\n");
         }
@@ -70,19 +69,23 @@ public class Board {
         }
         int cptOtherColor = 0;
         for(IIntersection i : getNeighborsIntersections(x, y)){
-            if(!i.getColor().equals("nothing") && i.getColor().equals(getOppositeColor(color)))
+            if(i.getColor().equals(getOppositeColor(color))){
                 cptOtherColor++;
+            }
             //suicide si les cases voisines sont prises
             //TODO : à améliorer
         }
-        if(cptOtherColor == NB_NEIGHBORS) return false;
+        if(cptOtherColor == NB_NEIGHBORS){
+            return false;
+        }
         return this.boardMap.get(x).get(y).isFree();
     }
 
     private String getOppositeColor(String color) {
-        if(color.equals(Intersection.Color.black.toString()))
-            return Intersection.Color.white.name();
-        return Intersection.Color.black.name();
+        if(color.equals(Intersection.Color.black.toString())){
+            return Intersection.Color.white.toString();
+        }
+        return Intersection.Color.black.toString();
     }
 
     public String makeMove(String color, String move, String noCommand) {
@@ -98,7 +101,7 @@ public class Board {
 
         if (isMoveValid(color, number, letter)){
             this.boardMap.get(number).set(letter, new Intersection(color));
-            updateCaptures(letter, number);
+            updateCaptures(color, letter, number);
             return ("=" + noCommand + " ");
         }
         return ("?" + noCommand + " illegal move\n\n");
@@ -119,7 +122,7 @@ public class Board {
 
         if (isMoveValid(color, number, letter)){
             this.boardMap.get(number).set(letter, new Intersection(color));
-            updateCaptures(letter, number);
+            updateCaptures(color, letter, number);
         }
         return ("=" + noCommand + " ");
     }
@@ -127,8 +130,7 @@ public class Board {
     public void updateScore() {
         int scoreBlack = 0; // TODO : Mettre dans le score des joueurs
         int scoreWhite = 0;
-        // TODO : compter le nombre d'intersections contrôlées (+1 point par pierres en jeu)
-        int size = boardMap.size();
+        // Compte le nombre d'intersections contrôlées (+1 point par pierres en jeu)
         for (ArrayList<IIntersection> intersectionsX : boardMap) {
             for (IIntersection intersectionsY : intersectionsX) {
                 if (intersectionsY.getColor().equals(Color.black.toString()))
@@ -138,13 +140,18 @@ public class Board {
             }
         }
         // TODO : compter le nombre de pierres capturées (+1 par pierre)
+        scoreBlack += capturedStonesBlack;
+        scoreWhite += capturedStonesWhite; // TODO : ajouter ce score au joueur
     }
 
-    public void updateCaptures(int letter, int number) {
+    public void updateCaptures(String Color, int letter, int number) {
         int nbLiberties = getNbLiberties(letter, number);
         if (nbLiberties < 1) {
             if (nbLiberties != -1) {
                 boardMap.get(letter).get(number).remove();
+                if (Color.equals("WHITE"))
+                    capturedStonesWhite++;
+                else capturedStonesBlack++;
                 updateScore();
             }
         }
@@ -164,50 +171,31 @@ public class Board {
     }
 
     public int getNbLiberties(int x, int y) {
-        ArrayList<IIntersection> toVisit = new ArrayList<>(); // TODO : gérer les intersections visitées
+        boolean[][] visited = new boolean[boardMap.size()][boardMap.get(0).size()];
         IIntersection currentIntersection = this.boardMap.get(x).get(y);
         String color = currentIntersection.getColor();
         if (currentIntersection.isFree()) return -1;
-        int nbLiberties = 0;
-        for (IIntersection intersection : getNeighborsIntersections(x, y)) {
-            if (intersection.isFree()) nbLiberties++;
-            else if (intersection.getColor().equals(color))
-                toVisit.add(intersection);
-                nbLiberties += getNbLibertiesAnnex(toVisit);
+        return countLiberties(x, y, visited, color);
+    }
+    private int countLiberties(int x, int y, boolean[][] visited, String color) {
+        if (!isValidCoordinate(x, y) || visited[x][y] || this.boardMap.get(x).get(y).getColor().equals((color))) {
+            return 0;
         }
-        return nbLiberties;
-    }
-    public int getNbLibertiesAnnex(ArrayList<IIntersection> toVisit) {
-        if (toVisit.isEmpty()) return 0;
-        return -1;//TODO
-    }
-    /*
-    public Set<Intersection> getGroupe(Plateau plateau) {
-        Set<Intersection> groupe = new HashSet<>();
-        Set<Intersection> dejaVisite = new HashSet<>();
+        visited[x][y] = true;
 
-        // Utiliser une recherche en profondeur (DFS) pour trouver le groupe
-        dfs(plateau, this, groupe, dejaVisite);
+        int liberties = 0;
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // Up, Right, Down, Left
 
-        return groupe;
-    }
+        for (int[] dir : directions) {
+            int newX = x + dir[0];
+            int newY = y + dir[1];
 
-    private void dfs(Plateau plateau, Pierre pierre, Set<Intersection> groupe, Set<Intersection> dejaVisite) {
-        Intersection intersection = new Intersection(pierre.x, pierre.y);
-
-        // Vérifier si l'intersection a déjà été visitée
-        if (dejaVisite.contains(intersection)) {
-            return;
+            liberties += countLiberties(newX, newY, visited, color);
         }
-
-        // Ajouter l'intersection au groupe
-        groupe.add(intersection);
-        dejaVisite.add(intersection);
-
-        // Vérifier les intersections voisines
-        for (Pierre voisin : plateau.getVoisins(pierre)) {
-            dfs(plateau, voisin, groupe, dejaVisite);
-        }
+        return liberties;
     }
-     */
+
+    private boolean isValidCoordinate(int x, int y) {
+        return x >= 0 && x < boardMap.size() && y >= 0 && y < boardMap.get(0).size();
+    }
 }
