@@ -47,10 +47,10 @@ public class Board {
 
             if ((size - i) == 2) {
                 sb.append("2     ");
-                sb.append("WHITE (O) has captured ").append(capturedStonesWhite).append(" stones\n");
+                sb.append("WHITE (O) has captured ").append(capturedStonesBlack).append(" stones\n");
             } else if ((size - i) == 1) {
                 sb.append("1     ");
-                sb.append("BLACK (X) has captured ").append(capturedStonesBlack).append(" stones\n");
+                sb.append("BLACK (X) has captured ").append(capturedStonesWhite).append(" stones\n");
             } else
                 sb.append(size - i).append("\n");
         }
@@ -183,7 +183,7 @@ public class Board {
         visited[x][y] = true;
 
         int liberties = 0;
-        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // Up, Right, Down, Left
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // Down, Left, Up, Right
 
         for (int[] dir : directions) {
             int newX = x + dir[0];
@@ -191,7 +191,7 @@ public class Board {
 
             liberties = countLiberties(newX, newY, visited, color);
         }
-        return liberties;
+        return liberties + 1;
     }
 
     private boolean isValidCoordinate(int x, int y) {

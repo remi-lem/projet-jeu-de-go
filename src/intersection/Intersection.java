@@ -34,10 +34,10 @@ public class Intersection implements IIntersection {
 
     @Override
     public String toString() {
-        if (isFree())
+        if (this.isFree())
             return ".";
         else {
-            if (getColor().compareToIgnoreCase(Color.black.toString()) == 0)
+            if (this.getColor().compareToIgnoreCase(Color.black.toString()) == 0)
                 return "X";
             return "O";
         }
