@@ -74,10 +74,11 @@ public class Board {
             //suicide si les cases voisines sont prises
             //TODO : à améliorer
         }
+        //TODO : compter les murs dans cptOtherColor
         if(cptOtherColor == NB_NEIGHBORS){
             return false;
         }
-        return this.boardMap.get(x).get(y).isFree();
+        return this.boardMap.get(y).get(x).isFree();
     }
 
     private String getOppositeColor(String color) {
@@ -159,19 +160,19 @@ public class Board {
     public ArrayList<IIntersection> getNeighborsIntersections(int x, int y) {
         ArrayList<IIntersection> neighborsIntersections = new ArrayList<>();
         if (x - 1 > 0)
-            neighborsIntersections.add(this.boardMap.get(x - 1).get(y)); // Left
-        if (x + 1 <= boardMap.size())
-            neighborsIntersections.add(this.boardMap.get(x + 1).get(y)); // Right
+            neighborsIntersections.add(this.boardMap.get(y).get(x - 1)); // Left
+        if (x + 1 < boardMap.size())
+            neighborsIntersections.add(this.boardMap.get(y).get(x + 1)); // Right
         if (y - 1 > 0)
-            neighborsIntersections.add(this.boardMap.get(x).get(y - 1)); // Up
-        if (y + 1 <= boardMap.size())
-            neighborsIntersections.add(this.boardMap.get(x).get(y + 1)); // Down
+            neighborsIntersections.add(this.boardMap.get(y - 1).get(x)); // Up
+        if (y + 1 < boardMap.size())
+            neighborsIntersections.add(this.boardMap.get(y + 1).get(x)); // Down
         return neighborsIntersections;
     }
 
     public int getNbLiberties(int x, int y) {
         boolean[][] visited = new boolean[boardMap.size()][boardMap.get(0).size()];
-        IIntersection currentIntersection = this.boardMap.get(x).get(y);
+        IIntersection currentIntersection = this.boardMap.get(y).get(x);
         String color = currentIntersection.getColor();
         if (currentIntersection.isFree()) return -1;
         return countLiberties(x, y, visited, color);
