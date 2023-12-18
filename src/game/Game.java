@@ -43,7 +43,7 @@ public class Game {
                 ret = genMove(command, noCommand);
                 break;
             case "final_score", "f":
-                ret = scoring(command, noCommand);
+                ret = scoring();
             case "quit", "q":
                 break;
             default:
@@ -91,7 +91,7 @@ public class Game {
         try {
             if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
                 ret.append(this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase(), noCommand));
-                ret.append("\n");
+                ret.append("\n").append(this.board.toString());
             }
             else throw new RuntimeException("syntax error");
         }
@@ -106,6 +106,7 @@ public class Game {
         try {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
                 ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand)).append("\n");
+                ret.append(this.board.toString());
             }
             else throw new RuntimeException("syntax error");
         }
@@ -115,10 +116,8 @@ public class Game {
         return ret.toString();
     }
 
-    private String scoring(String[] command, String noCommand) {
-        StringBuilder ret = new StringBuilder("WHITE : ");
-        ret.append(playerWhite.getScore()).append(" points");
-        ret.append("\nBLACK : ").append(playerBlack.getScore()).append(" points");
-        return ret.toString();
+    private String scoring() {
+        return "WHITE : " + playerWhite.getScore() + " points" +
+                "\nBLACK : " + playerBlack.getScore() + " points";
     }
 }
