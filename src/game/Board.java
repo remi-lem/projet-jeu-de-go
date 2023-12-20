@@ -129,12 +129,12 @@ public class Board {
         scoreWhite += capturedStonesWhite;
     }
 
-    public void updateCaptures(String Color, int letter, int number) {
+    public void updateCaptures(String color, int letter, int number) { // TODO : Appliquer au groupe
         int nbLiberties = getNbLiberties(letter, number);
         if (nbLiberties < 1)
             if (nbLiberties != -1) {
                 boardMap.get(number).get(letter).remove();
-                if (Color.equalsIgnoreCase("white"))
+                if (color.equalsIgnoreCase("white"))
                     capturedStonesWhite++;
                 else capturedStonesBlack++;
                 updateScore();
@@ -165,11 +165,13 @@ public class Board {
     private int countLiberties(int x, int y, boolean[][] visited, String color) { //TODO : à développer
         if (visited[x][y] || this.boardMap.get(y).get(x).getColor().equals(getOppositeColor(color)))
             return 0;
+        int liberties = 0;
         for(IIntersection i : getNeighborsCoord(x, y)) {
             visited[ix][iy] = true;
             if(i.getColor().equals("nothing")) return 1;
-            else return countLiberties(getNeighborsCoord(x, y), visited, color);
+            else liberties += countLiberties(getNeighborsCoord(x, y), visited, color);
         }
+        return liberties;
         //in progress
 
 
@@ -177,7 +179,7 @@ public class Board {
             return 0;
         visited[x][y] = true;
         int liberties = 0;
-        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // Down, Left, Up, Right
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // Right, Down, Left, Up
 
         for (int[] dir : directions) {
             int newX = x + dir[0];
@@ -186,6 +188,59 @@ public class Board {
             liberties = countLiberties(newX, newY, visited, color);
         }
         return liberties + 1;*/
+    }
+
+
+    private int verifyNeighborsLiberties(int coordNumber, int coordLetter, String color) {
+        int size = boardMap.size();
+        int[][] neighbors = {{-1,0}, {0,1}, {1,0}, {0,-1}}; // Up, Right, Down, Left
+        for (int[] neighbor : neighbors) {
+            int coordNumNeighbor = coordNumber + neighbor[0];
+            int coordLetNeighbor = coordLetter + neighbor[1];
+            if(coordNumNeighbor > size
+                    || coordNumNeighbor < 0
+                    || coordLetNeighbor > size
+                    || coordLetNeighbor < 0) continue; // Hors limites
+            if(this.boardMap.get(coordNumNeighbor).get(coordLetNeighbor).getColor().equals(getOppositeColor(color))) {
+                    // Verify if this neighbor was captured
+
+                break;
+            }
         }
+        return 0;
+    }
+
+    private int verifyMyLiberties(int coordNumber, int coordLetter, String color) {
+        int liberties = 4;
+        int size = boardMap.size();
+        int[][] neighbors = {{-1,0}, {0,1}, {1,0}, {0,-1}}; // Up, Right, Down, Left
+        ArrayList<int[]> sameColNeighbors = new ArrayList<>();
+        for (int[] neighbor : neighbors) {
+            int coordNumNeighbor = coordNumber + neighbor[0];
+            int coordLetNeighbor = coordLetter + neighbor[1];
+            if (coordNumNeighbor > size
+                    || coordNumNeighbor < 0
+                    || coordLetNeighbor > size
+                    || coordLetNeighbor < 0) continue; // Off limits
+            if (this.boardMap.get(coordNumNeighbor).get(coordLetNeighbor).getColor().equals(getOppositeColor(color))) {
+                liberties--;
+            } else if (this.boardMap.get(coordNumNeighbor).get(coordLetNeighbor).getColor().equals(color)) {
+                liberties--;
+                sameColNeighbors.add(new int[] {coordNumNeighbor, coordLetNeighbor});
+            }
+        }
+        if (liberties == 0 && sameColNeighbors.isEmpty()) {
+            // Remove captured stone
+            boardMap.get(coordNumber).get(coordLetter).remove();
+            if (color.equalsIgnoreCase("white")) capturedStonesWhite++;
+            else capturedStonesBlack++;
+            updateScore();
+        } else if (liberties == 0 && !sameColNeighbors.isEmpty()) {
+            // Some neighbors are there to support the current stone, let see if they are all captured
+            for (int[] neighbor : sameColNeighbors) {
+                //TODO : verify if neighbors has no liberties and be aware of the stones already visited
+            }
+        }
+        return 0;
     }
 }
