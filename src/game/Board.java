@@ -9,7 +9,7 @@ public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
 
     public static final int NB_NEIGHBORS = 4;
-    public static int capturedStonesWhite = 0, capturedStonesBlack = 0;//TODO stocker ca dans Player
+    public static int capturedStonesWhite = 0, capturedStonesBlack = 0; //TODO stocker ca dans Player
 
     public Board(int size) {
         initialize(size);
