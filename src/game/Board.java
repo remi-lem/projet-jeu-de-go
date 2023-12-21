@@ -15,6 +15,20 @@ public class Board {
         initialize(size);
     }
 
+    public Board(int size, String move){
+        initialize(size);
+        initializeSGF(move);}
+
+    private void initializeSGF(String move) {
+        String[] listMove = move.split(" ");
+        int i = 0;
+        for (String m : listMove) {
+            if (i%2 == 0) makeMove("black", m,"");
+            else makeMove("white", m,"");
+            i++;
+        }
+    }
+
     public void initialize(int size) {
         boardMap = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
@@ -83,9 +97,24 @@ public class Board {
         return Intersection.Color.black.toString();
     }
 
+    public void play(int i, int j) {
+        makeMove("black",i+""+j, "");
+    }
+
     public String makeMove(String color, String move, String noCommand) {
-        int letter = Character.toUpperCase(move.charAt(0)) - 'A';
-        int number = Integer.parseInt(move.substring(1)) - 1;
+        int letter, number;
+
+        if(Character.isDigit(move.charAt(0))) {
+            letter = Integer.parseInt(move.substring(0,1)) - 1;
+        } else {
+            letter = Character.toUpperCase(move.charAt(0)) - 'A';
+        }
+
+        if(Character.isDigit(move.charAt(1))) {
+            number = Integer.parseInt(move.substring(1)) - 1;
+        } else {
+            number = Character.toUpperCase(move.charAt(1)) - 'A';
+        }
 
         if (isMoveValid(color, letter, number)){
             this.boardMap.get(number).set(letter, new Intersection(color));
@@ -163,31 +192,7 @@ public class Board {
         return countLiberties(x, y, visited, color);
     }
     private int countLiberties(int x, int y, boolean[][] visited, String color) { //TODO : à développer
-        if (visited[x][y] || this.boardMap.get(y).get(x).getColor().equals(getOppositeColor(color)))
-            return 0;
-        int liberties = 0;
-        for(IIntersection i : getNeighborsCoord(x, y)) {
-            visited[ix][iy] = true;
-            if(i.getColor().equals("nothing")) return 1;
-            else liberties += countLiberties(getNeighborsCoord(x, y), visited, color);
-        }
-        return liberties;
-        //in progress
-
-
-        /*if (visited[x][y] || this.boardMap.get(x).get(y).getColor().equals((getOppositeColor(color))))
-            return 0;
-        visited[x][y] = true;
-        int liberties = 0;
-        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // Right, Down, Left, Up
-
-        for (int[] dir : directions) {
-            int newX = x + dir[0];
-            int newY = y + dir[1];
-
-            liberties = countLiberties(newX, newY, visited, color);
-        }
-        return liberties + 1;*/
+        return 4;
     }
 
 
