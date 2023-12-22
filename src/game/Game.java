@@ -54,7 +54,7 @@ public class Game {
             case "final_score", "f":
                 ret = scoring();
                 break;
-            case "player":
+            case "player", "pr":
                 ret = changePlayers(command, noCommand);
                 break;
             case "quit", "q":
@@ -70,14 +70,14 @@ public class Game {
         String color = command[1];
         String type = command[2];
         if(color.equals("black")){
-            if(type.equals("random")){
+            if(type.equals("robot")){
                 int tmpScore = this.playerBlack.getScore();
-                this.playerBlack = new Robot("black");
+                this.playerBlack = new Robot();
                 this.playerBlack.setScore(tmpScore);
             }
             else if(type.equals("human")){
                 int tmpScore = this.playerBlack.getScore();
-                this.playerBlack = new Human("black");
+                this.playerBlack = new Human();
                 this.playerBlack.setScore(tmpScore);
             }
             else {
@@ -85,14 +85,14 @@ public class Game {
             }
         }
         else if(color.equals("white")){
-            if(type.equals("random")){
+            if(type.equals("robot")){
                 int tmpScore = this.playerWhite.getScore();
-                this.playerWhite = new Robot("black");
+                this.playerWhite = new Robot();
                 this.playerWhite.setScore(tmpScore);
             }
             else if(type.equals("human")){
                 int tmpScore = this.playerWhite.getScore();
-                this.playerWhite = new Human("black");
+                this.playerWhite = new Human();
                 this.playerWhite.setScore(tmpScore);
             }
             else {

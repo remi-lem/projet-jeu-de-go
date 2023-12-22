@@ -14,15 +14,15 @@ public class TUI {
         }
         else{
             boolean errorArgs = false;
-            Game game = new Game(new Human("black"), new Human("white"));
+            Game game = new Game(new Human(), new Human());
             switch(args[0]) {
                 case "gtp": break;
                 case "direct":
-                    if(args[1].equals("random")){
-                        game.setPlayerBlack(new Robot("black"));
+                    if(args[1].equals("robot")){
+                        game.setPlayerBlack(new Robot()); //TODO : mettre un pattern design (supp liens)
                     }
-                    if(args[2].equals("random")){
-                        game.setPlayerWhite(new Robot("white"));
+                    if(args[2].equals("robot")){
+                        game.setPlayerWhite(new Robot());
                     }
                     break;
                 default:

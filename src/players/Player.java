@@ -4,7 +4,7 @@ import game.IPlayer;
 
 public abstract class Player implements IPlayer {
     private int score;
-    public Player(String color){
+    public Player(){
         this.score = 0;
     }
 
