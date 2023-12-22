@@ -120,23 +120,6 @@ public class Board {
         return neighborsIntersections;
     }
 
-    public void updateScore() {
-        int scoreBlack = 0; // TODO : Mettre dans le score des joueurs
-        int scoreWhite = 0;
-        // Compte le nombre d'intersections contrôlées (+1 point par pierres en jeu)
-        for (ArrayList<IIntersection> intersectionsX : boardMap) {
-            for (IIntersection intersectionsY : intersectionsX) {
-                if (intersectionsY.getColor().equals(Color.black.toString()))
-                    scoreBlack++;
-                else if (intersectionsY.getColor().equals(Color.white.toString()))
-                    scoreWhite++;
-            }
-        }
-        // Compte le nombre de pierres capturées (+1 par pierre)
-        scoreBlack += capturedStonesBlack;
-        scoreWhite += capturedStonesWhite;
-    }
-
     public void updateCaptures(String color, int letter, int number) { // TODO : Appliquer au groupe
         int nbLiberties = getNbLiberties(letter, number);
         if (nbLiberties < 1)
@@ -223,6 +206,33 @@ public class Board {
         if (color.equalsIgnoreCase("white")) capturedStonesWhite++;
         else capturedStonesBlack++;
         updateScore();
+    }
+
+    public void updateScore(IPlayer player, String color, int score) {
+        // TODO : Mettre dans le score des joueurs
+        // Compte le nombre de pierres capturées (+1 par pierre)
+        if (color.equalsIgnoreCase("black"))
+            player.setScore(score+capturedStonesBlack);
+        else player.setScore(score+capturedStonesWhite);
+    }
+
+    public String finalScore(IPlayer pBlack, IPlayer pWhite) {
+        int scoreBlack = 0, scoreWhite = 0;
+
+        // Compte le nombre d'intersections contrôlées (+1 point par pierres en jeu)
+        for (ArrayList<IIntersection> intersectionsX : boardMap) {
+            for (IIntersection intersectionsY : intersectionsX) {
+                if (intersectionsY.getColor().equals(Color.black.toString()))
+                    scoreBlack++;
+                else if (intersectionsY.getColor().equals(Color.white.toString()))
+                    scoreWhite++;
+            }
+        }
+
+        updateScore(pBlack, "black", scoreBlack);
+        updateScore(pWhite, "white", scoreWhite);
+        return "WHITE : " + pWhite.getScore() + " points" +
+                "\nBLACK : " + pBlack.getScore() + " points";
     }
 
     public String toString() {

@@ -118,7 +118,6 @@ public class Game {
     }
 
     private String scoring() {
-        return "WHITE : " + playerWhite.getScore() + " points" +
-                "\nBLACK : " + playerBlack.getScore() + " points";
+        return this.board.finalScore(playerBlack, playerWhite);
     }
 }
