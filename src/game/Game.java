@@ -1,11 +1,14 @@
 package game;
 
+import players.Human;
+import players.Robot;
+
 import java.util.Arrays;
 
 public class Game {
     private Board board;
-    private final IPlayer playerBlack;
-    private final IPlayer playerWhite;
+    private IPlayer playerBlack;
+    private IPlayer playerWhite;
     private final int BOARD_SIZE_MAX = 19;
     private final int BOARD_SIZE_MIN = 1;
 
@@ -13,6 +16,12 @@ public class Game {
         this.playerBlack = playerBlack;
         this.playerWhite = playerWhite;
         this.board = new Board(BOARD_SIZE_MAX);
+    }
+    public void setPlayerBlack(IPlayer player) {
+        this.playerBlack = player;
+    }
+    public void setPlayerWhite(IPlayer player) {
+        this.playerWhite = player;
     }
 
     public String commandInterpreter(String[] command) throws RuntimeException {
@@ -45,6 +54,9 @@ public class Game {
             case "final_score", "f":
                 ret = scoring();
                 break;
+            case "player":
+                ret = changePlayers(command, noCommand);
+                break;
             case "quit", "q":
                 break;
             default:
@@ -52,6 +64,45 @@ public class Game {
                 break;
         }
         return ret;
+    }
+
+    private String changePlayers(String[] command, String noCommand) {
+        String color = command[1];
+        String type = command[2];
+        if(color.equals("black")){
+            if(type.equals("random")){
+                int tmpScore = this.playerBlack.getScore();
+                this.playerBlack = new Robot("black");
+                this.playerBlack.setScore(tmpScore);
+            }
+            else if(type.equals("human")){
+                int tmpScore = this.playerBlack.getScore();
+                this.playerBlack = new Human("black");
+                this.playerBlack.setScore(tmpScore);
+            }
+            else {
+                return "?" + noCommand + " unrecognised player type\n";
+            }
+        }
+        else if(color.equals("white")){
+            if(type.equals("random")){
+                int tmpScore = this.playerWhite.getScore();
+                this.playerWhite = new Robot("black");
+                this.playerWhite.setScore(tmpScore);
+            }
+            else if(type.equals("human")){
+                int tmpScore = this.playerWhite.getScore();
+                this.playerWhite = new Human("black");
+                this.playerWhite.setScore(tmpScore);
+            }
+            else {
+                return "?" + noCommand + " unrecognised player type\n";
+            }
+        }
+        else {
+            return "?" + noCommand + " unrecognised color\n";
+        }
+        return "=" + noCommand + " player modified\n";
     }
 
     private String commandGTP(String command) {
