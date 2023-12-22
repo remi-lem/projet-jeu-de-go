@@ -187,7 +187,7 @@ public class Board {
             // Some neighbors are there to support the current stone, let see if they are all captured
             for (int[] neighbor : sameColNeighbors) {
                 //TODO : verify if neighbors has no liberties and be aware of the stones already visited
-                System.out.println("Coucou les putes !");
+                System.out.println("je suis la pour gérer les bugs !");
                 if (verifyMyLiberties(neighbor[0], neighbor[1], color, visitedMap))
                    return true;
             }
