@@ -1,5 +1,6 @@
 package game;
 
+import app.Factory;
 import players.Human;
 import players.Robot;
 
@@ -22,6 +23,10 @@ public class Game {
     }
     public void setPlayerWhite(IPlayer player) {
         this.playerWhite = player;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
     }
 
     public String commandInterpreter(String[] command) throws RuntimeException {
@@ -57,6 +62,9 @@ public class Game {
             case "player", "pr":
                 ret = changePlayers(command, noCommand);
                 break;
+            case "set_handicaps", "sh":
+                ret = setHandicaps(command, noCommand);
+                break;
             case "quit", "q":
                 break;
             default:
@@ -64,45 +72,6 @@ public class Game {
                 break;
         }
         return ret;
-    }
-
-    private String changePlayers(String[] command, String noCommand) {
-        String color = command[1];
-        String type = command[2];
-        if(color.equals("black")){
-            if(type.equals("robot")){
-                int tmpScore = this.playerBlack.getScore();
-                this.playerBlack = new Robot();
-                this.playerBlack.setScore(tmpScore);
-            }
-            else if(type.equals("human")){
-                int tmpScore = this.playerBlack.getScore();
-                this.playerBlack = new Human();
-                this.playerBlack.setScore(tmpScore);
-            }
-            else {
-                return "?" + noCommand + " unrecognised player type\n";
-            }
-        }
-        else if(color.equals("white")){
-            if(type.equals("robot")){
-                int tmpScore = this.playerWhite.getScore();
-                this.playerWhite = new Robot();
-                this.playerWhite.setScore(tmpScore);
-            }
-            else if(type.equals("human")){
-                int tmpScore = this.playerWhite.getScore();
-                this.playerWhite = new Human();
-                this.playerWhite.setScore(tmpScore);
-            }
-            else {
-                return "?" + noCommand + " unrecognised player type\n";
-            }
-        }
-        else {
-            return "?" + noCommand + " unrecognised color\n";
-        }
-        return "=" + noCommand + " player modified\n";
     }
 
     private String commandGTP(String command) {
@@ -140,17 +109,27 @@ public class Game {
 
     public String playMove(String[] command, String noCommand) {
         StringBuilder ret = new StringBuilder();
-        try {
-            if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
-                ret.append(this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase(), noCommand));
-                ret.append("\n").append(this.board.toString());
+        String passStr = "=" + noCommand + " pass\n";
+        if (command[2].equals("pass")) {
+            ++cptSkip;
+            if (cptSkip == 2) {
+                isFinished = true;
+                return ret.append(passStr).append("Game finished!").toString();
             }
-            else throw new RuntimeException("syntax error");
         }
-        catch (RuntimeException e) {
-            ret.append("?").append(noCommand).append(" illegal move\n");
+        else {
+            cptSkip = 0;
+            try {
+                if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
+                    ret.append(this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase(), noCommand));
+                    ret.append("\n").append(this.board.toString());
+                } else throw new RuntimeException("syntax error");
+            } catch (RuntimeException e) {
+                ret.append("?").append(noCommand).append(" illegal move\n");
+            }
+            return ret.toString();
         }
-        return ret.toString();
+        return passStr;
     }
 
     private String genMove(String[] command, String noCommand) {
@@ -170,5 +149,36 @@ public class Game {
 
     private String scoring() {
         return this.board.finalScore(playerBlack, playerWhite);
+    }
+
+    private String changePlayers(String[] command, String noCommand) {
+        String color = command[1];
+        String type = command[2];
+        IPlayer tmpPlayer;
+        tmpPlayer = color.equals("black") ? playerBlack : (color.equals("white") ? playerWhite : null);
+        if(tmpPlayer == null) return "?" + noCommand + " unrecognised color\n";
+        try {
+            int tmpScore = tmpPlayer.getScore();
+            tmpPlayer = Factory.createPlayer(type);
+            tmpPlayer.setScore(tmpScore);
+        } catch (IllegalArgumentException e) {
+            return "?" + noCommand + " unrecognised player type\n";
+        }
+        return "=" + noCommand + " player modified\n";
+    }
+
+    private String setHandicaps(String[] command, String noCommand) {
+        if (this.board.getSize() >= 7) {
+            String[] commandColor = {"", "black"};
+            int nbHandicaps = Integer.parseInt(command[1]);
+
+            if (nbHandicaps <= 4 && nbHandicaps >= 2) {
+                for (int i = 0; i < nbHandicaps; i++) {
+                    genMove(commandColor, noCommand);
+                }
+                return this.board.toString();
+            } else return "?" + noCommand + " illegal handicaps number\n";
+        }
+        else return "?" + noCommand + " illegal size of board\n";
     }
 }

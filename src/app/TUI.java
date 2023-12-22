@@ -18,12 +18,8 @@ public class TUI {
             switch(args[0]) {
                 case "gtp": break;
                 case "direct":
-                    if(args[1].equals("robot")){
-                        game.setPlayerBlack(new Robot()); //TODO : mettre un pattern design (supp liens)
-                    }
-                    if(args[2].equals("robot")){
-                        game.setPlayerWhite(new Robot());
-                    }
+                    game.setPlayerBlack(Factory.createPlayer(args[1]));
+                    game.setPlayerWhite(Factory.createPlayer(args[2]));
                     break;
                 default:
                     System.err.println("Mauvais arguments");

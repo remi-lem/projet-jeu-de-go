@@ -5,7 +5,7 @@
     <option name="PROGRAM_PARAMETERS" value="gtp" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="app.*" />
+        <option name="PATTERN" value="game.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>
