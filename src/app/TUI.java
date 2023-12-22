@@ -31,7 +31,7 @@ public class TUI {
                 do {
                     commands = sc.nextLine().split(" ");
                     System.out.println(game.commandInterpreter(commands));
-                } while (!(commands[0].equals("quit") || commands[0].equals("q")));
+                } while (!game.isFinished());
             }
         }
 

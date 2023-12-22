@@ -12,6 +12,8 @@ public class Game {
     private IPlayer playerWhite;
     private final int BOARD_SIZE_MAX = 19;
     private final int BOARD_SIZE_MIN = 1;
+    private int cptSkip = 0;
+    private boolean isFinished = false;
 
     public Game(IPlayer playerBlack, IPlayer playerWhite) {
         this.playerBlack = playerBlack;
@@ -66,6 +68,7 @@ public class Game {
                 ret = setHandicaps(command, noCommand);
                 break;
             case "quit", "q":
+                isFinished = true;
                 break;
             default:
                 ret = "unrecognized command";

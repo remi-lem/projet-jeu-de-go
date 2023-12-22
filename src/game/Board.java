@@ -17,7 +17,12 @@ public class Board {
 
     public Board(int size, String move){
         initialize(size);
-        initializeSGF(move);}
+        initializeSGF(move);
+    }
+
+    public int getSize(){
+        return this.boardMap.size();
+    }
 
     private void initializeSGF(String move) {
         String[] listMove = move.split(" ");
