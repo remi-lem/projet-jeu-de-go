@@ -128,7 +128,6 @@ public class Board {
                 if (color.equalsIgnoreCase("white"))
                     capturedStonesWhite++;
                 else capturedStonesBlack++;
-                //updateScore();
             }
     }
 
@@ -205,16 +204,8 @@ public class Board {
         boardMap.get(number).get(letter).remove();
         if (color.equalsIgnoreCase("white")) capturedStonesWhite++;
         else capturedStonesBlack++;
-        //updateScore();
     }
 
-    public void updateScore(IPlayer player, String color, int score) {
-        // TODO : Mettre dans le score des joueurs
-        // Compte le nombre de pierres capturées (+1 par pierre)
-        if (color.equalsIgnoreCase("black"))
-            player.setScore(score+capturedStonesBlack);
-        else player.setScore(score+capturedStonesWhite);
-    }
 
     public String finalScore(IPlayer pBlack, IPlayer pWhite) {
         int scoreBlack = 0, scoreWhite = 0;
@@ -229,8 +220,10 @@ public class Board {
             }
         }
 
-        updateScore(pBlack, "black", scoreBlack);
-        updateScore(pWhite, "white", scoreWhite);
+        // Compte le nombre de pierres capturées (+1 par pierre)
+        pBlack.setScore(scoreBlack+capturedStonesWhite);
+        pWhite.setScore(scoreWhite+capturedStonesBlack);
+
         return "WHITE : " + pWhite.getScore() + " points" +
                 "\nBLACK : " + pBlack.getScore() + " points";
     }
