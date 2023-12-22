@@ -43,8 +43,8 @@ public class Board {
     }
 
     public void play(int i, int j) {
-        makeMove("black",i+""+j, "");
-    }
+        makeMove("black",(i+1)+""+(j+1), ""); //TODO: change the color
+}
 
     public String makeMove(String color, String move, String noCommand) {
         int letter, number;
