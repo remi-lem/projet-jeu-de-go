@@ -128,7 +128,7 @@ public class Board {
                 if (color.equalsIgnoreCase("white"))
                     capturedStonesWhite++;
                 else capturedStonesBlack++;
-                updateScore();
+                //updateScore();
             }
     }
 
@@ -205,7 +205,7 @@ public class Board {
         boardMap.get(number).get(letter).remove();
         if (color.equalsIgnoreCase("white")) capturedStonesWhite++;
         else capturedStonesBlack++;
-        updateScore();
+        //updateScore();
     }
 
     public void updateScore(IPlayer player, String color, int score) {
