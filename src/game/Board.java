@@ -120,23 +120,6 @@ public class Board {
         return neighborsIntersections;
     }
 
-    public void updateScore() {
-        int scoreBlack = 0; // TODO : Mettre dans le score des joueurs
-        int scoreWhite = 0;
-        // Compte le nombre d'intersections contrôlées (+1 point par pierres en jeu)
-        for (ArrayList<IIntersection> intersectionsX : boardMap) {
-            for (IIntersection intersectionsY : intersectionsX) {
-                if (intersectionsY.getColor().equals(Color.black.toString()))
-                    scoreBlack++;
-                else if (intersectionsY.getColor().equals(Color.white.toString()))
-                    scoreWhite++;
-            }
-        }
-        // Compte le nombre de pierres capturées (+1 par pierre)
-        scoreBlack += capturedStonesBlack;
-        scoreWhite += capturedStonesWhite;
-    }
-
     public void updateCaptures(String color, int letter, int number) { // TODO : Appliquer au groupe
         int nbLiberties = getNbLiberties(letter, number);
         if (nbLiberties < 1)
@@ -145,7 +128,6 @@ public class Board {
                 if (color.equalsIgnoreCase("white"))
                     capturedStonesWhite++;
                 else capturedStonesBlack++;
-                updateScore();
             }
     }
 
@@ -205,7 +187,7 @@ public class Board {
             // Some neighbors are there to support the current stone, let see if they are all captured
             for (int[] neighbor : sameColNeighbors) {
                 //TODO : verify if neighbors has no liberties and be aware of the stones already visited
-                System.out.println("Coucou les putes !");
+                System.out.println("je suis la pour gérer les bugs !");
                 if (verifyMyLiberties(neighbor[0], neighbor[1], color, visitedMap))
                    return true;
             }
@@ -222,7 +204,28 @@ public class Board {
         boardMap.get(number).get(letter).remove();
         if (color.equalsIgnoreCase("white")) capturedStonesWhite++;
         else capturedStonesBlack++;
-        updateScore();
+    }
+
+
+    public String finalScore(IPlayer pBlack, IPlayer pWhite) {
+        int scoreBlack = 0, scoreWhite = 0;
+
+        // Compte le nombre d'intersections contrôlées (+1 point par pierres en jeu)
+        for (ArrayList<IIntersection> intersectionsX : boardMap) {
+            for (IIntersection intersectionsY : intersectionsX) {
+                if (intersectionsY.getColor().equals(Color.black.toString()))
+                    scoreBlack++;
+                else if (intersectionsY.getColor().equals(Color.white.toString()))
+                    scoreWhite++;
+            }
+        }
+
+        // Compte le nombre de pierres capturées (+1 par pierre)
+        pBlack.setScore(scoreBlack+capturedStonesWhite);
+        pWhite.setScore(scoreWhite+capturedStonesBlack);
+
+        return "WHITE : " + pWhite.getScore() + " points" +
+                "\nBLACK : " + pBlack.getScore() + " points";
     }
 
     public String toString() {
