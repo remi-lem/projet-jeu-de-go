@@ -6,7 +6,7 @@ import players.*;
 import java.util.Scanner;
 
 public class TUI {
-    public static void main(String[] args) throws RuntimeException {    
+    public static void main(String[] args) throws RuntimeException {
         String[] commands;
         Game game = new Game(new Human("black"), new Human("white")); // TODO : faire une fabrique
         Scanner sc = new Scanner(System.in);

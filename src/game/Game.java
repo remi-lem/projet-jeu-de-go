@@ -18,7 +18,7 @@ public class Game {
     public String commandInterpreter(String[] command) throws RuntimeException {
         String noCommand = "";
         String ret = "";
-        try{
+        try {
             Integer.parseInt(command[0]);
             noCommand = command[0];
             command = Arrays.copyOfRange(command, 1, command.length);
@@ -41,6 +41,9 @@ public class Game {
                 break;
             case "genmove", "g":
                 ret = genMove(command, noCommand);
+                break;
+            case "final_score", "f":
+                ret = scoring();
                 break;
             case "quit", "q":
                 break;
@@ -87,10 +90,9 @@ public class Game {
     public String playMove(String[] command, String noCommand) {
         StringBuilder ret = new StringBuilder();
         try {
-
             if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
-                this.board.makeMove(command[1].toUpperCase(), command[2].toUpperCase(), noCommand);
-                ret.append("=").append(noCommand).append("\n").append(this.board.toString());
+                ret.append(this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase(), noCommand));
+                ret.append("\n").append(this.board.toString());
             }
             else throw new RuntimeException("syntax error");
         }
@@ -104,8 +106,7 @@ public class Game {
         StringBuilder ret = new StringBuilder();
         try {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
-                this.board.makeRndMove(command[1].toLowerCase(), noCommand);
-                ret.append("=").append(noCommand).append("\n");
+                ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand)).append("\n");
                 ret.append(this.board.toString());
             }
             else throw new RuntimeException("syntax error");
@@ -114,5 +115,10 @@ public class Game {
             ret.append("?").append(noCommand).append(" illegal move\n");
         }
         return ret.toString();
+    }
+
+    private String scoring() {
+        return "WHITE : " + playerWhite.getScore() + " points" +
+                "\nBLACK : " + playerBlack.getScore() + " points";
     }
 }

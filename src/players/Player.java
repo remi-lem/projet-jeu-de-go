@@ -3,11 +3,9 @@ package players;
 import game.IPlayer;
 
 public abstract class Player implements IPlayer {
-    private final int score;
-    private final String color;
+    private int score;
     public Player(String color){
         this.score = 0;
-        this.color = color;
     }
 
     @Override
@@ -15,5 +13,8 @@ public abstract class Player implements IPlayer {
         return score;
     }
 
-    public String getColor() {return color;}
+    @Override
+    public void setScore(int score) {
+        this.score += score;
+    }
 }

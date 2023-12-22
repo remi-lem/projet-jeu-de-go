@@ -5,34 +5,39 @@ import java.util.ArrayList;
 
 public class Intersection implements IIntersection {
     public enum Color {
-        white, black
+        white, black, nothing
     }
     private Color color;
 
-    public Intersection(){
-        this.color = null;
+    public Intersection() {
+        this.color = Color.nothing;
     }
 
-    public Intersection(String color){
+    public Intersection(String color) {
         this.color = Color.valueOf(color);
     }
 
     @Override
     public boolean isFree() {
-        return this.color == null;
+        return this.color == Color.nothing;
+    }
+
+    @Override
+    public void remove() {
+        this.color = Color.nothing;
     }
 
     @Override
     public String getColor() {
-        return color.toString();// TODO : À tester
+        return color.toString();
     }
 
     @Override
-    public String toString(){
-        if (isFree())
+    public String toString() {
+        if (this.isFree())
             return ".";
         else {
-            if (getColor().compareToIgnoreCase(Color.black.toString()) == 0) //TODO : À VERIFIER
+            if (this.getColor().compareToIgnoreCase(Color.black.toString()) == 0)
                 return "X";
             return "O";
         }
