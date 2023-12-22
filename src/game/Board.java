@@ -9,10 +9,24 @@ public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
 
     public static final int NB_NEIGHBORS = 4;
-    public static int capturedStonesWhite = 0, capturedStonesBlack = 0;//TODO stocker ca dans Player
+    public static int capturedStonesWhite = 0, capturedStonesBlack = 0; //TODO stocker ca dans Player
 
     public Board(int size) {
         initialize(size);
+    }
+
+    public Board(int size, String move){
+        initialize(size);
+        initializeSGF(move);}
+
+    private void initializeSGF(String move) {
+        String[] listMove = move.split(" ");
+        int i = 0;
+        for (String m : listMove) {
+            if (i%2 == 0) makeMove("black", m,"");
+            else makeMove("white", m,"");
+            i++;
+        }
     }
 
     public void initialize(int size) {
@@ -28,9 +42,24 @@ public class Board {
         initialize(boardMap.size());
     }
 
+    public void play(int i, int j) {
+        makeMove("black",i+""+j, "");
+    }
+
     public String makeMove(String color, String move, String noCommand) {
-        int letter = Character.toUpperCase(move.charAt(0)) - 'A';
-        int number = Integer.parseInt(move.substring(1)) - 1;
+        int letter, number;
+
+        if(Character.isDigit(move.charAt(0))) {
+            letter = Integer.parseInt(move.substring(0,1)) - 1;
+        } else {
+            letter = Character.toUpperCase(move.charAt(0)) - 'A';
+        }
+
+        if(Character.isDigit(move.charAt(1))) {
+            number = Integer.parseInt(move.substring(1)) - 1;
+        } else {
+            number = Character.toUpperCase(move.charAt(1)) - 'A';
+        }
 
         if (isMoveValid(color, letter, number)){
             this.boardMap.get(number).set(letter, new Intersection(color));
