@@ -103,7 +103,7 @@ public class Board {
 
     public ArrayList<IIntersection> getNeighborsIntersections(int x, int y) {
         ArrayList<IIntersection> neighborsIntersections = new ArrayList<>();
-
+        System.out.println(x + ' ' + y);
         if (x - 1 >= 0)
             neighborsIntersections.add(this.boardMap.get(x - 1).get(y)); // Left
         if (x + 1 < boardMap.size())
@@ -128,9 +128,10 @@ public class Board {
 
     public int getNbLiberties(int x, int y) {
         int nbLiberties = 0;
-        for(IIntersection i : getNeighborsIntersections(x, y))
-            if(i.getColor().equals("nothing"))
+        for(IIntersection i : getNeighborsIntersections(x, y)) {
+            if (i.getColor().equals("nothing"))
                 nbLiberties++;
+        }
         return nbLiberties;
     }
 
