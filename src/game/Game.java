@@ -1,8 +1,6 @@
 package game;
 
 import app.Factory;
-import players.Human;
-import players.Robot;
 
 import java.util.Arrays;
 
@@ -38,7 +36,7 @@ public class Game {
             Integer.parseInt(command[0]);
             noCommand = command[0];
             command = Arrays.copyOfRange(command, 1, command.length);
-        } catch(NumberFormatException e) {
+        } catch(NumberFormatException ignored) {
 
         }
 
@@ -100,17 +98,17 @@ public class Game {
         board = new Board(sizeBoard);
     }
 
-    public String showBoard(String noCommand) {
+    private String showBoard(String noCommand) {
         return commandGTP(noCommand) + this.board.toString();
     }
 
-    public String clearBoard(String noCommand) {
+    private String clearBoard(String noCommand) {
         this.board.clear();
         return commandGTP(noCommand);
     }
 
 
-    public String playMove(String[] command, String noCommand) {
+    private String playMove(String[] command, String noCommand) {
         StringBuilder ret = new StringBuilder();
         String passStr = "=" + noCommand + " pass\n";
         if (command[2].equals("pass")) {
@@ -183,5 +181,9 @@ public class Game {
             } else return "?" + noCommand + " illegal handicaps number\n";
         }
         else return "?" + noCommand + " illegal size of board\n";
+    }
+
+    public void playDirect() {
+        // TODO : à développer
     }
 }

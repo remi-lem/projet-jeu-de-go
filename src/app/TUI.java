@@ -20,6 +20,7 @@ public class TUI {
                 case "direct":
                     game.setPlayerBlack(Factory.createPlayer(args[1]));
                     game.setPlayerWhite(Factory.createPlayer(args[2]));
+                    game.playDirect();
                     break;
                 default:
                     System.err.println("Mauvais arguments");
