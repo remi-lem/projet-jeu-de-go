@@ -92,7 +92,7 @@ public class Board {
 
     private boolean isMoveValid(int x, int y) {
         if(x < 0 || x >= this.boardMap.size() || y < 0 || y >= this.boardMap.size()) return false;
-        if(getNbLiberties(x,y) < 1) return false;
+        if(getNbLiberties(x, y) < 1) return false;
         return this.boardMap.get(y).get(x).isFree();
     }
 
@@ -103,15 +103,14 @@ public class Board {
 
     public ArrayList<IIntersection> getNeighborsIntersections(int x, int y) {
         ArrayList<IIntersection> neighborsIntersections = new ArrayList<>();
-        System.out.println(x + ' ' + y);
-        if (x - 1 >= 0)
-            neighborsIntersections.add(this.boardMap.get(x - 1).get(y)); // Left
-        if (x + 1 < boardMap.size())
-            neighborsIntersections.add(this.boardMap.get(x + 1).get(y)); // Right
         if (y - 1 >= 0)
-            neighborsIntersections.add(this.boardMap.get(x).get(y - 1)); // Down
+            neighborsIntersections.add(this.boardMap.get(y - 1).get(x)); // Left
         if (y + 1 < boardMap.size())
-            neighborsIntersections.add(this.boardMap.get(x).get(y + 1)); // Up
+            neighborsIntersections.add(this.boardMap.get(y + 1).get(x)); // Right
+        if (x - 1 >= 0)
+            neighborsIntersections.add(this.boardMap.get(y).get(x - 1)); // Down
+        if (x + 1 < boardMap.size())
+            neighborsIntersections.add(this.boardMap.get(y).get(x + 1)); // Up
         return neighborsIntersections;
     }
 
@@ -128,6 +127,7 @@ public class Board {
 
     public int getNbLiberties(int x, int y) {
         int nbLiberties = 0;
+
         for(IIntersection i : getNeighborsIntersections(x, y)) {
             if (i.getColor().equals("nothing"))
                 nbLiberties++;
