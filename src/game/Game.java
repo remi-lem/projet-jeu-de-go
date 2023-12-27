@@ -3,6 +3,7 @@ package game;
 import app.Factory;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 public class Game {
     private Board board;
@@ -12,21 +13,28 @@ public class Game {
     private final int BOARD_SIZE_MIN = 1;
     private int cptSkip = 0;
     private boolean isFinished = false;
+    private String mode = "gtp";
 
     public Game(IPlayer playerBlack, IPlayer playerWhite) {
         this.playerBlack = playerBlack;
         this.playerWhite = playerWhite;
         this.board = new Board(BOARD_SIZE_MAX);
     }
+
     public void setPlayerBlack(IPlayer player) {
         this.playerBlack = player;
     }
+
     public void setPlayerWhite(IPlayer player) {
         this.playerWhite = player;
     }
 
     public boolean isFinished() {
         return isFinished;
+    }
+
+    public void setMode(String mode) {
+        this.mode = mode.equals("direct") ? "direct" : "gtp";
     }
 
     public String commandInterpreter(String[] command) throws RuntimeException {
@@ -60,7 +68,7 @@ public class Game {
                 ret = scoring();
                 break;
             case "player", "pr":
-                ret = changePlayers(command, noCommand);
+                ret = changeTypePlayers(command, noCommand);
                 break;
             case "set_handicaps", "sh":
                 ret = setHandicaps(command, noCommand);
@@ -107,52 +115,56 @@ public class Game {
         return commandGTP(noCommand);
     }
 
-
     private String playMove(String[] command, String noCommand) {
         StringBuilder ret = new StringBuilder();
-        String passStr = "=" + noCommand + " pass\n";
-        if (command[2].equals("pass")) {
-            ++cptSkip;
-            if (cptSkip == 2) {
-                isFinished = true;
-                return ret.append(passStr).append("Game finished!").toString();
+        IPlayer currentPlayer = command[1].equalsIgnoreCase("black") ? playerBlack : playerWhite;
+        if (mode.equals("direct") && currentPlayer.playConsole()) {
+            String passStr = "=" + noCommand + " pass\n";
+            if (command[2].equals("pass")) {
+                ++cptSkip;
+                if (cptSkip == 2) {
+                    isFinished = true;
+                    return ret.append(passStr).append("Game finished!").toString();
+                }
+            } else {
+                cptSkip = 0;
+                try {
+                    if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
+                        ret.append(this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase(), noCommand));
+                        ret.append("\n").append(this.board.toString());
+                    } else throw new RuntimeException("syntax error");
+                } catch (RuntimeException e) {
+                    ret.append("?").append(noCommand).append(" illegal move\n");
+                }
+                return ret.toString();
             }
+            return passStr;
         }
-        else {
-            cptSkip = 0;
+        return ret.append("A robot can't play in the console\n").toString();
+    }
+
+    private String genMove(String[] command, String noCommand) {
+        StringBuilder ret = new StringBuilder();
+        IPlayer currentPlayer = command[1].equalsIgnoreCase("black") ? playerBlack : playerWhite;
+        if (mode.equals("direct") && !currentPlayer.playConsole()) {
             try {
-                if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
-                    ret.append(this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase(), noCommand));
-                    ret.append("\n").append(this.board.toString());
+                if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
+                    ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand)).append("\n");
+                    ret.append(this.board.toString());
                 } else throw new RuntimeException("syntax error");
             } catch (RuntimeException e) {
                 ret.append("?").append(noCommand).append(" illegal move\n");
             }
             return ret.toString();
         }
-        return passStr;
-    }
-
-    private String genMove(String[] command, String noCommand) {
-        StringBuilder ret = new StringBuilder();
-        try {
-            if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
-                ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand)).append("\n");
-                ret.append(this.board.toString());
-            }
-            else throw new RuntimeException("syntax error");
-        }
-        catch (RuntimeException e){
-            ret.append("?").append(noCommand).append(" illegal move\n");
-        }
-        return ret.toString();
-    }
+        return ret.append("A human can't play randomly\n").toString();
+    } //TODO: a robot play automatically
 
     private String scoring() {
         return this.board.finalScore(playerBlack, playerWhite);
     }
 
-    private String changePlayers(String[] command, String noCommand) {
+    private String changeTypePlayers(String[] command, String noCommand) {
         String color = command[1];
         String type = command[2];
         IPlayer tmpPlayer;
@@ -181,9 +193,5 @@ public class Game {
             } else return "?" + noCommand + " illegal handicaps number\n";
         }
         else return "?" + noCommand + " illegal size of board\n";
-    }
-
-    public void playDirect() {
-        // TODO : à développer
     }
 }
