@@ -3,7 +3,6 @@ package game;
 import app.Factory;
 
 import java.util.Arrays;
-import java.util.Scanner;
 
 public class Game {
     private Board board;
@@ -29,8 +28,8 @@ public class Game {
         this.playerWhite = player;
     }
 
-    public boolean isFinished() {
-        return isFinished;
+    public boolean isNotFinished() {
+        return !isFinished;
     }
 
     public void setMode(String mode) {
@@ -118,7 +117,7 @@ public class Game {
     private String playMove(String[] command, String noCommand) {
         StringBuilder ret = new StringBuilder();
         IPlayer currentPlayer = command[1].equalsIgnoreCase("black") ? playerBlack : playerWhite;
-        if (mode.equals("direct") && currentPlayer.playConsole()) {
+        if (mode.equals("direct") && currentPlayer.canPlayConsole()) {
             String passStr = "=" + noCommand + " pass\n";
             if (command[2].equals("pass")) {
                 ++cptSkip;
@@ -129,9 +128,13 @@ public class Game {
             } else {
                 cptSkip = 0;
                 try {
-                    if (command[1].equalsIgnoreCase("black") || command[1].equalsIgnoreCase("white")) {
+                    if (command[1].equalsIgnoreCase("black")
+                            || command[1].equalsIgnoreCase("white")) {
                         ret.append(this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase(), noCommand));
                         ret.append("\n").append(this.board.toString());
+
+                        IPlayer nextPlayer = currentPlayer.equals(playerBlack) ? playerWhite : playerBlack;
+                        if (!nextPlayer.canPlayConsole()) robotPlay(nextPlayer.equals(playerBlack) ? "black" : "white");
                     } else throw new RuntimeException("syntax error");
                 } catch (RuntimeException e) {
                     ret.append("?").append(noCommand).append(" illegal move\n");
@@ -146,7 +149,7 @@ public class Game {
     private String genMove(String[] command, String noCommand) {
         StringBuilder ret = new StringBuilder();
         IPlayer currentPlayer = command[1].equalsIgnoreCase("black") ? playerBlack : playerWhite;
-        if (mode.equals("direct") && !currentPlayer.playConsole()) {
+        if (mode.equals("direct") && !currentPlayer.canPlayConsole()) {
             try {
                 if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
                     ret.append(this.board.makeRndMove(command[1].toLowerCase(), noCommand)).append("\n");
@@ -158,7 +161,7 @@ public class Game {
             return ret.toString();
         }
         return ret.append("A human can't play randomly\n").toString();
-    } //TODO: a robot play automatically
+    }
 
     private String scoring() {
         return this.board.finalScore(playerBlack, playerWhite);
@@ -193,5 +196,19 @@ public class Game {
             } else return "?" + noCommand + " illegal handicaps number\n";
         }
         else return "?" + noCommand + " illegal size of board\n";
+    }
+
+    public boolean isOnlyRobotPlay() {
+        return !playerBlack.canPlayConsole() && !playerWhite.canPlayConsole();
+    }
+
+    public void robotPlay(String color) {
+        genMove(new String[]{"", color}, "");
+        //TODO : Return the IA move
+    }
+
+    public void onlyRobotPlay() {
+        robotPlay("black");
+        robotPlay("white");
     }
 }

@@ -19,7 +19,7 @@ public abstract class Player implements IPlayer {
     }
 
     @Override
-    public boolean playConsole() {
+    public boolean canPlayConsole() {
         return false;
     }
 }

@@ -25,13 +25,20 @@ public class TUI {
                     System.err.println("Mauvais arguments");
                     errorArgs = true;
             }
-            if(!errorArgs){
-                String[] commands;
-                Scanner sc = new Scanner(System.in);
-                do {
-                    commands = sc.nextLine().split(" ");
-                    System.out.println(game.commandInterpreter(commands));
-                } while (!game.isFinished());
+            if(!errorArgs) {
+                if (!game.isOnlyRobotPlay()) {
+                    String[] commands;
+                    Scanner sc = new Scanner(System.in);
+                    do {
+                        commands = sc.nextLine().split(" ");
+                        System.out.println(game.commandInterpreter(commands));
+                    } while (game.isNotFinished());
+                }
+                else {
+                    do {
+                        game.onlyRobotPlay();
+                    } while (game.isNotFinished());
+                }
             }
         }
 

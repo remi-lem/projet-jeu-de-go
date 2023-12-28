@@ -6,7 +6,7 @@ public class Human extends Player {
     }
 
     @Override
-    public boolean playConsole() {
+    public boolean canPlayConsole() {
         return true;
     }
 }
