@@ -7,7 +7,6 @@ import intersection.Intersection.Color;
 
 public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
-
     public static int capturedStonesWhite = 0, capturedStonesBlack = 0;
 
     public Board(int size) {
@@ -53,17 +52,11 @@ public class Board {
     public String makeMove(String color, String move, String noCommand) {
         int letter, number;
 
-        if(Character.isDigit(move.charAt(0))) {
-            letter = Integer.parseInt(move.substring(0,1)) - 1;
-        } else {
-            letter = Character.toUpperCase(move.charAt(0)) - 'A';
-        }
+        if(Character.isDigit(move.charAt(0))) letter = Integer.parseInt(move.substring(0,1)) - 1;
+        else letter = Character.toUpperCase(move.charAt(0)) - 'A';
 
-        if(Character.isDigit(move.charAt(1))) {
-            number = Integer.parseInt(move.substring(1)) - 1;
-        } else {
-            number = Character.toUpperCase(move.charAt(1)) - 'A';
-        }
+        if(Character.isDigit(move.charAt(1))) number = Integer.parseInt(move.substring(1)) - 1;
+        else number = Character.toUpperCase(move.charAt(1)) - 'A';
 
         if (isMoveValid(letter, number)){
             this.boardMap.get(number).set(letter, new Intersection(color));
@@ -87,12 +80,12 @@ public class Board {
             this.boardMap.get(number).set(letter, new Intersection(color));
             updateCaptures(color, letter, number);
         }
-        return ("=" + noCommand + " ");
+        return ("=" + noCommand + " "); //TODO: Return the move for printing
     }
 
     private boolean isMoveValid(int x, int y) {
         if(x < 0 || x >= this.boardMap.size() || y < 0 || y >= this.boardMap.size()) return false;
-        if(getNbLiberties(x, y) < 1) return false;
+        if(getNbLiberties(x, y) < 1) return false; //TODO: Check if the stone capture
         return this.boardMap.get(y).get(x).isFree();
     }
 
@@ -128,10 +121,9 @@ public class Board {
     public int getNbLiberties(int x, int y) {
         int nbLiberties = 0;
 
-        for(IIntersection i : getNeighborsIntersections(x, y)) {
+        for(IIntersection i : getNeighborsIntersections(x, y))
             if (i.getColor().equals("nothing"))
                 nbLiberties++;
-        }
         return nbLiberties;
     }
 
@@ -147,13 +139,16 @@ public class Board {
         int size = boardMap.size();
         boolean[][] visited = new boolean[size][size];
         int[][] neighbors = {{-1,0}, {0,1}, {1,0}, {0,-1}}; // Up, Right, Down, Left
+
         for (int[] neighbor : neighbors) {
             int coordLetNeighbor = coordLetter + neighbor[0];
             int coordNumNeighbor = coordNumber + neighbor[1];
+
             if(coordNumNeighbor >= size
                     || coordNumNeighbor < 0
                     || coordLetNeighbor >= size
                     || coordLetNeighbor < 0) continue; // Hors limites
+
             if(this.boardMap.get(coordNumNeighbor).get(coordLetNeighbor).getColor().equals(getOppositeColor(color)))
                 // Verify if this neighbor was captured
                 verifyMyLiberties(coordNumNeighbor, coordLetNeighbor, getOppositeColor(color), visited, true);
@@ -165,6 +160,7 @@ public class Board {
                                       String color, boolean[][] visitedMap, boolean isFirstCalled) {
         if (visitedMap[coordLetter][coordNumber]) return false; // I'm surrounded, but I have at least a friend near me
         else visitedMap[coordLetter][coordNumber] = true; // We will find if I'm still fine
+
         int liberties = 4;
         int size = boardMap.size();
         int[][] neighbors = {{-1,0}, {0,1}, {1,0}, {0,-1}}; // Up, Right, Down, Left
@@ -178,9 +174,9 @@ public class Board {
                 liberties--;
                 continue;
             }
-            if (this.boardMap.get(coordNumNeighbor).get(coordLetNeighbor).getColor().equals(getOppositeColor(color))) {
+            if (this.boardMap.get(coordNumNeighbor).get(coordLetNeighbor).getColor().equals(getOppositeColor(color)))
                 liberties--;
-            } else if (this.boardMap.get(coordNumNeighbor).get(coordLetNeighbor).getColor().equals(color)) {
+            else if (this.boardMap.get(coordNumNeighbor).get(coordLetNeighbor).getColor().equals(color)) {
                 liberties--;
                 sameColNeighbors.add(new int[] {coordNumNeighbor, coordLetNeighbor});
             }

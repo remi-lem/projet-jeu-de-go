@@ -117,6 +117,7 @@ public class Game {
     private String playMove(String[] command, String noCommand) {
         StringBuilder ret = new StringBuilder();
         IPlayer currentPlayer = command[1].equalsIgnoreCase("black") ? playerBlack : playerWhite;
+
         if (mode.equals("direct") && currentPlayer.canPlayConsole()) {
             String passStr = "=" + noCommand + " pass\n";
             if (command[2].equals("pass")) {
@@ -149,6 +150,7 @@ public class Game {
     private String genMove(String[] command, String noCommand) {
         StringBuilder ret = new StringBuilder();
         IPlayer currentPlayer = command[1].equalsIgnoreCase("black") ? playerBlack : playerWhite;
+
         if (mode.equals("direct") && !currentPlayer.canPlayConsole()) {
             try {
                 if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
