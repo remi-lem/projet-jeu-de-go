@@ -34,8 +34,11 @@ public class TUI {
                     } while (game.isNotFinished());
                 }
                 else {
+                    if (game.isRobotFirstPlayer()) System.out.println(game.robotPlay("black"));
+
                     String[] commands;
                     Scanner sc = new Scanner(System.in);
+
                     do {
                         commands = sc.nextLine().split(" ");
                         System.out.println(game.commandInterpreter(commands));

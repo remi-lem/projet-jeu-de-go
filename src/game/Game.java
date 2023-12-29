@@ -12,7 +12,6 @@ public class Game {
     private final int BOARD_SIZE_MIN = 1;
     private int cptSkip = 0;
     private boolean isFinished = false;
-    private boolean isRobotFirstPlayer = true;
     private String mode = "gtp";
 
     public Game(IPlayer playerBlack, IPlayer playerWhite) {
@@ -119,12 +118,6 @@ public class Game {
         StringBuilder ret = new StringBuilder();
         IPlayer currentPlayer = command[1].equalsIgnoreCase("black") ? playerBlack : playerWhite;
 
-        if (playerBlack.canPlayConsole()) isRobotFirstPlayer = false; //TODO: make it automatically
-        else if (isRobotFirstPlayer) {
-            ret.append("\n").append(robotPlay("black"));
-            isRobotFirstPlayer = false;
-        }
-
         if (mode.equals("direct") && !currentPlayer.canPlayConsole())
             return ret.append("A robot can't play in the console\n").toString();
 
@@ -216,6 +209,10 @@ public class Game {
 
     public boolean isOnlyRobotPlay() {
         return !playerBlack.canPlayConsole() && !playerWhite.canPlayConsole();
+    }
+
+    public boolean isRobotFirstPlayer() {
+        return !playerBlack.canPlayConsole();
     }
 
     public String robotPlay(String color) {
