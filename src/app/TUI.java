@@ -4,11 +4,12 @@ import game.Game;
 import players.*;
 
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class TUI {
     public static final int MIN_LENGHT_ARGS = 1;
     public static final int MAX_LENGHT_ARGS = 3;
-    public static void main(String[] args) throws RuntimeException {
+    public static void main(String[] args) throws RuntimeException, InterruptedException {
         if (args.length < MIN_LENGHT_ARGS || args.length > MAX_LENGHT_ARGS)
             System.err.println("Error: please run with good arguments");
         else {
@@ -26,17 +27,18 @@ public class TUI {
                     errorArgs = true;
             }
             if(!errorArgs) {
-                if (!game.isOnlyRobotPlay()) {
+                if (game.isOnlyRobotPlay()) {
+                    do {
+                        System.out.println(game.onlyRobotPlay());
+                        TimeUnit.SECONDS.sleep(3);
+                    } while (game.isNotFinished());
+                }
+                else {
                     String[] commands;
                     Scanner sc = new Scanner(System.in);
                     do {
                         commands = sc.nextLine().split(" ");
                         System.out.println(game.commandInterpreter(commands));
-                    } while (game.isNotFinished());
-                }
-                else {
-                    do {
-                        game.onlyRobotPlay();
                     } while (game.isNotFinished());
                 }
             }

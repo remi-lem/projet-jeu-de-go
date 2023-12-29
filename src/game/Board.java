@@ -26,8 +26,8 @@ public class Board {
         String[] listMove = move.split(" ");
         int i = 0;
         for (String m : listMove) {
-            if (i%2 == 0) makeMove("black", m,"");
-            else makeMove("white", m,"");
+            if (i%2 == 0) makeMove("black", m);
+            else makeMove("white", m);
             i++;
         }
     }
@@ -46,10 +46,10 @@ public class Board {
     }
 
     public void play(int i, int j) {
-        makeMove("black",(i+1)+""+(j+1), ""); //TODO: change the color
+        makeMove("black",(i+1)+""+(j+1)); //TODO: change the color
 }
 
-    public String makeMove(String color, String move, String noCommand) {
+    public void makeMove(String color, String move) {
         int letter, number;
 
         if(Character.isDigit(move.charAt(0))) letter = Integer.parseInt(move.substring(0,1)) - 1;
@@ -61,26 +61,26 @@ public class Board {
         if (isMoveValid(letter, number)){
             this.boardMap.get(number).set(letter, new Intersection(color));
             updateCaptures(color, letter, number);
-            return ("=" + noCommand + " ");
         }
-        return ("?" + noCommand + " illegal move\n\n");
+        else throw new IllegalArgumentException("illegal move");
     }
 
-    public String makeRndMove(String color, String noCommand) {
+    public String makeRndMove(String color) throws RuntimeException {
         int letter, number, numTest = 0;
 
         do {
             letter = (int) (Math.random() * boardMap.size());
             number = (int) (Math.random() * boardMap.size());
             numTest++;
-            if(numTest > Math.pow(boardMap.size(), 2)) return ("?" + noCommand + " illegal move");
+            //TODO: Find a best way to stop
+            //if(numTest > Math.pow(boardMap.size(), 2)) throw new RuntimeException("not enough place");
         } while (!isMoveValid(letter, number));
 
         if (isMoveValid(letter, number)){
             this.boardMap.get(number).set(letter, new Intersection(color));
             updateCaptures(color, letter, number);
         }
-        return ("=" + noCommand + " "); //TODO: Return the move for printing
+        return ((char)(letter+65) + "" + (number+1));
     }
 
     private boolean isMoveValid(int x, int y) {
