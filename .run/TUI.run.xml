@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="TUI" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="app.TUI" />
-    <module name="projet-jeu-de-go" />
-    <option name="PROGRAM_PARAMETERS" value="direct console random" />
+    <module name="Jeu de Go" />
+    <option name="PROGRAM_PARAMETERS" value="gtp" />
     <extension name="coverage">
       <pattern>
-        <option name="PATTERN" value="app.*" />
+        <option name="PATTERN" value="game.*" />
         <option name="ENABLED" value="true" />
       </pattern>
     </extension>

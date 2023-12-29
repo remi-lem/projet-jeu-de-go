@@ -1,17 +1,12 @@
 package players;
 
 public class Human extends Player {
-    public Human(String name) {
-        super(name);
+    public Human() {
+        super();
     }
 
     @Override
-    public int getScore() {
-        return super.getScore();
-    }
-
-    @Override
-    public void setScore(int score) {
-        super.setScore(score);
+    public boolean canPlayConsole() {
+        return true;
     }
 }
