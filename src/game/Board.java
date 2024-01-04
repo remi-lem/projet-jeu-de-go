@@ -45,8 +45,8 @@ public class Board {
         initialize(boardMap.size());
     }
 
-    public void play(int i, int j) {
-        makeMove("black",(i+1)+""+(j+1)); //TODO: change the color
+    public void play(char color, int i, int j) {
+        makeMove(color == 'b' ? "black" : "white",(i+1)+""+(j+1));
 }
 
     public void makeMove(String color, String move) {

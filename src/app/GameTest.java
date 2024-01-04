@@ -15,7 +15,7 @@ public class GameTest {
         assertEquals(0, b.getNbLiberties(0, 1));
         assertEquals(1, b.getNbLiberties(0, 0));
         assertEquals(3, b.getNbLiberties(1, 1));
-        b.play(1,0);
+        b.play('b',1,0);
         System.out.println(b);
     }
 }
