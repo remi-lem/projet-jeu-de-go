@@ -1,20 +1,19 @@
 package app;
 
 import game.Game;
-import players.*;
 
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class TUI {
-    public static final int MIN_LENGHT_ARGS = 1;
-    public static final int MAX_LENGHT_ARGS = 3;
+    public static final int MIN_LENGTH_ARGS = 1;
+    public static final int MAX_LENGTH_ARGS = 3;
     public static void main(String[] args) throws RuntimeException, InterruptedException {
-        if (args.length < MIN_LENGHT_ARGS || args.length > MAX_LENGHT_ARGS)
+        if (args.length < MIN_LENGTH_ARGS || args.length > MAX_LENGTH_ARGS)
             System.err.println("Error: please run with good arguments");
         else {
             boolean errorArgs = false;
-            Game game = new Game(new Human(), new Human());
+            Game game = new Game(Factory.createPlayer("human"), Factory.createPlayer("human"));
             game.setMode(args[0]);
             switch(args[0]) {
                 case "gtp": break;

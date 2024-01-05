@@ -1,0 +1,48 @@
+@startuml
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+package "app" #FFC43D {
+class TUI
+class Factory
+class GameTest
+}
+package "game" #C75146 {
+class Board
+class Game
+interface IIntersection << interface >>
+interface IPlayer << interface >>
+}
+package "intersection" #8B8BAE {
+enum Color << enumeration >>
+class Intersection
+}
+package "player" #88D9E6 {
+class Human
+class Player
+class Robot
+}
+
+
+Board          -[#000000,dashed]->  Color
+Board          -[#000000,dashed]->  IIntersection
+Board          -[#000000,dashed]->  IPlayer
+Board          -[#000000,dashed]->  Intersection  : "«create»"
+Color          +-[#820000,plain]-  Intersection
+Factory        -[#000000,dashed]->  Human         : "«create»"
+Factory        -[#000000,dashed]->  IPlayer
+Factory        -[#000000,dashed]->  Robot         : "«create»"
+Game          "1" *-[#000000,plain]-> "board\n1" Board
+Game           -[#000000,dashed]->  Board         : "«create»"
+Game           -[#000000,dashed]->  Factory
+Game          "1" *-[#000000,plain]-> "playerBlack\n1" IPlayer
+GameTest       -[#000000,dashed]->  Board         : "«create»"
+Human          -[#000082,plain]-^  Player
+Intersection  "1" *-[#000000,plain]-> "color\n1" Color
+Intersection   -[#008200,dashed]-^  IIntersection
+Player         -[#008200,dashed]-^  IPlayer
+Robot          -[#000082,plain]-^  Player
+TUI            -[#000000,dashed]->  Factory
+TUI            -[#000000,dashed]->  Game          : "«create»"
+@enduml
