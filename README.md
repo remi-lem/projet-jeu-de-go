@@ -39,7 +39,7 @@ Ce projet a pour objectif de nous apprendre les principes SOLID et à les respec
 - Coder un bot qui joue selon les règles du jeu de Go
 
 ## Principes SOLID et Design Pattern
-Nous respectons ces principes SOLID : 
+Nous respectons les principes SOLID suivants : 
 - DIP : Pour chaque paquetage qui pourrait varier, nous "cachons" les classes concrètes derrière une interface.
 - SRP : Chaque paquetage a un et un seul axe de changement.
 - OCP : La classe Player, par exemple, est fermée à la modification directe, mais ouverte à l'extension
