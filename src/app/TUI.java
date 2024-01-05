@@ -1,7 +1,6 @@
 package app;
 
 import game.Game;
-import players.*;
 
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -14,7 +13,7 @@ public class TUI {
             System.err.println("Error: please run with good arguments");
         else {
             boolean errorArgs = false;
-            Game game = new Game(new Human(), new Human());
+            Game game = new Game(Factory.createPlayer("human"), Factory.createPlayer("human"));
             game.setMode(args[0]);
             switch(args[0]) {
                 case "gtp": break;

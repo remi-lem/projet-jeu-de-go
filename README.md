@@ -46,6 +46,9 @@ Nous respectons ces principes SOLID :
 (avec Human et Robot).
 - Patron de création Factory : pour éviter la dépendance d'un paquet stable a un instable.
 - DRY (Don't Repeat Yourself) : Pas de redondance dans le code.
+
+## Diagramme d'Architecture / de Paquetage
+![DiagrammeArchi.png](DiagrammeArchi.png)
 ---
 
 ## Languages utilisés
