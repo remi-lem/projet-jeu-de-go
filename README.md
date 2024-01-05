@@ -48,7 +48,7 @@ Nous respectons ces principes SOLID :
 - DRY (Don't Repeat Yourself) : Pas de redondance dans le code.
 
 ## Diagramme d'Architecture / de Paquetage
-![DiagrammeArchi.png](DiagrammeArchi.png)
+![DiagrammeArchi.png](diagrammeArchi/DiagrammeArchi.png)
 ---
 
 ## Languages utilisés
