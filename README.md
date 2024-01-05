@@ -38,13 +38,15 @@ Ce projet a pour objectif de nous apprendre les principes SOLID et à les respec
 - Gérer la règle du KO
 - Coder un bot qui joue selon les règles du jeu de Go
 
-## Principes SOLID
+## Principes SOLID et Design Pattern
 Nous respectons ces principes SOLID : 
 - DIP : Pour chaque paquetage qui pourrait varier, nous "cachons" les classes concrètes derrière une interface.
 - SRP : Chaque paquetage a un et un seul axe de changement.
 - OCP : La classe Player, par exemple, est fermée à la modification directe, mais ouverte à l'extension
 (avec Human et Robot).
-
+- Patron de création Factory : pour éviter la dépendance d'un paquet stable a un instable.
+- DRY (Don't Repeat Yourself) : Pas de redondance dans le code.
+---
 
 ## Languages utilisés
 ![Java](https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white)
