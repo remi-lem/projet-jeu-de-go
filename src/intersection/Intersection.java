@@ -1,7 +1,6 @@
 package intersection;
 
 import game.IIntersection;
-import java.util.ArrayList;
 
 public class Intersection implements IIntersection {
     public enum Color {

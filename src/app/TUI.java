@@ -7,10 +7,10 @@ import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
 public class TUI {
-    public static final int MIN_LENGHT_ARGS = 1;
-    public static final int MAX_LENGHT_ARGS = 3;
+    public static final int MIN_LENGTH_ARGS = 1;
+    public static final int MAX_LENGTH_ARGS = 3;
     public static void main(String[] args) throws RuntimeException, InterruptedException {
-        if (args.length < MIN_LENGHT_ARGS || args.length > MAX_LENGHT_ARGS)
+        if (args.length < MIN_LENGTH_ARGS || args.length > MAX_LENGTH_ARGS)
             System.err.println("Error: please run with good arguments");
         else {
             boolean errorArgs = false;
@@ -30,7 +30,7 @@ public class TUI {
                 if (game.isOnlyRobotPlay()) {
                     do {
                         System.out.println(game.onlyRobotPlay());
-                        //TimeUnit.SECONDS.sleep(3);
+                        TimeUnit.SECONDS.sleep(2);
                     } while (game.isNotFinished());
                 }
                 else {
