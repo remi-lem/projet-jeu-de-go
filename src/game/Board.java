@@ -251,6 +251,15 @@ public class Board {
                 "\nBLACK : " + pBlack.getScore() + " points";
     }
 
+    public Board copy() {
+        Board copy = new Board(this.boardMap.size());
+
+        for (int i = 0; i < this.boardMap.size(); i++)
+            for (int j = 0; j < this.boardMap.size(); j++)
+                copy.boardMap.get(i).set(j, new Intersection(this.boardMap.get(i).get(j).getColor()));
+        return copy;
+    }
+
     public String toString() {
         StringBuilder sb = new StringBuilder();
         int size = boardMap.size();
