@@ -7,8 +7,9 @@ import intersection.Intersection.Color;
 
 public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
-    public static int capturedStonesWhite = 0, capturedStonesBlack = 0;
-    public static int numStonesWhite, numStonesBlack;
+    private static int capturedStonesWhite = 0, capturedStonesBlack = 0;
+    private static int numStonesWhite, numStonesBlack;
+    private String colorToPlaySGF = "white";
 
     public Board(int size) {
         initialize(size);
@@ -17,8 +18,8 @@ public class Board {
 
     public Board(int size, String move){
         initialize(size);
-        initializeSGF(move);
         setNumStones();
+        initializeSGF(move);
     }
 
     public int getSize(){
@@ -36,12 +37,8 @@ public class Board {
 
     private void initializeSGF(String move) {
         String[] listMove = move.split(" ");
-        int i = 0;
-        for (String m : listMove) {
-            if (i%2 == 0) makeMove("black", m);
-            else makeMove("white", m);
-            i++;
-        }
+
+        for (String m : listMove) makeMove(colorToPlaySGF = getOppositeColor(colorToPlaySGF), m);
     }
 
     public void initialize(int size) {
@@ -57,8 +54,8 @@ public class Board {
         initialize(boardMap.size());
     }
 
-    public void play(char color, int i, int j) {
-        makeMove(color == 'b' ? "black" : "white",(i+1)+""+(j+1));
+    public void play(int i, int j) {
+        makeMove(colorToPlaySGF = getOppositeColor(colorToPlaySGF),(i+1)+""+(j+1));
 }
 
     public void makeMove(String color, String move) throws RuntimeException {
@@ -72,7 +69,7 @@ public class Board {
         if(Character.isDigit(move.charAt(1))) number = Integer.parseInt(move.substring(1)) - 1;
         else number = Character.toUpperCase(move.charAt(1)) - 'A';
 
-        if (isMoveValid(letter, number)){
+        if (isMoveValid(color, letter, number)){
             this.boardMap.get(number).set(letter, new Intersection(color));
             updateCaptures(color, letter, number);
             playStone(color);
@@ -90,9 +87,9 @@ public class Board {
             number = (int) (Math.random() * this.boardMap.size());
 
             if (maxNum-- == 0) throw new RuntimeException("pass");
-        } while (!isMoveValid(letter, number));
+        } while (!isMoveValid(color, letter, number));
 
-        if (isMoveValid(letter, number)) {
+        if (isMoveValid(color, letter, number)) {
             this.boardMap.get(number).set(letter, new Intersection(color));
             updateCaptures(color, letter, number);
             playStone(color);
@@ -100,9 +97,9 @@ public class Board {
         return ((char)(letter+65) + "" + (number+1));
     }
 
-    private boolean isMoveValid(int x, int y) {
+    private boolean isMoveValid(String color, int x, int y) {
         if(x < 0 || x >= this.boardMap.size() || y < 0 || y >= this.boardMap.size()) return false;
-        if(getNbLiberties(x, y) < 1) return false; //TODO: Check if the stone capture
+        if(getNbLiberties(color, x, y) < 1) return false; //TODO: Check if the stone capture (suicide rule)
         return this.boardMap.get(y).get(x).isFree();
     }
     private boolean isStonesEmpty(String color) {
@@ -129,13 +126,12 @@ public class Board {
 
     public void updateCaptures(String color, int letter, int number) {
         int nbLiberties = getNbLibertiesGroup(letter, number);
-        if (nbLiberties < 1)
-            if (nbLiberties != -1) {
-                boardMap.get(number).get(letter).remove();
-                if (color.equalsIgnoreCase("white"))
-                    capturedStonesWhite++;
-                else capturedStonesBlack++;
-            }
+        if (nbLiberties == 0) {
+            boardMap.get(number).get(letter).remove();
+            if (color.equalsIgnoreCase("white"))
+                capturedStonesWhite++;
+            else capturedStonesBlack++;
+        }
     }
 
     public int getNbLiberties(int x, int y) {
@@ -147,18 +143,27 @@ public class Board {
         return nbLiberties;
     }
 
+    public int getNbLiberties(String color, int x, int y) {
+        int nbLiberties = 0;
+
+        for(IIntersection i : getNeighborsIntersections(x, y))
+            if (i.getColor().equals("nothing"))
+                nbLiberties++;
+        return nbLiberties + verifyNeighborsLiberties(color, x, y);
+    }
+
     public int getNbLibertiesGroup(int x, int y) {
         IIntersection currentIntersection = this.boardMap.get(y).get(x);
         String color = currentIntersection.getColor();
 
         if (currentIntersection.isFree()) return -1;
-        return verifyNeighborsLiberties(x, y, color);
+        return verifyNeighborsLiberties(color, x, y);
     }
 
-    private int verifyNeighborsLiberties(int coordLetter, int coordNumber, String color) {
+    private int verifyNeighborsLiberties(String color, int coordLetter, int coordNumber) {
         int size = boardMap.size();
         boolean[][] visited = new boolean[size][size];
-        int[][] neighbors = {{-1,0}, {0,1}, {1,0}, {0,-1}}; // Up, Right, Down, Left
+        int[][] neighbors = {{-1,0}, {0,1}, {1,0}, {0,-1}}; // Left, Up, Right, Down
 
         for (int[] neighbor : neighbors) {
             int coordLetNeighbor = coordLetter + neighbor[0];
@@ -171,13 +176,13 @@ public class Board {
 
             if(this.boardMap.get(coordNumNeighbor).get(coordLetNeighbor).getColor().equals(getOppositeColor(color)))
                 // Verify if this neighbor was captured
-                verifyMyLiberties(coordNumNeighbor, coordLetNeighbor, getOppositeColor(color), visited, true);
+                verifyMyLiberties(getOppositeColor(color), coordNumNeighbor, coordLetNeighbor,  visited, true);
         }
         return 1;
     }
 
-    private boolean verifyMyLiberties(int coordNumber, int coordLetter,
-                                      String color, boolean[][] visitedMap, boolean isFirstCalled) {
+    private boolean verifyMyLiberties(String color, int coordNumber, int coordLetter,
+                                       boolean[][] visitedMap, boolean isFirstCalled) {
         if (visitedMap[coordLetter][coordNumber]) return false; // I'm surrounded, but I have at least a friend near me
         else visitedMap[coordLetter][coordNumber] = true; // We will find if I'm still fine
 
@@ -189,6 +194,7 @@ public class Board {
         for (int[] neighbor : neighbors) {
             int coordLetNeighbor = coordLetter + neighbor[0];
             int coordNumNeighbor = coordNumber + neighbor[1];
+
             if (coordNumNeighbor >= size || coordNumNeighbor < 0
                     || coordLetNeighbor >= size || coordLetNeighbor < 0) { // Off limits
                 liberties--;
@@ -208,7 +214,7 @@ public class Board {
         } else if (liberties == 0) {
             // Some neighbors are there to support the current stone, let see if they are all captured
             for (int[] neighbor : sameColNeighbors)
-                if (verifyMyLiberties(neighbor[0], neighbor[1], color, visitedMap, false))
+                if (verifyMyLiberties(color, neighbor[0], neighbor[1], visitedMap, false))
                    return true;
             if (isFirstCalled)
                 for (int i = 0; i < size; i++) for (int j = 0; j < size; j++)
