@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="TUI" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="TUI_gtp" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="app.TUI" />
     <module name="Jeu de Go" />
     <option name="PROGRAM_PARAMETERS" value="gtp" />

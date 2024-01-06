@@ -9,7 +9,6 @@ public class Game {
     private IPlayer playerBlack;
     private IPlayer playerWhite;
     private final int BOARD_SIZE_MAX = 19;
-    private final int BOARD_SIZE_MIN = 1;
     private int cptSkip = 0;
     private boolean isFinished = false;
     private String mode = "gtp";
@@ -38,7 +37,7 @@ public class Game {
 
     public String commandInterpreter(String[] command) throws RuntimeException {
         String noCommand = "";
-        String ret = "";
+        String ret;
         try {
             Integer.parseInt(command[0]);
             noCommand = command[0];
@@ -47,38 +46,18 @@ public class Game {
 
         }
 
-        switch(command[0]) {
-            case "boardsize", "b":
-                ret = boardsize(command, noCommand);
-                break;
-            case "showboard", "s":
-                ret = showBoard(noCommand);
-                break;
-            case "play", "p":
-                ret = playMove(command, noCommand);
-                break;
-            case "clear_board", "c":
-                ret = clearBoard(noCommand);
-                break;
-            case "genmove", "g":
-                ret = genMove(command, noCommand);
-                break;
-            case "final_score", "f":
-                ret = scoring(noCommand);
-                break;
-            case "player", "pr":
-                ret = changeTypePlayers(command, noCommand);
-                break;
-            case "set_handicaps", "sh":
-                ret = setHandicaps(command, noCommand);
-                break;
-            case "quit", "q":
-                isFinished = true;
-                break;
-            default:
-                ret = "unrecognized command";
-                break;
-        }
+        ret = switch (command[0]) {
+            case "boardsize", "b" -> boardsize(command, noCommand);
+            case "showboard", "s" -> showBoard(noCommand);
+            case "play", "p" -> playMove(command, noCommand);
+            case "clear_board", "c" -> clearBoard(noCommand);
+            case "genmove", "g" -> genMove(command, noCommand);
+            case "final_score", "f" -> scoring(noCommand);
+            case "player", "pr" -> changeTypePlayers(command, noCommand);
+            case "set_handicaps", "sh" -> setHandicaps(command, noCommand);
+            case "quit", "q" -> endGame(noCommand);
+            default -> "unrecognized command";
+        };
         return ret;
     }
 
@@ -90,7 +69,7 @@ public class Game {
         String ret;
         try {
             int size = Integer.parseInt(command[1]);
-            if ((size > BOARD_SIZE_MIN - 1) && (size < BOARD_SIZE_MAX + 1)) {
+            if ((size > 0) && (size < BOARD_SIZE_MAX + 1)) {
                 setSizeBoard(Integer.parseInt(command[1]));
                 ret = commandGTP(noCommand);
             }
@@ -126,8 +105,7 @@ public class Game {
         if (command[2].equals("pass")) {
             ++cptSkip;
             if (cptSkip == 2) {
-                isFinished = true;
-                return ret.append(passStr).append("Game finished!").toString();
+                return ret.append(passStr).append("\n").append(endGame(noCommand)).toString();
             }
         } else {
             cptSkip = 0;
@@ -140,10 +118,11 @@ public class Game {
                     IPlayer nextPlayer = currentPlayer.equals(playerBlack) ? playerWhite : playerBlack;
                     if (!nextPlayer.canPlayConsole())
                         ret.append("\n").append(robotPlay(nextPlayer.equals(playerBlack) ? "black" : "white"));
-
                 } else throw new RuntimeException("syntax error");
             } catch (RuntimeException e) {
-                ret.append("?").append(noCommand).append(" illegal move\n");
+                if(e.getMessage().equalsIgnoreCase("not enough stones"))
+                    ret.delete(0,ret.length()).append(endGame(noCommand));
+                else ret.append("?").append(noCommand).append(" illegal move\n");
             }
             return ret.toString();
         }
@@ -166,13 +145,21 @@ public class Game {
                 ret.append(this.board.toString());
             } else throw new RuntimeException("syntax error");
         } catch (RuntimeException e) {
-            ret.append("?").append(noCommand).append(" illegal move\n");
+            if(e.getMessage().equalsIgnoreCase("pass") ||
+                    e.getMessage().equalsIgnoreCase("not enough stones"))
+                ret.append(endGame(noCommand));
+            else ret.append("?").append(noCommand).append(" illegal move\n");
         }
         return ret.toString();
     }
 
     private String scoring(String noCommand) {
         return commandGTP(noCommand) + this.board.finalScore(playerBlack, playerWhite);
+    }
+
+    private String endGame(String noCommand) {
+        isFinished = true;
+        return scoring(noCommand) + "\nGame finished!";
     }
 
     private String changeTypePlayers(String[] command, String noCommand) {
@@ -220,6 +207,6 @@ public class Game {
     }
 
     public String onlyRobotPlay() {
-        return robotPlay("black") + "\n" + robotPlay("white");
+        return robotPlay("black") + "\n" + (isNotFinished() ? robotPlay("white") : "");
     }
 }
