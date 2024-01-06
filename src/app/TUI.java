@@ -30,7 +30,7 @@ public class TUI {
                 if (game.isOnlyRobotPlay()) {
                     do {
                         System.out.println(game.onlyRobotPlay());
-                        TimeUnit.SECONDS.sleep(3);
+                        //TimeUnit.SECONDS.sleep(3);
                     } while (game.isNotFinished());
                 }
                 else {

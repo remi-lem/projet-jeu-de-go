@@ -8,18 +8,30 @@ import intersection.Intersection.Color;
 public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
     public static int capturedStonesWhite = 0, capturedStonesBlack = 0;
+    public static int numStonesWhite, numStonesBlack;
 
     public Board(int size) {
         initialize(size);
+        setNumStones();
     }
 
     public Board(int size, String move){
         initialize(size);
         initializeSGF(move);
+        setNumStones();
     }
 
     public int getSize(){
         return this.boardMap.size();
+    }
+
+    public void setNumStones() {
+        numStonesWhite = numStonesBlack = (int) (Math.pow(getSize(),2)/2);
+    }
+
+    public void playStone(String color) {
+        if (color.equalsIgnoreCase("black")) numStonesBlack--;
+        else numStonesWhite--;
     }
 
     private void initializeSGF(String move) {
@@ -49,7 +61,9 @@ public class Board {
         makeMove(color == 'b' ? "black" : "white",(i+1)+""+(j+1));
 }
 
-    public void makeMove(String color, String move) {
+    public void makeMove(String color, String move) throws RuntimeException {
+        if(isStonesEmpty(color)) throw new RuntimeException("not enough stones");
+
         int letter, number;
 
         if(Character.isDigit(move.charAt(0))) letter = Integer.parseInt(move.substring(0,1)) - 1;
@@ -61,24 +75,27 @@ public class Board {
         if (isMoveValid(letter, number)){
             this.boardMap.get(number).set(letter, new Intersection(color));
             updateCaptures(color, letter, number);
+            playStone(color);
         }
         else throw new IllegalArgumentException("illegal move");
     }
 
     public String makeRndMove(String color) throws RuntimeException {
-        int letter, number, numTest = 0;
+        if(isStonesEmpty(color)) throw new RuntimeException("not enough stones");
+
+        int letter, number, maxNum = (int) Math.pow(this.boardMap.size(), 2);
 
         do {
-            letter = (int) (Math.random() * boardMap.size());
-            number = (int) (Math.random() * boardMap.size());
-            numTest++;
-            //TODO: Find a best way to stop
-            //if(numTest > Math.pow(boardMap.size(), 2)) throw new RuntimeException("not enough place");
+            letter = (int) (Math.random() * this.boardMap.size());
+            number = (int) (Math.random() * this.boardMap.size());
+
+            if (maxNum-- == 0) throw new RuntimeException("pass");
         } while (!isMoveValid(letter, number));
 
-        if (isMoveValid(letter, number)){
+        if (isMoveValid(letter, number)) {
             this.boardMap.get(number).set(letter, new Intersection(color));
             updateCaptures(color, letter, number);
+            playStone(color);
         }
         return ((char)(letter+65) + "" + (number+1));
     }
@@ -87,6 +104,9 @@ public class Board {
         if(x < 0 || x >= this.boardMap.size() || y < 0 || y >= this.boardMap.size()) return false;
         if(getNbLiberties(x, y) < 1) return false; //TODO: Check if the stone capture
         return this.boardMap.get(y).get(x).isFree();
+    }
+    private boolean isStonesEmpty(String color) {
+        return (color.equalsIgnoreCase("black") ? numStonesBlack : numStonesWhite) <= 0;
     }
 
     private String getOppositeColor(String color) {

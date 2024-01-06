@@ -73,7 +73,7 @@ public class Game {
                 ret = setHandicaps(command, noCommand);
                 break;
             case "quit", "q":
-                isFinished = true;
+                ret = endGame(noCommand);
                 break;
             default:
                 ret = "unrecognized command";
@@ -126,8 +126,7 @@ public class Game {
         if (command[2].equals("pass")) {
             ++cptSkip;
             if (cptSkip == 2) {
-                isFinished = true;
-                return ret.append(passStr).append("Game finished!").toString();
+                return ret.append(passStr).append("\n").append(endGame(noCommand)).toString();
             }
         } else {
             cptSkip = 0;
@@ -140,10 +139,11 @@ public class Game {
                     IPlayer nextPlayer = currentPlayer.equals(playerBlack) ? playerWhite : playerBlack;
                     if (!nextPlayer.canPlayConsole())
                         ret.append("\n").append(robotPlay(nextPlayer.equals(playerBlack) ? "black" : "white"));
-
                 } else throw new RuntimeException("syntax error");
             } catch (RuntimeException e) {
-                ret.append("?").append(noCommand).append(" illegal move\n");
+                if(e.getMessage().equalsIgnoreCase("not enough stones"))
+                    ret.delete(0,ret.length()).append(endGame(noCommand));
+                else ret.append("?").append(noCommand).append(" illegal move\n");
             }
             return ret.toString();
         }
@@ -166,13 +166,21 @@ public class Game {
                 ret.append(this.board.toString());
             } else throw new RuntimeException("syntax error");
         } catch (RuntimeException e) {
-            ret.append("?").append(noCommand).append(" illegal move\n");
+            if(e.getMessage().equalsIgnoreCase("pass") ||
+                    e.getMessage().equalsIgnoreCase("not enough stones"))
+                ret.append(endGame(noCommand));
+            else ret.append("?").append(noCommand).append(" illegal move\n");
         }
         return ret.toString();
     }
 
     private String scoring(String noCommand) {
         return commandGTP(noCommand) + this.board.finalScore(playerBlack, playerWhite);
+    }
+
+    private String endGame(String noCommand) {
+        isFinished = true;
+        return scoring(noCommand) + "\nGame finished!";
     }
 
     private String changeTypePlayers(String[] command, String noCommand) {
