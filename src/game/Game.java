@@ -42,6 +42,7 @@ public class Game {
     public String commandInterpreter(String[] command) throws RuntimeException {
         String noCommand = "";
         String ret;
+
         try {
             Integer.parseInt(command[0]);
             noCommand = command[0];
@@ -72,6 +73,7 @@ public class Game {
 
     private String boardsize(String[] command, String noCommand) {
         String ret;
+
         try {
             int size = Integer.parseInt(command[1]);
             if ((size > 0) && (size < BOARD_SIZE_MAX + 1)) {
@@ -146,7 +148,7 @@ public class Game {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
                 String movePlayed = this.board.makeRndMove(command[1].toLowerCase());
 
-                this.boardHistory.add(new Board(this.board)); //TODO: it change all the boards, not only the last one
+                this.boardHistory.add(new Board(this.board));
                 ret.append(commandGTP(noCommand));
 
                 if (mode.equals("direct"))
@@ -204,9 +206,9 @@ public class Game {
     }
 
     private String undoMove(String noCommand) {
-        if (boardHistory.size() > 1) {
-            this.boardHistory.remove(boardHistory.size() - 1);
-            this.board = new Board(boardHistory.get(boardHistory.size() - 1));
+        if (this.boardHistory.size() > 1) {
+            this.boardHistory.remove(this.boardHistory.size() - 1);
+            this.board = new Board(this.boardHistory.get(this.boardHistory.size() - 1));
             return commandGTP(noCommand) + this.board.toString();
         }
         return commandGTP(noCommand) + "can't undo command\n";
