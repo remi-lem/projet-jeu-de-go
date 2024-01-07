@@ -22,13 +22,13 @@ public class Board {
         initializeSGF(move);
     }
 
-    public Board(Board lastBoard){
-        this.boardMap = lastBoard.boardMap;
+    public Board(Board lastBoard) {
         this.capturedStonesWhite = lastBoard.capturedStonesWhite;
-        this.capturedStonesBlack = lastBoard.numStonesBlack;
+        this.capturedStonesBlack = lastBoard.capturedStonesBlack;
         this.numStonesWhite = lastBoard.numStonesWhite;
-        this.numStonesBlack = lastBoard.capturedStonesBlack;
+        this.numStonesBlack = lastBoard.numStonesBlack;
         this.colorToPlaySGF = lastBoard.colorToPlaySGF;
+        initialize(lastBoard);
     }
 
     public int getSize(){
@@ -51,12 +51,19 @@ public class Board {
     }
 
     public void initialize(int size) {
-        boardMap = new ArrayList<>(size);
+        this.boardMap = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            boardMap.add(new ArrayList<>(size));
+            this.boardMap.add(new ArrayList<>(size));
             for (int j = 0; j < size ; j++)
-                boardMap.get(i).add(new Intersection());
+                this.boardMap.get(i).add(new Intersection());
         }
+    }
+
+    public void initialize(Board otherBoard) {
+        initialize(otherBoard.boardMap.size());
+        for (int i = 0; i < this.boardMap.size(); i++)
+            for (int j = 0; j < this.boardMap.size(); j++)
+                this.boardMap.get(i).set(j, new Intersection(otherBoard.boardMap.get(i).get(j).getColor()));
     }
 
     public void clear() {
@@ -238,7 +245,6 @@ public class Board {
         else capturedStonesBlack++;
     }
 
-
     public String finalScore(IPlayer pBlack, IPlayer pWhite) {
         int scoreBlack = 0, scoreWhite = 0;
 
@@ -258,15 +264,6 @@ public class Board {
 
         return "WHITE : " + pWhite.getScore() + " points" +
                 "\nBLACK : " + pBlack.getScore() + " points";
-    }
-
-    public Board copy() {
-        Board copy = new Board(this.boardMap.size());
-
-        for (int i = 0; i < this.boardMap.size(); i++)
-            for (int j = 0; j < this.boardMap.size(); j++)
-                copy.boardMap.get(i).set(j, new Intersection(this.boardMap.get(i).get(j).getColor()));
-        return copy;
     }
 
     public String toString() {

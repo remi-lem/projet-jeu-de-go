@@ -206,10 +206,10 @@ public class Game {
     private String undoMove(String noCommand) {
         if (boardHistory.size() > 1) {
             this.boardHistory.remove(boardHistory.size() - 1);
-            this.board = new Board(boardHistory.get(boardHistory.size() - 1));  // Utilisez la copie de l'état précédent
+            this.board = new Board(boardHistory.get(boardHistory.size() - 1));
             return commandGTP(noCommand) + this.board.toString();
         }
-        return commandGTP(noCommand) + "can't undo command";
+        return commandGTP(noCommand) + "can't undo command\n";
     }
 
     public boolean isOnlyRobotPlay() {
