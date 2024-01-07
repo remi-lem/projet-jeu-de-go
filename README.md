@@ -64,6 +64,7 @@ Nous respectons les principes SOLID suivants :
 ![Google Drive](https://img.shields.io/badge/Google%20Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)
 ![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)
 
+### Modélisation du diagramme :
 <img src="https://goat-inc.co.jp/wp-content/uploads/2021/03/logo-plantuml-visual-code.png" alt=PlantUML width="100"/>
 
 
