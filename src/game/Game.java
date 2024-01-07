@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Game {
-    private final ArrayList<Board> boardHistory; //TODO: Change Board to String
+    private final ArrayList<Board> boardHistory;
     private Board board;
     private IPlayer playerBlack;
     private IPlayer playerWhite;
@@ -118,7 +118,7 @@ public class Game {
                 if (command[1].equalsIgnoreCase("black")
                         || command[1].equalsIgnoreCase("white")) {
                     this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase());
-                    this.boardHistory.add(this.board);
+                    this.boardHistory.add(this.board.clone());
                     ret.append("\n").append(this.board.toString());
 
                     IPlayer nextPlayer = currentPlayer.equals(playerBlack) ? playerWhite : playerBlack;
@@ -146,7 +146,7 @@ public class Game {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
                 String movePlayed = this.board.makeRndMove(command[1].toLowerCase());
 
-                this.boardHistory.add(this.board); //TODO: it change all the boards, not only the last one
+                this.boardHistory.add(this.board.clone()); //TODO: it change all the boards, not only the last one
                 ret.append(commandGTP(noCommand));
 
                 if (mode.equals("direct"))

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import intersection.Intersection.Color;
 
-public class Board {
+public class Board implements Cloneable {
     private ArrayList<ArrayList<IIntersection>> boardMap;
     private static int capturedStonesWhite = 0, capturedStonesBlack = 0;
     private static int numStonesWhite, numStonesBlack;
@@ -258,6 +258,15 @@ public class Board {
             for (int j = 0; j < this.boardMap.size(); j++)
                 copy.boardMap.get(i).set(j, new Intersection(this.boardMap.get(i).get(j).getColor()));
         return copy;
+    }
+
+    @Override
+    public Board clone() {
+        try {
+            return (Board) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 
     public String toString() {
