@@ -15,7 +15,7 @@ public class Game {
     private boolean isFinished = false;
     private String mode = "gtp";
 
-    public Game(IPlayer playerBlack, IPlayer playerWhite) throws CloneNotSupportedException {
+    public Game(IPlayer playerBlack, IPlayer playerWhite) {
         this.playerBlack = playerBlack;
         this.playerWhite = playerWhite;
         this.board = new Board(BOARD_SIZE_MAX);
