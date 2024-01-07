@@ -7,8 +7,8 @@ import intersection.Intersection.Color;
 
 public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
-    private static int capturedStonesWhite = 0, capturedStonesBlack = 0;
-    private static int numStonesWhite, numStonesBlack;
+    private int capturedStonesWhite = 0, capturedStonesBlack = 0;
+    private int numStonesWhite, numStonesBlack;
     private String colorToPlaySGF = "white";
 
     public Board(int size) {
@@ -20,6 +20,15 @@ public class Board {
         initialize(size);
         setNumStones();
         initializeSGF(move);
+    }
+
+    public Board(Board lastBoard) {
+        this.capturedStonesWhite = lastBoard.capturedStonesWhite;
+        this.capturedStonesBlack = lastBoard.capturedStonesBlack;
+        this.numStonesWhite = lastBoard.numStonesWhite;
+        this.numStonesBlack = lastBoard.numStonesBlack;
+        this.colorToPlaySGF = lastBoard.colorToPlaySGF;
+        initialize(lastBoard);
     }
 
     public int getSize(){
@@ -42,12 +51,19 @@ public class Board {
     }
 
     public void initialize(int size) {
-        boardMap = new ArrayList<>(size);
+        this.boardMap = new ArrayList<>(size);
         for (int i = 0; i < size; i++) {
-            boardMap.add(new ArrayList<>(size));
+            this.boardMap.add(new ArrayList<>(size));
             for (int j = 0; j < size ; j++)
-                boardMap.get(i).add(new Intersection());
+                this.boardMap.get(i).add(new Intersection());
         }
+    }
+
+    public void initialize(Board otherBoard) {
+        initialize(otherBoard.boardMap.size());
+        for (int i = 0; i < this.boardMap.size(); i++)
+            for (int j = 0; j < this.boardMap.size(); j++)
+                this.boardMap.get(i).set(j, new Intersection(otherBoard.boardMap.get(i).get(j).getColor()));
     }
 
     public void clear() {
@@ -228,7 +244,6 @@ public class Board {
         if (color.equalsIgnoreCase("white")) capturedStonesWhite++;
         else capturedStonesBlack++;
     }
-
 
     public String finalScore(IPlayer pBlack, IPlayer pWhite) {
         int scoreBlack = 0, scoreWhite = 0;

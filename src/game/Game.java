@@ -2,9 +2,11 @@ package game;
 
 import app.Factory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Game {
+    private final ArrayList<Board> boardHistory;
     private Board board;
     private IPlayer playerBlack;
     private IPlayer playerWhite;
@@ -17,6 +19,8 @@ public class Game {
         this.playerBlack = playerBlack;
         this.playerWhite = playerWhite;
         this.board = new Board(BOARD_SIZE_MAX);
+        this.boardHistory = new ArrayList<>();
+        this.boardHistory.add(new Board(this.board));
     }
 
     public void setPlayerBlack(IPlayer player) {
@@ -38,6 +42,7 @@ public class Game {
     public String commandInterpreter(String[] command) throws RuntimeException {
         String noCommand = "";
         String ret;
+
         try {
             Integer.parseInt(command[0]);
             noCommand = command[0];
@@ -55,6 +60,7 @@ public class Game {
             case "final_score", "f" -> scoring(noCommand);
             case "player", "pr" -> changeTypePlayers(command, noCommand);
             case "set_handicaps", "sh" -> setHandicaps(command, noCommand);
+            case "undo", "u" -> undoMove(noCommand);
             case "quit", "q" -> endGame(noCommand);
             default -> "unrecognized command";
         };
@@ -67,6 +73,7 @@ public class Game {
 
     private String boardsize(String[] command, String noCommand) {
         String ret;
+
         try {
             int size = Integer.parseInt(command[1]);
             if ((size > 0) && (size < BOARD_SIZE_MAX + 1)) {
@@ -113,6 +120,7 @@ public class Game {
                 if (command[1].equalsIgnoreCase("black")
                         || command[1].equalsIgnoreCase("white")) {
                     this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase());
+                    this.boardHistory.add(new Board(this.board));
                     ret.append("\n").append(this.board.toString());
 
                     IPlayer nextPlayer = currentPlayer.equals(playerBlack) ? playerWhite : playerBlack;
@@ -139,7 +147,10 @@ public class Game {
         try {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
                 String movePlayed = this.board.makeRndMove(command[1].toLowerCase());
+
+                this.boardHistory.add(new Board(this.board));
                 ret.append(commandGTP(noCommand));
+
                 if (mode.equals("direct"))
                     ret.append("Robot ").append(command[1]).append(" have played ").append(movePlayed).append("\n");
                 ret.append(this.board.toString());
@@ -192,6 +203,15 @@ public class Game {
             } else return "?" + noCommand + " illegal handicaps number\n";
         }
         else return "?" + noCommand + " illegal size of board\n";
+    }
+
+    private String undoMove(String noCommand) {
+        if (this.boardHistory.size() > 1) {
+            this.boardHistory.remove(this.boardHistory.size() - 1);
+            this.board = new Board(this.boardHistory.get(this.boardHistory.size() - 1));
+            return commandGTP(noCommand) + this.board.toString();
+        }
+        return commandGTP(noCommand) + "can't undo command\n";
     }
 
     public boolean isOnlyRobotPlay() {
