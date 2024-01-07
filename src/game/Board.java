@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 import intersection.Intersection.Color;
 
-public class Board implements Cloneable {
+public class Board {
     private ArrayList<ArrayList<IIntersection>> boardMap;
-    private static int capturedStonesWhite = 0, capturedStonesBlack = 0;
-    private static int numStonesWhite, numStonesBlack;
+    private int capturedStonesWhite = 0, capturedStonesBlack = 0;
+    private int numStonesWhite, numStonesBlack;
     private String colorToPlaySGF = "white";
 
     public Board(int size) {
@@ -20,6 +20,15 @@ public class Board implements Cloneable {
         initialize(size);
         setNumStones();
         initializeSGF(move);
+    }
+
+    public Board(Board lastBoard){
+        this.boardMap = lastBoard.boardMap;
+        this.capturedStonesWhite = lastBoard.capturedStonesWhite;
+        this.capturedStonesBlack = lastBoard.numStonesBlack;
+        this.numStonesWhite = lastBoard.numStonesWhite;
+        this.numStonesBlack = lastBoard.capturedStonesBlack;
+        this.colorToPlaySGF = lastBoard.colorToPlaySGF;
     }
 
     public int getSize(){
@@ -258,15 +267,6 @@ public class Board implements Cloneable {
             for (int j = 0; j < this.boardMap.size(); j++)
                 copy.boardMap.get(i).set(j, new Intersection(this.boardMap.get(i).get(j).getColor()));
         return copy;
-    }
-
-    @Override
-    public Board clone() {
-        try {
-            return (Board) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new AssertionError();
-        }
     }
 
     public String toString() {

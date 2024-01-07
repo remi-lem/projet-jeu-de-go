@@ -15,12 +15,12 @@ public class Game {
     private boolean isFinished = false;
     private String mode = "gtp";
 
-    public Game(IPlayer playerBlack, IPlayer playerWhite) {
+    public Game(IPlayer playerBlack, IPlayer playerWhite) throws CloneNotSupportedException {
         this.playerBlack = playerBlack;
         this.playerWhite = playerWhite;
         this.board = new Board(BOARD_SIZE_MAX);
         this.boardHistory = new ArrayList<>();
-        this.boardHistory.add(this.board);
+        this.boardHistory.add(new Board(this.board));
     }
 
     public void setPlayerBlack(IPlayer player) {
@@ -118,7 +118,7 @@ public class Game {
                 if (command[1].equalsIgnoreCase("black")
                         || command[1].equalsIgnoreCase("white")) {
                     this.board.makeMove(command[1].toLowerCase(), command[2].toUpperCase());
-                    this.boardHistory.add(this.board.clone());
+                    this.boardHistory.add(new Board(this.board));
                     ret.append("\n").append(this.board.toString());
 
                     IPlayer nextPlayer = currentPlayer.equals(playerBlack) ? playerWhite : playerBlack;
@@ -146,7 +146,7 @@ public class Game {
             if (command[1].equalsIgnoreCase("BLACK") || command[1].equalsIgnoreCase("WHITE")) {
                 String movePlayed = this.board.makeRndMove(command[1].toLowerCase());
 
-                this.boardHistory.add(this.board.clone()); //TODO: it change all the boards, not only the last one
+                this.boardHistory.add(new Board(this.board)); //TODO: it change all the boards, not only the last one
                 ret.append(commandGTP(noCommand));
 
                 if (mode.equals("direct"))
@@ -206,7 +206,7 @@ public class Game {
     private String undoMove(String noCommand) {
         if (boardHistory.size() > 1) {
             this.boardHistory.remove(boardHistory.size() - 1);
-            this.board = boardHistory.get(boardHistory.size() - 1).copy();  // Utilisez la copie de l'état précédent
+            this.board = new Board(boardHistory.get(boardHistory.size() - 1));  // Utilisez la copie de l'état précédent
             return commandGTP(noCommand) + this.board.toString();
         }
         return commandGTP(noCommand) + "can't undo command";
