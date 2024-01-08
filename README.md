@@ -8,35 +8,9 @@ Ce projet a pour objectif de nous apprendre les principes SOLID et à les respec
 - [Esteban C.R.](https://github.com/EstebanCRz)
 - [Clothilde P.](https://github.com/TorielLink)
 
-## Fonctionnalités de l'application
-### Sprint 1
-- Diagramme d'Architecture (de Paquetage)
-- Interpreter qui accepte des commandes
-- Mise en place du protocole GTP
-- Commande QUIT
-- Commande BOARDSIZE
-- Commande SHOW_BOARD
+## Rapport
 
-### Sprint 2
-- Commande CLEAR_BOARD
-- Commande GENMOVE
-- Commande PLAY
-- Commande FINAL_SCORE
-- Capture d'une ou d'un groupe de pierres
-- Jeux de tests
-
-### Sprint 3
-- Jeu hors GTP (joueurs humains ou robots)
-- Commande PLAYER
-- Commande PLAY pass
-- Commande SET_HANDICAPS
-- Commande UNDO
-- Bot qui joue aléatoirement
-
-## Améliorations possibles
-- Gérer les suicides
-- Gérer la règle du KO
-- Coder un bot qui joue selon les règles du jeu de Go
+[Rapport-QDEV_CARDAILLAC-RODRIGUEZ_LEMAIRE_PROUX.pdf](Rapport-QDEV_CARDAILLAC-RODRIGUEZ_LEMAIRE_PROUX.pdf)
 
 ## Principes SOLID et Design Pattern
 Nous respectons les principes SOLID suivants : 
