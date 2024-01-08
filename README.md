@@ -1,5 +1,13 @@
 # Projet jeu de Go
 
+Note 14/20
+
+Le code de la classe Robot est vide. La classe ne sert donc à rien. je pense que vous n'avez pas bien compris l'exercice.
+On ne sait pas trop pourquoi la partie s'arrête.
+Quand un joueur suicide une pierre elle est prise mais pas son groupe ce qui est incohérent.
+Pour les auteurs mettez le nom de famille en entier sinon je perds du temps à chercher qui c'est sur scodoc.
+
+
 Projet effectué dans le cadre du cours de Qualité de Développement de la deuxième année de BUT Informatique.<br>
 Ce projet a pour objectif de nous apprendre les principes SOLID et à les respecter.
 
